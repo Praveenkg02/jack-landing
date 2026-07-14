@@ -279,6 +279,16 @@
     color: var(--muted); margin-top: 4px;
   }
 
+  .feat-link {
+    display: inline-block; margin-top: 32px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid rgba(255,107,43,0.3);
+    padding-bottom: 4px; transition: border-color .2s;
+  }
+  .feat-link:hover { border-color: var(--accent); }
+
   /* visual side */
   .feature-visual {
     position: relative; width: 440px; flex-shrink: 0;
@@ -508,6 +518,16 @@
     font-size: 12px; color: var(--muted); letter-spacing: 1px;
   }
 
+  .footer-links {
+    display: flex; gap: 24px;
+  }
+  .footer-links a {
+    font-size: 12px; color: var(--muted); text-decoration: none;
+    letter-spacing: 1px; text-transform: uppercase;
+    transition: color .2s;
+  }
+  .footer-links a:hover { color: var(--off-white); }
+
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
@@ -590,7 +610,7 @@
     <p class="hero-sub">Book services, discover local vendors, earn rewards — all in one place. JACK brings your neighbourhood to your fingertips.</p>
     <div class="hero-actions">
       <button class="btn-primary">Explore JACK</button>
-      <button class="btn-ghost">View Vendors</button>
+      <a href="https://github.com/Praveenkg02/jack-app" target="_blank" class="btn-ghost">View on GitHub</a>
     </div>
   </div>
 
@@ -628,6 +648,7 @@
         <div class="stat-label">Avg Booking Time</div>
       </div>
     </div>
+    <a href="https://github.com/Praveenkg02/jack-app" target="_blank" class="feat-link">View Source →</a>
   </div>
 
   <div class="feature-visual">
@@ -688,6 +709,7 @@
         <div class="stat-label">Avg Rating</div>
       </div>
     </div>
+    <a href="https://github.com/Praveenkg02/jack-app" target="_blank" class="feat-link">View Source →</a>
   </div>
 
   <div class="feature-visual">
@@ -721,6 +743,7 @@
         <div class="stat-label">Fee to Join</div>
       </div>
     </div>
+    <a href="https://github.com/Praveenkg02/jack-app" target="_blank" class="feat-link">View Source →</a>
   </div>
 
   <div class="feature-visual">
@@ -791,6 +814,10 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">JACK</div>
+  <div class="footer-links">
+    <a href="https://github.com/Praveenkg02/jack-app" target="_blank">Jack App</a>
+    <a href="https://github.com/Praveenkg02/jack-landing" target="_blank">Landing Page</a>
+  </div>
   <div class="footer-copy">© 2025 JACK Platform · Built by Praveen KG</div>
 </footer>
 
