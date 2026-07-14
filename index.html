@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JACK — Your City, Connected</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --off-white: #f0ede6;
+    --warm-cream: #e8e3d8;
+    --accent: #ff6b2b;
+    --accent2: #ffd166;
+    --muted: #888;
+    --nav-h: 64px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px; font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--off-white);
+  }
+
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a {
+    font-size: 13px; font-weight: 500; letter-spacing: 1.5px;
+    color: var(--muted); text-decoration: none; text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--off-white); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #fff; font-size: 13px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 10px 24px; border: none; cursor: pointer;
+    transition: opacity .2s;
+  }
+  .nav-cta:hover { opacity: .85; }
+
+  /* ── HERO ── */
+  #hero {
+    height: 100vh;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 80px;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(255,107,43,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .hero-left { position: relative; z-index: 2; max-width: 520px; }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; font-weight: 400; letter-spacing: 3px;
+    color: var(--accent); text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp .6s .2s forwards;
+  }
+
+  .hero-title {
+    font-size: clamp(56px, 7vw, 96px);
+    font-weight: 700; line-height: .95;
+    letter-spacing: -3px;
+    opacity: 0; transform: translateY(30px);
+    animation: fadeUp .7s .4s forwards;
+  }
+
+  .hero-title span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 17px; font-weight: 400; line-height: 1.6;
+    color: var(--muted); margin-top: 28px; max-width: 380px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp .6s .7s forwards;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; margin-top: 48px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp .6s .9s forwards;
+  }
+
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    font-size: 14px; font-weight: 600; letter-spacing: 1px;
+    padding: 16px 36px; border: none; cursor: pointer;
+    text-transform: uppercase; transition: transform .2s, opacity .2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); opacity: .9; }
+
+  .btn-ghost {
+    background: transparent; color: var(--off-white);
+    font-size: 14px; font-weight: 500; letter-spacing: 1px;
+    padding: 16px 36px; border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer; text-transform: uppercase; transition: border-color .2s;
+  }
+  .btn-ghost:hover { border-color: var(--off-white); }
+
+  /* hero right — map blob */
+  .hero-right {
+    position: relative; z-index: 2;
+    width: 420px; height: 420px; flex-shrink: 0;
+    opacity: 0; transform: scale(.9) translateX(40px);
+    animation: heroRight .8s .6s forwards;
+  }
+
+  .map-blob {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    border: 1px solid rgba(255,107,43,0.2);
+    position: relative;
+    background: radial-gradient(circle at center, rgba(255,107,43,0.06), transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  .map-blob::before {
+    content: '';
+    position: absolute; inset: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,107,43,0.1);
+  }
+
+  .map-blob::after {
+    content: '';
+    position: absolute; inset: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,107,43,0.06);
+  }
+
+  .map-pin {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255,107,43,0.2), 0 0 20px rgba(255,107,43,0.4);
+  }
+
+  .map-pin::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,107,43,0.4);
+    animation: ripple 2s ease-out infinite;
+  }
+
+  .pin1 { top: 35%; left: 45%; }
+  .pin2 { top: 55%; left: 30%; animation-delay: .5s; }
+  .pin3 { top: 42%; left: 65%; animation-delay: 1s; }
+  .pin4 { top: 65%; left: 55%; animation-delay: 1.5s; }
+
+  .pin-line {
+    position: absolute;
+    background: linear-gradient(to right, rgba(255,107,43,0.3), transparent);
+    height: 1px;
+    transform-origin: left;
+    animation: drawLine 2s 1.2s forwards;
+    width: 0;
+  }
+  .pl1 { top: calc(35% + 5px); left: calc(45% + 5px); width: 80px; transform: rotate(15deg); animation: drawLine 1s 1.2s forwards; }
+  .pl2 { top: calc(55% + 5px); left: calc(30% + 5px); width: 100px; transform: rotate(-8deg); animation: drawLine 1s 1.5s forwards; }
+
+  .hero-scroll {
+    position: absolute; bottom: 36px; left: 80px;
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--muted); letter-spacing: 2px;
+    opacity: 0; animation: fadeUp .5s 1.2s forwards;
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--muted);
+    animation: scrollLine 2s 1.5s ease-in-out infinite;
+  }
+
+  /* ── SCROLL SECTIONS ── */
+  .feature-section {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 120px 80px;
+    position: relative; overflow: hidden;
+  }
+
+  .feature-section:nth-child(even) { flex-direction: row-reverse; }
+
+  .feature-section.cream {
+    background: var(--warm-cream);
+    color: var(--black);
+  }
+
+  .feature-content { max-width: 480px; }
+
+  .feat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 20px;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .7s, transform .7s;
+  }
+
+  .feat-title {
+    font-size: clamp(48px, 5vw, 72px);
+    font-weight: 700; line-height: .95;
+    letter-spacing: -2px;
+    opacity: 0; transform: translateY(32px);
+    transition: opacity .7s .1s, transform .7s .1s;
+  }
+
+  .feat-title-sub {
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 300; color: var(--muted);
+    letter-spacing: -1px; margin-top: 4px;
+    opacity: 0; transform: translateY(32px);
+    transition: opacity .7s .2s, transform .7s .2s;
+  }
+
+  .cream .feat-title-sub { color: #888; }
+
+  .feat-body {
+    font-size: 15px; line-height: 1.7; color: var(--muted);
+    margin-top: 28px; max-width: 360px;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity .7s .3s, transform .7s .3s;
+  }
+  .cream .feat-body { color: #555; }
+
+  .feat-stats {
+    display: flex; gap: 40px; margin-top: 48px;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity .7s .4s, transform .7s .4s;
+  }
+
+  .stat-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 32px; font-weight: 700; color: var(--accent);
+  }
+  .stat-label {
+    font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--muted); margin-top: 4px;
+  }
+
+  /* visual side */
+  .feature-visual {
+    position: relative; width: 440px; flex-shrink: 0;
+    opacity: 0; transform: translateX(40px) scale(.95);
+    transition: opacity .8s .2s, transform .8s .2s;
+  }
+
+  .feature-section:nth-child(even) .feature-visual {
+    transform: translateX(-40px) scale(.95);
+  }
+
+  /* phone mockup */
+  .phone-wrap {
+    position: relative; width: 240px; margin: 0 auto;
+  }
+
+  .phone-body {
+    width: 240px; height: 480px;
+    background: #111;
+    border-radius: 36px;
+    border: 2px solid rgba(255,255,255,0.1);
+    position: relative; overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+  }
+
+  .phone-screen {
+    position: absolute; inset: 8px;
+    background: var(--black); border-radius: 28px;
+    overflow: hidden;
+  }
+
+  .phone-notch {
+    width: 80px; height: 24px;
+    background: #111; border-radius: 0 0 16px 16px;
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  .phone-content {
+    padding: 32px 16px 16px;
+    height: 100%;
+    background: linear-gradient(160deg, #111 0%, #0a0a0a 100%);
+  }
+
+  .pc-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+  }
+  .pc-title { font-size: 16px; font-weight: 700; }
+  .pc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+  .pc-search {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 10px 14px;
+    font-size: 11px; color: var(--muted);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .service-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .service-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px; padding: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .sc-icon { font-size: 18px; margin-bottom: 6px; }
+  .sc-name { font-size: 10px; font-weight: 600; color: var(--off-white); }
+  .sc-count { font-size: 9px; color: var(--muted); }
+
+  /* map visual */
+  .map-visual {
+    width: 100%; height: 320px;
+    background: #111;
+    border-radius: 16px;
+    position: relative; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .map-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(rgba(255,107,43,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,107,43,0.04) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .map-center-pin {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px; height: 16px;
+    border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 8px rgba(255,107,43,0.15), 0 0 40px rgba(255,107,43,0.3);
+  }
+
+  .map-ring {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid rgba(255,107,43,0.2);
+    animation: expandRing 3s ease-out infinite;
+  }
+  .mr1 { width: 60px; height: 60px; }
+  .mr2 { width: 120px; height: 120px; animation-delay: 1s; }
+  .mr3 { width: 200px; height: 200px; animation-delay: 2s; }
+
+  /* vendor chips */
+  .vendor-chip {
+    position: absolute;
+    background: rgba(10,10,10,0.9);
+    border: 1px solid rgba(255,107,43,0.3);
+    border-radius: 8px; padding: 6px 10px;
+    font-size: 10px; font-weight: 600;
+    color: var(--off-white);
+    white-space: nowrap;
+  }
+  .vc1 { top: 20%; left: 15%; }
+  .vc2 { top: 30%; right: 10%; }
+  .vc3 { bottom: 25%; left: 20%; }
+
+  /* reward visual */
+  .reward-visual {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .reward-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 20px 24px;
+    display: flex; align-items: center; gap: 20px;
+  }
+
+  .reward-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: rgba(255,107,43,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+
+  .reward-info { flex: 1; }
+  .reward-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .reward-pts { font-size: 12px; color: var(--muted); }
+
+  .reward-bar-wrap {
+    width: 80px; height: 4px;
+    background: rgba(255,255,255,0.1); border-radius: 2px; flex-shrink: 0;
+  }
+  .reward-bar {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(to right, var(--accent), var(--accent2));
+  }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    background: var(--accent);
+    padding: 60px 80px;
+    display: flex; justify-content: space-around; align-items: center;
+    flex-wrap: wrap; gap: 40px;
+  }
+
+  .strip-stat { text-align: center; }
+  .strip-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 48px; font-weight: 700; color: #fff;
+    display: block;
+  }
+  .strip-lbl {
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); margin-top: 6px; display: block;
+  }
+
+  /* ── FINAL CTA ── */
+  #cta {
+    padding: 160px 80px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+
+  #cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at center, rgba(255,107,43,0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 700; line-height: .95; letter-spacing: -3px;
+    margin-bottom: 32px;
+  }
+
+  .cta-title span { color: var(--accent); }
+
+  .cta-sub {
+    font-size: 17px; color: var(--muted);
+    max-width: 480px; margin: 0 auto 48px; line-height: 1.6;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 15px; font-weight: 700; letter-spacing: 2px;
+    padding: 20px 56px; text-transform: uppercase;
+    border: none; cursor: pointer;
+    position: relative; overflow: hidden;
+    transition: transform .2s;
+  }
+  .cta-btn:hover { transform: translateY(-3px); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 40px 80px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px; letter-spacing: 4px; font-weight: 700;
+  }
+
+  .footer-copy {
+    font-size: 12px; color: var(--muted); letter-spacing: 1px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes heroRight {
+    to { opacity: 1; transform: scale(1) translateX(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,43,0.1); }
+    50% { box-shadow: 0 0 0 20px rgba(255,107,43,0); }
+  }
+
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+
+  @keyframes expandRing {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.6; }
+    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+  }
+
+  @keyframes scrollLine {
+    0%, 100% { width: 40px; }
+    50% { width: 60px; }
+  }
+
+  @keyframes drawLine {
+    to { width: 80px; }
+  }
+
+  /* in-view revealed */
+  .in-view .feat-label,
+  .in-view .feat-title,
+  .in-view .feat-title-sub,
+  .in-view .feat-body,
+  .in-view .feat-stats { opacity: 1; transform: translateY(0); }
+
+  .in-view .feature-visual { opacity: 1; transform: translateX(0) scale(1) !important; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    #hero { flex-direction: column; padding: 120px 32px 60px; text-align: center; }
+    .hero-right { width: 260px; height: 260px; }
+    .feature-section, .feature-section:nth-child(even) {
+      flex-direction: column; padding: 80px 32px; gap: 60px;
+    }
+    .feature-visual { width: 100%; transform: none !important; }
+    .stats-strip { padding: 40px 32px; }
+    #cta, footer { padding: 80px 32px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">JACK</div>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Vendors</a>
+  </div>
+  <button class="nav-cta">Get the App</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">Local Commerce Platform</div>
+    <h1 class="hero-title">Your City,<br><span>Connected.</span></h1>
+    <p class="hero-sub">Book services, discover local vendors, earn rewards — all in one place. JACK brings your neighbourhood to your fingertips.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">Explore JACK</button>
+      <button class="btn-ghost">View Vendors</button>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="map-blob">
+      <div class="map-pin pin1"></div>
+      <div class="map-pin pin2"></div>
+      <div class="map-pin pin3"></div>
+      <div class="map-pin pin4"></div>
+      <div class="pin-line pl1"></div>
+      <div class="pin-line pl2"></div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll Down
+  </div>
+</section>
+
+<!-- SECTION 1: Service Booking -->
+<section class="feature-section" id="s1">
+  <div class="feature-content">
+    <div class="feat-label">Service Booking</div>
+    <h2 class="feat-title">Book<br><span style="color:var(--accent)">Anything</span></h2>
+    <div class="feat-title-sub">Instantly</div>
+    <p class="feat-body">From plumbers to tutors — browse trusted local service providers, check availability, and confirm bookings in under 60 seconds. No calls, no waiting.</p>
+    <div class="feat-stats">
+      <div>
+        <div class="stat-val">50+</div>
+        <div class="stat-label">Service Types</div>
+      </div>
+      <div>
+        <div class="stat-val">2min</div>
+        <div class="stat-label">Avg Booking Time</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-visual">
+    <div class="phone-wrap">
+      <div class="phone-body">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-content">
+            <div class="pc-header">
+              <div class="pc-title">Services</div>
+              <div class="pc-dot"></div>
+            </div>
+            <div class="pc-search">🔍 &nbsp;Search services near you…</div>
+            <div class="service-grid">
+              <div class="service-card">
+                <div class="sc-icon">🔧</div>
+                <div class="sc-name">Plumbing</div>
+                <div class="sc-count">12 nearby</div>
+              </div>
+              <div class="service-card">
+                <div class="sc-icon">⚡</div>
+                <div class="sc-name">Electrical</div>
+                <div class="sc-count">8 nearby</div>
+              </div>
+              <div class="service-card">
+                <div class="sc-icon">📚</div>
+                <div class="sc-name">Tutoring</div>
+                <div class="sc-count">24 nearby</div>
+              </div>
+              <div class="service-card">
+                <div class="sc-icon">🍕</div>
+                <div class="sc-name">Food</div>
+                <div class="sc-count">31 nearby</div>
+              </div>
+            </div>
+            <div style="background:var(--accent);border-radius:10px;padding:12px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;">BOOK NOW →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: Vendor Discovery (cream) -->
+<section class="feature-section cream" id="s2">
+  <div class="feature-content">
+    <div class="feat-label">Vendor Discovery</div>
+    <h2 class="feat-title" style="color:var(--black)">Find<br><span style="color:var(--accent)">Local</span></h2>
+    <div class="feat-title-sub">Vendors</div>
+    <p class="feat-body">Hyperlocal discovery powered by real-time maps. Filter by category, rating, distance, and availability. Every vendor is verified and reviewed by your community.</p>
+    <div class="feat-stats">
+      <div>
+        <div class="stat-val">200+</div>
+        <div class="stat-label">Vendors Listed</div>
+      </div>
+      <div>
+        <div class="stat-val">4.8★</div>
+        <div class="stat-label">Avg Rating</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-visual">
+    <div class="map-visual">
+      <div class="map-bg"></div>
+      <div class="map-ring mr1"></div>
+      <div class="map-ring mr2"></div>
+      <div class="map-ring mr3"></div>
+      <div class="map-center-pin"></div>
+      <div class="vendor-chip vc1">🍕 Raj's Kitchen · 0.3km</div>
+      <div class="vendor-chip vc2">🔧 Ajay Plumbing · 0.8km</div>
+      <div class="vendor-chip vc3">📚 EduPoint · 1.1km</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: Loyalty Rewards -->
+<section class="feature-section" id="s3">
+  <div class="feature-content">
+    <div class="feat-label">Loyalty Program</div>
+    <h2 class="feat-title">Earn<br><span style="color:var(--accent)">Points</span></h2>
+    <div class="feat-title-sub">Every Order</div>
+    <p class="feat-body">Every booking, every purchase earns you JACK Points. Redeem for discounts, exclusive deals, and priority service from your favourite local vendors.</p>
+    <div class="feat-stats">
+      <div>
+        <div class="stat-val">10x</div>
+        <div class="stat-label">Points Multiplier</div>
+      </div>
+      <div>
+        <div class="stat-val">₹0</div>
+        <div class="stat-label">Fee to Join</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-visual">
+    <div class="reward-visual">
+      <div class="reward-card">
+        <div class="reward-icon">🎯</div>
+        <div class="reward-info">
+          <div class="reward-name">Weekly Streak</div>
+          <div class="reward-pts">+250 JACK Points</div>
+        </div>
+        <div class="reward-bar-wrap"><div class="reward-bar" style="width:80%"></div></div>
+      </div>
+      <div class="reward-card">
+        <div class="reward-icon">🛒</div>
+        <div class="reward-info">
+          <div class="reward-name">First Purchase</div>
+          <div class="reward-pts">+500 JACK Points</div>
+        </div>
+        <div class="reward-bar-wrap"><div class="reward-bar" style="width:100%"></div></div>
+      </div>
+      <div class="reward-card">
+        <div class="reward-icon">⭐</div>
+        <div class="reward-info">
+          <div class="reward-name">Leave a Review</div>
+          <div class="reward-pts">+100 JACK Points</div>
+        </div>
+        <div class="reward-bar-wrap"><div class="reward-bar" style="width:40%"></div></div>
+      </div>
+      <div class="reward-card" style="border-color:rgba(255,107,43,0.3)">
+        <div class="reward-icon" style="background:rgba(255,107,43,0.15)">💳</div>
+        <div class="reward-info">
+          <div class="reward-name">Your Balance</div>
+          <div class="reward-pts" style="color:var(--accent);font-weight:700;font-size:14px">1,850 Points</div>
+        </div>
+        <div style="font-size:11px;color:var(--accent);font-weight:600;">Redeem →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="strip-stat">
+    <span class="strip-val">10K+</span>
+    <span class="strip-lbl">Active Users</span>
+  </div>
+  <div class="strip-stat">
+    <span class="strip-val">200+</span>
+    <span class="strip-lbl">Local Vendors</span>
+  </div>
+  <div class="strip-stat">
+    <span class="strip-val">50+</span>
+    <span class="strip-lbl">Service Categories</span>
+  </div>
+  <div class="strip-stat">
+    <span class="strip-val">4.9★</span>
+    <span class="strip-lbl">App Rating</span>
+  </div>
+</div>
+
+<!-- CTA -->
+<section id="cta">
+  <h2 class="cta-title">Ready to explore<br><span>your city?</span></h2>
+  <p class="cta-sub">Join thousands of users already discovering the best of local commerce with JACK.</p>
+  <button class="cta-btn">Launch JACK App →</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">JACK</div>
+  <div class="footer-copy">© 2025 JACK Platform · Built by Praveen KG</div>
+</footer>
+
+<script>
+  // Intersection Observer for scroll animations
+  const sections = document.querySelectorAll('.feature-section');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Nav scroll effect
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.borderBottomColor = window.scrollY > 60
+      ? 'rgba(255,107,43,0.15)'
+      : 'rgba(255,255,255,0.06)';
+  });
+</script>
+</body>
+</html>
