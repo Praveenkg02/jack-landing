@@ -3,688 +3,609 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JACK — Your City, Connected</title>
+<title>JACK — Grow Your Local Business</title>
+<meta name="description" content="Join 200+ local vendors on JACK. Get more customers, manage orders, and grow your business — all from one platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
-
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --black: #0a0a0a;
-    --off-white: #f0ede6;
-    --warm-cream: #e8e3d8;
-    --accent: #ff6b2b;
-    --accent2: #ffd166;
-    --muted: #888;
-    --nav-h: 64px;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--black);
-    color: var(--off-white);
-    font-family: 'Space Grotesk', sans-serif;
-    overflow-x: hidden;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    height: var(--nav-h);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 48px;
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .nav-logo {
-    font-family: 'Space Mono', monospace;
-    font-size: 22px; font-weight: 700;
-    letter-spacing: 4px;
-    color: var(--off-white);
-  }
-
-  .nav-links { display: flex; gap: 36px; }
-  .nav-links a {
-    font-size: 13px; font-weight: 500; letter-spacing: 1.5px;
-    color: var(--muted); text-decoration: none; text-transform: uppercase;
-    transition: color .2s;
-  }
-  .nav-links a:hover { color: var(--off-white); }
-
-  .nav-cta {
-    background: var(--accent);
-    color: #fff; font-size: 13px; font-weight: 600;
-    letter-spacing: 1px; text-transform: uppercase;
-    padding: 10px 24px; border: none; cursor: pointer;
-    transition: opacity .2s;
-  }
-  .nav-cta:hover { opacity: .85; }
-
-  /* ── HERO ── */
-  #hero {
-    height: 100vh;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 80px;
-    position: relative; overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(255,107,43,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .hero-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 80px 80px;
-    pointer-events: none;
-  }
-
-  .hero-left { position: relative; z-index: 2; max-width: 520px; }
-
-  .hero-eyebrow {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; font-weight: 400; letter-spacing: 3px;
-    color: var(--accent); text-transform: uppercase;
-    margin-bottom: 24px;
-    opacity: 0; transform: translateY(20px);
-    animation: fadeUp .6s .2s forwards;
-  }
-
-  .hero-title {
-    font-size: clamp(56px, 7vw, 96px);
-    font-weight: 700; line-height: .95;
-    letter-spacing: -3px;
-    opacity: 0; transform: translateY(30px);
-    animation: fadeUp .7s .4s forwards;
-  }
-
-  .hero-title span { color: var(--accent); }
-
-  .hero-sub {
-    font-size: 17px; font-weight: 400; line-height: 1.6;
-    color: var(--muted); margin-top: 28px; max-width: 380px;
-    opacity: 0; transform: translateY(20px);
-    animation: fadeUp .6s .7s forwards;
-  }
-
-  .hero-actions {
-    display: flex; gap: 16px; margin-top: 48px;
-    opacity: 0; transform: translateY(20px);
-    animation: fadeUp .6s .9s forwards;
-  }
-
-  .btn-primary {
-    background: var(--accent); color: #fff;
-    font-size: 14px; font-weight: 600; letter-spacing: 1px;
-    padding: 16px 36px; border: none; cursor: pointer;
-    text-transform: uppercase; transition: transform .2s, opacity .2s;
-  }
-  .btn-primary:hover { transform: translateY(-2px); opacity: .9; }
-
-  .btn-ghost {
-    background: transparent; color: var(--off-white);
-    font-size: 14px; font-weight: 500; letter-spacing: 1px;
-    padding: 16px 36px; border: 1px solid rgba(255,255,255,0.2);
-    cursor: pointer; text-transform: uppercase; transition: border-color .2s;
-  }
-  .btn-ghost:hover { border-color: var(--off-white); }
-
-  /* hero right — map blob */
-  .hero-right {
-    position: relative; z-index: 2;
-    width: 420px; height: 420px; flex-shrink: 0;
-    opacity: 0; transform: scale(.9) translateX(40px);
-    animation: heroRight .8s .6s forwards;
-  }
-
-  .map-blob {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    border: 1px solid rgba(255,107,43,0.2);
-    position: relative;
-    background: radial-gradient(circle at center, rgba(255,107,43,0.06), transparent 70%);
-    animation: pulse 4s ease-in-out infinite;
-  }
-
-  .map-blob::before {
-    content: '';
-    position: absolute; inset: 16px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,107,43,0.1);
-  }
-
-  .map-blob::after {
-    content: '';
-    position: absolute; inset: 32px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,107,43,0.06);
-  }
-
-  .map-pin {
-    position: absolute;
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px rgba(255,107,43,0.2), 0 0 20px rgba(255,107,43,0.4);
-  }
-
-  .map-pin::after {
-    content: '';
-    position: absolute;
-    inset: -6px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,107,43,0.4);
-    animation: ripple 2s ease-out infinite;
-  }
-
-  .pin1 { top: 35%; left: 45%; }
-  .pin2 { top: 55%; left: 30%; animation-delay: .5s; }
-  .pin3 { top: 42%; left: 65%; animation-delay: 1s; }
-  .pin4 { top: 65%; left: 55%; animation-delay: 1.5s; }
-
-  .pin-line {
-    position: absolute;
-    background: linear-gradient(to right, rgba(255,107,43,0.3), transparent);
-    height: 1px;
-    transform-origin: left;
-    animation: drawLine 2s 1.2s forwards;
-    width: 0;
-  }
-  .pl1 { top: calc(35% + 5px); left: calc(45% + 5px); width: 80px; transform: rotate(15deg); animation: drawLine 1s 1.2s forwards; }
-  .pl2 { top: calc(55% + 5px); left: calc(30% + 5px); width: 100px; transform: rotate(-8deg); animation: drawLine 1s 1.5s forwards; }
-
-  .hero-scroll {
-    position: absolute; bottom: 36px; left: 80px;
-    display: flex; align-items: center; gap: 12px;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; color: var(--muted); letter-spacing: 2px;
-    opacity: 0; animation: fadeUp .5s 1.2s forwards;
-  }
-  .scroll-line {
-    width: 40px; height: 1px;
-    background: var(--muted);
-    animation: scrollLine 2s 1.5s ease-in-out infinite;
-  }
-
-  /* ── SCROLL SECTIONS ── */
-  .feature-section {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 120px 80px;
-    position: relative; overflow: hidden;
-  }
-
-  .feature-section:nth-child(even) { flex-direction: row-reverse; }
-
-  .feature-section.cream {
-    background: var(--warm-cream);
-    color: var(--black);
-  }
-
-  .feature-content { max-width: 480px; }
-
-  .feat-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 20px;
-    opacity: 0; transform: translateY(24px);
-    transition: opacity .7s, transform .7s;
-  }
-
-  .feat-title {
-    font-size: clamp(48px, 5vw, 72px);
-    font-weight: 700; line-height: .95;
-    letter-spacing: -2px;
-    opacity: 0; transform: translateY(32px);
-    transition: opacity .7s .1s, transform .7s .1s;
-  }
-
-  .feat-title-sub {
-    font-size: clamp(24px, 3vw, 36px);
-    font-weight: 300; color: var(--muted);
-    letter-spacing: -1px; margin-top: 4px;
-    opacity: 0; transform: translateY(32px);
-    transition: opacity .7s .2s, transform .7s .2s;
-  }
-
-  .cream .feat-title-sub { color: #888; }
-
-  .feat-body {
-    font-size: 15px; line-height: 1.7; color: var(--muted);
-    margin-top: 28px; max-width: 360px;
-    opacity: 0; transform: translateY(20px);
-    transition: opacity .7s .3s, transform .7s .3s;
-  }
-  .cream .feat-body { color: #555; }
-
-  .feat-stats {
-    display: flex; gap: 40px; margin-top: 48px;
-    opacity: 0; transform: translateY(20px);
-    transition: opacity .7s .4s, transform .7s .4s;
-  }
-
-  .stat-val {
-    font-family: 'Space Mono', monospace;
-    font-size: 32px; font-weight: 700; color: var(--accent);
-  }
-  .stat-label {
-    font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--muted); margin-top: 4px;
-  }
-
-  .feat-link {
-    display: inline-block; margin-top: 32px;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--accent); text-decoration: none;
-    border-bottom: 1px solid rgba(255,107,43,0.3);
-    padding-bottom: 4px; transition: border-color .2s;
-  }
-  .feat-link:hover { border-color: var(--accent); }
-
-  /* visual side */
-  .feature-visual {
-    position: relative; width: 440px; flex-shrink: 0;
-    opacity: 0; transform: translateX(40px) scale(.95);
-    transition: opacity .8s .2s, transform .8s .2s;
-  }
-
-  .feature-section:nth-child(even) .feature-visual {
-    transform: translateX(-40px) scale(.95);
-  }
-
-  /* phone mockup */
-  .phone-wrap {
-    position: relative; width: 240px; margin: 0 auto;
-  }
-
-  .phone-body {
-    width: 240px; height: 480px;
-    background: #111;
-    border-radius: 36px;
-    border: 2px solid rgba(255,255,255,0.1);
-    position: relative; overflow: hidden;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
-  }
-
-  .phone-screen {
-    position: absolute; inset: 8px;
-    background: var(--black); border-radius: 28px;
-    overflow: hidden;
-  }
-
-  .phone-notch {
-    width: 80px; height: 24px;
-    background: #111; border-radius: 0 0 16px 16px;
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    z-index: 10;
-  }
-
-  .phone-content {
-    padding: 32px 16px 16px;
-    height: 100%;
-    background: linear-gradient(160deg, #111 0%, #0a0a0a 100%);
-  }
-
-  .pc-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px;
-  }
-  .pc-title { font-size: 16px; font-weight: 700; }
-  .pc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
-
-  .pc-search {
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px; padding: 10px 14px;
-    font-size: 11px; color: var(--muted);
-    margin-bottom: 16px;
-    display: flex; align-items: center; gap: 8px;
-  }
-
-  .service-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .service-card {
-    background: rgba(255,255,255,0.04);
-    border-radius: 12px; padding: 12px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .sc-icon { font-size: 18px; margin-bottom: 6px; }
-  .sc-name { font-size: 10px; font-weight: 600; color: var(--off-white); }
-  .sc-count { font-size: 9px; color: var(--muted); }
-
-  /* map visual */
-  .map-visual {
-    width: 100%; height: 320px;
-    background: #111;
-    border-radius: 16px;
-    position: relative; overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .map-bg {
-    position: absolute; inset: 0;
-    background:
-      linear-gradient(rgba(255,107,43,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,107,43,0.04) 1px, transparent 1px);
-    background-size: 30px 30px;
-  }
-
-  .map-center-pin {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 16px; height: 16px;
-    border-radius: 50%; background: var(--accent);
-    box-shadow: 0 0 0 8px rgba(255,107,43,0.15), 0 0 40px rgba(255,107,43,0.3);
-  }
-
-  .map-ring {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    border: 1px solid rgba(255,107,43,0.2);
-    animation: expandRing 3s ease-out infinite;
-  }
-  .mr1 { width: 60px; height: 60px; }
-  .mr2 { width: 120px; height: 120px; animation-delay: 1s; }
-  .mr3 { width: 200px; height: 200px; animation-delay: 2s; }
-
-  /* vendor chips */
-  .vendor-chip {
-    position: absolute;
-    background: rgba(10,10,10,0.9);
-    border: 1px solid rgba(255,107,43,0.3);
-    border-radius: 8px; padding: 6px 10px;
-    font-size: 10px; font-weight: 600;
-    color: var(--off-white);
-    white-space: nowrap;
-  }
-  .vc1 { top: 20%; left: 15%; }
-  .vc2 { top: 30%; right: 10%; }
-  .vc3 { bottom: 25%; left: 20%; }
-
-  /* reward visual */
-  .reward-visual {
-    display: flex; flex-direction: column; gap: 12px;
-  }
-
-  .reward-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px; padding: 20px 24px;
-    display: flex; align-items: center; gap: 20px;
-  }
-
-  .reward-icon {
-    width: 48px; height: 48px;
-    border-radius: 12px;
-    background: rgba(255,107,43,0.1);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0;
-  }
-
-  .reward-info { flex: 1; }
-  .reward-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-  .reward-pts { font-size: 12px; color: var(--muted); }
-
-  .reward-bar-wrap {
-    width: 80px; height: 4px;
-    background: rgba(255,255,255,0.1); border-radius: 2px; flex-shrink: 0;
-  }
-  .reward-bar {
-    height: 100%; border-radius: 2px;
-    background: linear-gradient(to right, var(--accent), var(--accent2));
-  }
-
-  /* ── STATS STRIP ── */
-  .stats-strip {
-    background: var(--accent);
-    padding: 60px 80px;
-    display: flex; justify-content: space-around; align-items: center;
-    flex-wrap: wrap; gap: 40px;
-  }
-
-  .strip-stat { text-align: center; }
-  .strip-val {
-    font-family: 'Space Mono', monospace;
-    font-size: 48px; font-weight: 700; color: #fff;
-    display: block;
-  }
-  .strip-lbl {
-    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
-    color: rgba(255,255,255,0.7); margin-top: 6px; display: block;
-  }
-
-  /* ── FINAL CTA ── */
-  #cta {
-    padding: 160px 80px;
-    text-align: center; position: relative; overflow: hidden;
-  }
-
-  #cta::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at center, rgba(255,107,43,0.08), transparent 70%);
-    pointer-events: none;
-  }
-
-  .cta-title {
-    font-size: clamp(48px, 7vw, 96px);
-    font-weight: 700; line-height: .95; letter-spacing: -3px;
-    margin-bottom: 32px;
-  }
-
-  .cta-title span { color: var(--accent); }
-
-  .cta-sub {
-    font-size: 17px; color: var(--muted);
-    max-width: 480px; margin: 0 auto 48px; line-height: 1.6;
-  }
-
-  .cta-btn {
-    display: inline-block;
-    background: var(--accent); color: #fff;
-    font-size: 15px; font-weight: 700; letter-spacing: 2px;
-    padding: 20px 56px; text-transform: uppercase;
-    border: none; cursor: pointer;
-    position: relative; overflow: hidden;
-    transition: transform .2s;
-  }
-  .cta-btn:hover { transform: translateY(-3px); }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 40px 80px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-
-  .footer-logo {
-    font-family: 'Space Mono', monospace;
-    font-size: 18px; letter-spacing: 4px; font-weight: 700;
-  }
-
-  .footer-copy {
-    font-size: 12px; color: var(--muted); letter-spacing: 1px;
-  }
-
-  .footer-links {
-    display: flex; gap: 24px;
-  }
-  .footer-links a {
-    font-size: 12px; color: var(--muted); text-decoration: none;
-    letter-spacing: 1px; text-transform: uppercase;
-    transition: color .2s;
-  }
-  .footer-links a:hover { color: var(--off-white); }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes heroRight {
-    to { opacity: 1; transform: scale(1) translateX(0); }
-  }
-
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,43,0.1); }
-    50% { box-shadow: 0 0 0 20px rgba(255,107,43,0); }
-  }
-
-  @keyframes ripple {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(3); opacity: 0; }
-  }
-
-  @keyframes expandRing {
-    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.6; }
-    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-  }
-
-  @keyframes scrollLine {
-    0%, 100% { width: 40px; }
-    50% { width: 60px; }
-  }
-
-  @keyframes drawLine {
-    to { width: 80px; }
-  }
-
-  /* in-view revealed */
-  .in-view .feat-label,
-  .in-view .feat-title,
-  .in-view .feat-title-sub,
-  .in-view .feat-body,
-  .in-view .feat-stats { opacity: 1; transform: translateY(0); }
-
-  .in-view .feature-visual { opacity: 1; transform: translateX(0) scale(1) !important; }
-
-  @media (max-width: 900px) {
-    nav { padding: 0 24px; }
-    .nav-links { display: none; }
-    #hero { flex-direction: column; padding: 120px 32px 60px; text-align: center; }
-    .hero-right { width: 260px; height: 260px; }
-    .feature-section, .feature-section:nth-child(even) {
-      flex-direction: column; padding: 80px 32px; gap: 60px;
-    }
-    .feature-visual { width: 100%; transform: none !important; }
-    .stats-strip { padding: 40px 32px; }
-    #cta, footer { padding: 80px 32px; }
-    footer { flex-direction: column; gap: 16px; text-align: center; }
-  }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#09090b;--surface:#131316;--surface2:#1a1a1f;--border:#27272a;
+  --text:#fafafa;--muted:#71717a;--muted2:#a1a1aa;
+  --accent:#f97316;--accent-hover:#fb923c;--accent-dim:rgba(249,115,22,.12);
+  --accent2:#fbbf24;
+  --radius:16px;--radius-sm:10px;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+h1,h2,h3,h4{font-family:'Syne',sans-serif;font-weight:700;letter-spacing:-.02em;line-height:1.05}
+
+a{color:inherit;text-decoration:none}
+
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;
+  background:rgba(9,9,11,.8);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:background .3s;
+}
+
+.nav-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:2px;color:var(--accent)}
+
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:13px;font-weight:500;color:var(--muted2);transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+
+.nav-cta{
+  background:var(--accent);color:#fff;font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:600;padding:10px 24px;
+  border:none;border-radius:var(--radius-sm);cursor:pointer;
+  transition:background .2s,transform .15s;
+}
+.nav-cta:hover{background:var(--accent-hover);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:120px 32px 80px;position:relative;overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 75% 40%,rgba(249,115,22,.07),transparent 70%);
+  pointer-events:none;
+}
+
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:64px 64px;pointer-events:none;
+}
+
+.hero-inner{
+  max-width:1200px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+  position:relative;z-index:2;
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent-dim);border:1px solid rgba(249,115,22,.2);
+  border-radius:999px;padding:6px 16px;margin-bottom:28px;
+  font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.5px;
+  opacity:0;transform:translateY(16px);
+  animation:fadeUp .5s .15s forwards;
+}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+
+.hero-title{
+  font-size:clamp(44px,5.5vw,76px);font-weight:800;line-height:1;
+  letter-spacing:-.03em;
+  opacity:0;transform:translateY(24px);
+  animation:fadeUp .6s .3s forwards;
+}
+
+.hero-title .accent{color:var(--accent)}
+.hero-title .line{display:block}
+.hero-title .line:nth-child(2){color:var(--muted);font-weight:500;font-size:.55em;letter-spacing:0;margin-top:8px}
+
+.hero-sub{
+  font-size:17px;color:var(--muted2);max-width:440px;
+  margin-top:24px;line-height:1.7;
+  opacity:0;transform:translateY(20px);
+  animation:fadeUp .5s .5s forwards;
+}
+
+.hero-actions{
+  display:flex;gap:12px;margin-top:40px;align-items:center;flex-wrap:wrap;
+  opacity:0;transform:translateY(16px);
+  animation:fadeUp .5s .65s forwards;
+}
+
+.btn-primary{
+  background:var(--accent);color:#fff;font-family:'Inter',sans-serif;
+  font-size:15px;font-weight:600;padding:16px 36px;
+  border:none;border-radius:var(--radius-sm);cursor:pointer;
+  transition:background .2s,transform .15s,box-shadow .2s;
+}
+.btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 24px rgba(249,115,22,.25)}
+
+.btn-secondary{
+  background:transparent;color:var(--text);font-family:'Inter',sans-serif;
+  font-size:15px;font-weight:500;padding:16px 32px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;
+  transition:border-color .2s,background .2s;
+}
+.btn-secondary:hover{border-color:var(--muted);background:var(--surface)}
+
+.hero-metrics{
+  display:flex;gap:40px;margin-top:48px;
+  opacity:0;animation:fadeUp .5s .8s forwards;
+}
+.hero-metric .val{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;color:var(--accent)}
+.hero-metric .lbl{font-size:12px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+
+/* hero right — product preview */
+.hero-visual{
+  position:relative;
+  opacity:0;transform:translateX(32px) scale(.96);
+  animation:fadeRight .7s .4s forwards;
+}
+
+.dashboard-preview{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:0 32px 64px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.03);
+}
+
+.dash-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;border-bottom:1px solid var(--border);
+  background:var(--surface2);
+}
+.dash-dots{display:flex;gap:6px}
+.dash-dots span{width:10px;height:10px;border-radius:50%;background:var(--border)}
+.dash-dots span:nth-child(1){background:#ef4444}
+.dash-dots span:nth-child(2){background:#eab308}
+.dash-dots span:nth-child(3){background:#22c55e}
+.dash-title{font-size:12px;color:var(--muted);font-weight:500}
+
+.dash-body{padding:20px}
+
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.dash-stat{
+  background:var(--surface2);border-radius:var(--radius-sm);padding:16px;
+  border:1px solid var(--border);
+}
+.dash-stat .ds-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.dash-stat .ds-value{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-top:4px}
+.dash-stat .ds-change{font-size:11px;color:#22c55e;margin-top:4px;font-weight:500}
+
+.dash-chart{
+  background:var(--surface2);border-radius:var(--radius-sm);
+  padding:16px;border:1px solid var(--border);margin-bottom:16px;
+}
+.dash-chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.dash-chart-title{font-size:13px;font-weight:600}
+.dash-chart-badge{font-size:11px;color:var(--accent);background:var(--accent-dim);padding:4px 10px;border-radius:999px}
+
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:100px}
+.chart-bar{
+  flex:1;border-radius:4px 4px 0 0;
+  background:linear-gradient(to top,var(--accent),var(--accent-hover));
+  opacity:.7;transition:opacity .2s;
+  animation:barGrow .8s ease-out forwards;
+  transform-origin:bottom;
+}
+.chart-bar:hover{opacity:1}
+
+.dash-orders{display:flex;flex-direction:column;gap:8px}
+.dash-order{
+  display:flex;align-items:center;gap:12px;
+  background:var(--surface2);border-radius:var(--radius-sm);
+  padding:12px 16px;border:1px solid var(--border);
+}
+.order-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.order-info{flex:1}
+.order-name{font-size:13px;font-weight:500}
+.order-meta{font-size:11px;color:var(--muted)}
+.order-amount{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--accent)}
+
+/* ── SOCIAL PROOF BAR ── */
+.social-proof{
+  padding:48px 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--surface);
+}
+.social-proof-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;
+}
+.proof-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:500;white-space:nowrap}
+.proof-logos{display:flex;gap:32px;align-items:center;flex-wrap:wrap}
+.proof-logo{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  color:var(--muted);opacity:.5;transition:opacity .2s;white-space:nowrap;
+}
+.proof-logo:hover{opacity:.8}
+
+/* ── SECTIONS ── */
+section{padding:120px 32px}
+
+.section-eyebrow{
+  font-size:12px;font-weight:600;color:var(--accent);
+  text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;
+}
+.section-title{font-size:clamp(36px,4vw,56px);font-weight:800;letter-spacing:-.02em}
+.section-sub{font-size:17px;color:var(--muted2);max-width:520px;margin-top:16px;line-height:1.7}
+
+/* ── BENTO GRID ── */
+.bento{max-width:1200px;margin:0 auto}
+.bento-header{text-align:center;margin-bottom:64px}
+.bento-header .section-sub{margin:16px auto 0}
+
+.bento-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:auto auto;
+  gap:16px;
+}
+
+.bento-cell{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px;
+  position:relative;overflow:hidden;
+  transition:border-color .3s,transform .2s;
+}
+.bento-cell:hover{border-color:rgba(249,115,22,.3);transform:translateY(-2px)}
+
+.bento-cell.large{grid-column:span 2;grid-row:span 2;padding:40px}
+
+.bento-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:20px;
+}
+.bento-cell.large .bento-icon{width:56px;height:56px;font-size:26px}
+
+.bento-cell h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.bento-cell.large h3{font-size:28px}
+.bento-cell p{font-size:14px;color:var(--muted2);line-height:1.6}
+.bento-cell.large p{font-size:15px;max-width:400px}
+
+.bento-visual{
+  margin-top:24px;background:var(--surface2);border-radius:var(--radius-sm);
+  border:1px solid var(--border);overflow:hidden;
+}
+
+/* mini dashboard in bento */
+.mini-dash{padding:16px}
+.mini-dash-row{display:flex;gap:8px;margin-bottom:8px}
+.mini-dash-block{
+  flex:1;background:var(--bg);border-radius:8px;padding:12px;
+  border:1px solid var(--border);
+}
+.mini-dash-block .mdb-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.mini-dash-block .mdb-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-top:2px;color:var(--accent)}
+
+/* mini chart */
+.mini-chart{display:flex;align-items:flex-end;gap:6px;height:80px;padding:16px}
+.mini-bar{flex:1;border-radius:3px 3px 0 0;background:var(--accent);opacity:.6;animation:barGrow .6s ease-out forwards;transform-origin:bottom}
+
+/* mini list */
+.mini-list{padding:12px}
+.mini-list-item{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-bottom:1px solid var(--border);
+}
+.mini-list-item:last-child{border-bottom:none}
+.mini-list-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.mini-list-text{font-size:12px;color:var(--muted2);flex:1}
+.mini-list-val{font-size:12px;font-weight:600;color:var(--text)}
+
+/* ── HOW IT WORKS ── */
+.how-it-works{max-width:1200px;margin:0 auto}
+.how-header{text-align:center;margin-bottom:72px}
+.how-header .section-sub{margin:16px auto 0}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative}
+.steps::before{
+  content:'';position:absolute;top:40px;left:calc(16.66% + 16px);right:calc(16.66% + 16px);
+  height:2px;background:linear-gradient(to right,var(--accent),var(--accent2),var(--accent));
+  opacity:.3;
+}
+
+.step{text-align:center;position:relative}
+.step-num{
+  width:80px;height:80px;border-radius:50%;
+  background:var(--surface);border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
+  color:var(--accent);margin:0 auto 24px;
+  position:relative;z-index:2;
+  transition:background .3s,color .3s;
+}
+.step:hover .step-num{background:var(--accent);color:#fff}
+
+.step h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.step p{font-size:14px;color:var(--muted2);max-width:280px;margin:0 auto;line-height:1.6}
+
+/* ── TESTIMONIALS ── */
+.testimonials{max-width:1200px;margin:0 auto}
+.test-header{text-align:center;margin-bottom:64px}
+.test-header .section-sub{margin:16px auto 0}
+
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+.test-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:32px;
+  display:flex;flex-direction:column;
+  transition:border-color .3s,transform .2s;
+}
+.test-card:hover{border-color:rgba(249,115,22,.3);transform:translateY(-2px)}
+
+.test-stars{color:var(--accent2);font-size:14px;letter-spacing:2px;margin-bottom:16px}
+
+.test-quote{
+  font-size:15px;line-height:1.7;color:var(--muted2);
+  flex:1;margin-bottom:24px;
+  font-style:italic;
+}
+
+.test-author{display:flex;align-items:center;gap:12px}
+.test-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:var(--accent);
+}
+.test-name{font-size:14px;font-weight:600}
+.test-role{font-size:12px;color:var(--muted)}
+
+/* ── COMPARISON TABLE ── */
+.comparison{max-width:900px;margin:0 auto}
+.comp-header{text-align:center;margin-bottom:56px}
+.comp-header .section-sub{margin:16px auto 0}
+
+.comp-table{
+  width:100%;border-collapse:collapse;
+  background:var(--surface);border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--border);
+}
+
+.comp-table th,.comp-table td{
+  padding:16px 24px;text-align:left;font-size:14px;
+  border-bottom:1px solid var(--border);
+}
+.comp-table th{
+  background:var(--surface2);font-weight:600;font-size:13px;
+  text-transform:uppercase;letter-spacing:1px;color:var(--muted);
+}
+.comp-table th.highlight{color:var(--accent);background:var(--accent-dim)}
+.comp-table td.feature{font-weight:500;color:var(--text)}
+.comp-table td{color:var(--muted2)}
+.comp-table td.highlight-col{color:var(--accent);font-weight:600;background:rgba(249,115,22,.05)}
+.comp-table tr:last-child td{border-bottom:none}
+
+.comp-check{color:#22c55e;font-weight:700}
+.comp-cross{color:#ef4444;font-weight:700}
+
+/* ── FAQ ── */
+.faq{max-width:720px;margin:0 auto}
+.faq-header{text-align:center;margin-bottom:56px}
+.faq-header .section-sub{margin:16px auto 0}
+
+.faq-item{
+  border-bottom:1px solid var(--border);
+}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:24px 0;background:none;border:none;cursor:pointer;
+  font-family:'Syne',sans-serif;font-size:17px;font-weight:600;
+  color:var(--text);text-align:left;
+  transition:color .2s;
+}
+.faq-q:hover{color:var(--accent)}
+.faq-q .icon{
+  width:28px;height:28px;border-radius:50%;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;transition:transform .3s,border-color .3s;
+}
+.faq-item.open .faq-q .icon{transform:rotate(45deg);border-color:var(--accent);color:var(--accent)}
+
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s;
+}
+.faq-item.open .faq-a{max-height:200px;padding-bottom:24px}
+.faq-a p{font-size:15px;color:var(--muted2);line-height:1.7}
+
+/* ── FINAL CTA ── */
+.final-cta{
+  padding:140px 32px;text-align:center;position:relative;overflow:hidden;
+}
+.final-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at center,rgba(249,115,22,.06),transparent 70%);
+  pointer-events:none;
+}
+.final-cta .section-title{font-size:clamp(40px,5vw,64px);margin-bottom:20px}
+.final-cta .section-sub{margin:0 auto 48px;text-align:center}
+
+/* ── STICKY CTA ── */
+.sticky-cta{
+  position:fixed;bottom:0;left:0;right:0;z-index:99;
+  background:rgba(9,9,11,.95);backdrop-filter:blur(16px);
+  border-top:1px solid var(--border);
+  padding:12px 32px;
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  transform:translateY(100%);transition:transform .3s;
+}
+.sticky-cta.visible{transform:translateY(0)}
+.sticky-cta-text{font-size:14px;color:var(--muted2);font-weight:500}
+.sticky-cta .btn-primary{padding:10px 28px;font-size:13px}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);padding:40px 32px;
+}
+.footer-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--accent);letter-spacing:2px}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:13px;color:var(--muted);transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-copy{font-size:12px;color:var(--muted)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeRight{to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.35s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .hero{padding:100px 20px 60px}
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .hero-visual{order:-1}
+  .hero-metrics{gap:24px}
+  .bento-grid{grid-template-columns:1fr}
+  .bento-cell.large{grid-column:span 1;grid-row:span 1}
+  .steps{grid-template-columns:1fr;gap:40px}
+  .steps::before{display:none}
+  .test-grid{grid-template-columns:1fr}
+  .comp-table{font-size:13px}
+  .comp-table th,.comp-table td{padding:12px 16px}
+  section{padding:80px 20px}
+  .final-cta{padding:100px 20px}
+  .sticky-cta-text{display:none}
+  .footer-inner{flex-direction:column;text-align:center}
+}
+
+@media(max-width:600px){
+  .dash-stats{grid-template-columns:1fr}
+  .hero-title{font-size:36px}
+  .hero-metrics{flex-direction:column;gap:16px}
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">JACK</div>
+  <a href="#" class="nav-logo">JACK</a>
   <div class="nav-links">
-    <a href="#">Home</a>
-    <a href="#">About</a>
-    <a href="#">Services</a>
-    <a href="#">Vendors</a>
+    <a href="#benefits">Benefits</a>
+    <a href="#how">How It Works</a>
+    <a href="#testimonials">Vendors</a>
+    <a href="#compare">Compare</a>
+    <a href="#faq">FAQ</a>
   </div>
-  <button class="nav-cta">Get the App</button>
+  <button class="nav-cta">Become a Vendor</button>
 </nav>
 
 <!-- HERO -->
-<section id="hero">
+<section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
-
-  <div class="hero-left">
-    <div class="hero-eyebrow">Local Commerce Platform</div>
-    <h1 class="hero-title">Your City,<br><span>Connected.</span></h1>
-    <p class="hero-sub">Book services, discover local vendors, earn rewards — all in one place. JACK brings your neighbourhood to your fingertips.</p>
-    <div class="hero-actions">
-      <button class="btn-primary">Explore JACK</button>
-      <a href="https://github.com/Praveenkg02/jack-app" target="_blank" class="btn-ghost">View on GitHub</a>
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="map-blob">
-      <div class="map-pin pin1"></div>
-      <div class="map-pin pin2"></div>
-      <div class="map-pin pin3"></div>
-      <div class="map-pin pin4"></div>
-      <div class="pin-line pl1"></div>
-      <div class="pin-line pl2"></div>
-    </div>
-  </div>
-
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    Scroll Down
-  </div>
-</section>
-
-<!-- SECTION 1: Service Booking -->
-<section class="feature-section" id="s1">
-  <div class="feature-content">
-    <div class="feat-label">Service Booking</div>
-    <h2 class="feat-title">Book<br><span style="color:var(--accent)">Anything</span></h2>
-    <div class="feat-title-sub">Instantly</div>
-    <p class="feat-body">From plumbers to tutors — browse trusted local service providers, check availability, and confirm bookings in under 60 seconds. No calls, no waiting.</p>
-    <div class="feat-stats">
-      <div>
-        <div class="stat-val">50+</div>
-        <div class="stat-label">Service Types</div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge"><span class="dot"></span> Now onboarding vendors in your city</div>
+      <h1 class="hero-title">
+        <span class="line">Get <span class="accent">3x More</span></span>
+        <span class="line">Customers in 30 Days</span>
+        <span class="line">Join the local commerce platform your neighbourhood already uses.</span>
+      </h1>
+      <p class="hero-sub">List your services, manage orders, and grow your business — all from one dashboard. Zero setup fee. Start in under 5 minutes.</p>
+      <div class="hero-actions">
+        <button class="btn-primary">Join as Vendor — Free</button>
+        <button class="btn-secondary">See How It Works</button>
       </div>
-      <div>
-        <div class="stat-val">2min</div>
-        <div class="stat-label">Avg Booking Time</div>
+      <div class="hero-metrics">
+        <div class="hero-metric">
+          <div class="val" data-target="200">0</div>
+          <div class="lbl">Active Vendors</div>
+        </div>
+        <div class="hero-metric">
+          <div class="val" data-target="10000">0</div>
+          <div class="lbl">Monthly Customers</div>
+        </div>
+        <div class="hero-metric">
+          <div class="val" data-target="4.9">0</div>
+          <div class="lbl">Avg Rating</div>
+        </div>
       </div>
     </div>
-    <a href="https://github.com/Praveenkg02/jack-app" target="_blank" class="feat-link">View Source →</a>
-  </div>
-
-  <div class="feature-visual">
-    <div class="phone-wrap">
-      <div class="phone-body">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <div class="phone-content">
-            <div class="pc-header">
-              <div class="pc-title">Services</div>
-              <div class="pc-dot"></div>
+    <div class="hero-visual">
+      <div class="dashboard-preview">
+        <div class="dash-topbar">
+          <div class="dash-dots"><span></span><span></span><span></span></div>
+          <div class="dash-title">JACK Vendor Dashboard</div>
+          <div style="width:60px"></div>
+        </div>
+        <div class="dash-body">
+          <div class="dash-stats">
+            <div class="dash-stat">
+              <div class="ds-label">Revenue</div>
+              <div class="ds-value">₹48,250</div>
+              <div class="ds-change">↑ 23% this week</div>
             </div>
-            <div class="pc-search">🔍 &nbsp;Search services near you…</div>
-            <div class="service-grid">
-              <div class="service-card">
-                <div class="sc-icon">🔧</div>
-                <div class="sc-name">Plumbing</div>
-                <div class="sc-count">12 nearby</div>
-              </div>
-              <div class="service-card">
-                <div class="sc-icon">⚡</div>
-                <div class="sc-name">Electrical</div>
-                <div class="sc-count">8 nearby</div>
-              </div>
-              <div class="service-card">
-                <div class="sc-icon">📚</div>
-                <div class="sc-name">Tutoring</div>
-                <div class="sc-count">24 nearby</div>
-              </div>
-              <div class="service-card">
-                <div class="sc-icon">🍕</div>
-                <div class="sc-name">Food</div>
-                <div class="sc-count">31 nearby</div>
-              </div>
+            <div class="dash-stat">
+              <div class="ds-label">Orders</div>
+              <div class="ds-value">156</div>
+              <div class="ds-change">↑ 18% this week</div>
             </div>
-            <div style="background:var(--accent);border-radius:10px;padding:12px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;">BOOK NOW →</div>
+            <div class="dash-stat">
+              <div class="ds-label">Rating</div>
+              <div class="ds-value">4.9★</div>
+              <div class="ds-change">Top 5% vendor</div>
+            </div>
+          </div>
+          <div class="dash-chart">
+            <div class="dash-chart-header">
+              <div class="dash-chart-title">Weekly Orders</div>
+              <div class="dash-chart-badge">+32% vs last week</div>
+            </div>
+            <div class="chart-bars">
+              <div class="chart-bar" style="height:40%"></div>
+              <div class="chart-bar" style="height:55%"></div>
+              <div class="chart-bar" style="height:45%"></div>
+              <div class="chart-bar" style="height:70%"></div>
+              <div class="chart-bar" style="height:60%"></div>
+              <div class="chart-bar" style="height:85%"></div>
+              <div class="chart-bar" style="height:95%"></div>
+            </div>
+          </div>
+          <div class="dash-orders">
+            <div class="dash-order">
+              <div class="order-icon">🔧</div>
+              <div class="order-info">
+                <div class="order-name">Plumbing Service</div>
+                <div class="order-meta">Raj Kumar · 2 min ago</div>
+              </div>
+              <div class="order-amount">₹850</div>
+            </div>
+            <div class="dash-order">
+              <div class="order-icon">⚡</div>
+              <div class="order-info">
+                <div class="order-name">Electrical Repair</div>
+                <div class="order-meta">Priya S. · 15 min ago</div>
+              </div>
+              <div class="order-amount">₹1,200</div>
+            </div>
+            <div class="dash-order">
+              <div class="order-icon">📚</div>
+              <div class="order-info">
+                <div class="order-name">Home Tutoring</div>
+                <div class="order-meta">Amit G. · 1 hr ago</div>
+              </div>
+              <div class="order-amount">₹600</div>
+            </div>
           </div>
         </div>
       </div>
@@ -692,156 +613,358 @@
   </div>
 </section>
 
-<!-- SECTION 2: Vendor Discovery (cream) -->
-<section class="feature-section cream" id="s2">
-  <div class="feature-content">
-    <div class="feat-label">Vendor Discovery</div>
-    <h2 class="feat-title" style="color:var(--black)">Find<br><span style="color:var(--accent)">Local</span></h2>
-    <div class="feat-title-sub">Vendors</div>
-    <p class="feat-body">Hyperlocal discovery powered by real-time maps. Filter by category, rating, distance, and availability. Every vendor is verified and reviewed by your community.</p>
-    <div class="feat-stats">
-      <div>
-        <div class="stat-val">200+</div>
-        <div class="stat-label">Vendors Listed</div>
-      </div>
-      <div>
-        <div class="stat-val">4.8★</div>
-        <div class="stat-label">Avg Rating</div>
-      </div>
+<!-- SOCIAL PROOF BAR -->
+<div class="social-proof">
+  <div class="social-proof-inner">
+    <div class="proof-label">Trusted by local businesses</div>
+    <div class="proof-logos">
+      <span class="proof-logo">Raj's Kitchen</span>
+      <span class="proof-logo">Ajay Plumbing</span>
+      <span class="proof-logo">EduPoint</span>
+      <span class="proof-logo">QuickFix Electrical</span>
+      <span class="proof-logo">FreshBite Foods</span>
+      <span class="proof-logo">HomeCare Services</span>
     </div>
-    <a href="https://github.com/Praveenkg02/jack-app" target="_blank" class="feat-link">View Source →</a>
-  </div>
-
-  <div class="feature-visual">
-    <div class="map-visual">
-      <div class="map-bg"></div>
-      <div class="map-ring mr1"></div>
-      <div class="map-ring mr2"></div>
-      <div class="map-ring mr3"></div>
-      <div class="map-center-pin"></div>
-      <div class="vendor-chip vc1">🍕 Raj's Kitchen · 0.3km</div>
-      <div class="vendor-chip vc2">🔧 Ajay Plumbing · 0.8km</div>
-      <div class="vendor-chip vc3">📚 EduPoint · 1.1km</div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION 3: Loyalty Rewards -->
-<section class="feature-section" id="s3">
-  <div class="feature-content">
-    <div class="feat-label">Loyalty Program</div>
-    <h2 class="feat-title">Earn<br><span style="color:var(--accent)">Points</span></h2>
-    <div class="feat-title-sub">Every Order</div>
-    <p class="feat-body">Every booking, every purchase earns you JACK Points. Redeem for discounts, exclusive deals, and priority service from your favourite local vendors.</p>
-    <div class="feat-stats">
-      <div>
-        <div class="stat-val">10x</div>
-        <div class="stat-label">Points Multiplier</div>
-      </div>
-      <div>
-        <div class="stat-val">₹0</div>
-        <div class="stat-label">Fee to Join</div>
-      </div>
-    </div>
-    <a href="https://github.com/Praveenkg02/jack-app" target="_blank" class="feat-link">View Source →</a>
-  </div>
-
-  <div class="feature-visual">
-    <div class="reward-visual">
-      <div class="reward-card">
-        <div class="reward-icon">🎯</div>
-        <div class="reward-info">
-          <div class="reward-name">Weekly Streak</div>
-          <div class="reward-pts">+250 JACK Points</div>
-        </div>
-        <div class="reward-bar-wrap"><div class="reward-bar" style="width:80%"></div></div>
-      </div>
-      <div class="reward-card">
-        <div class="reward-icon">🛒</div>
-        <div class="reward-info">
-          <div class="reward-name">First Purchase</div>
-          <div class="reward-pts">+500 JACK Points</div>
-        </div>
-        <div class="reward-bar-wrap"><div class="reward-bar" style="width:100%"></div></div>
-      </div>
-      <div class="reward-card">
-        <div class="reward-icon">⭐</div>
-        <div class="reward-info">
-          <div class="reward-name">Leave a Review</div>
-          <div class="reward-pts">+100 JACK Points</div>
-        </div>
-        <div class="reward-bar-wrap"><div class="reward-bar" style="width:40%"></div></div>
-      </div>
-      <div class="reward-card" style="border-color:rgba(255,107,43,0.3)">
-        <div class="reward-icon" style="background:rgba(255,107,43,0.15)">💳</div>
-        <div class="reward-info">
-          <div class="reward-name">Your Balance</div>
-          <div class="reward-pts" style="color:var(--accent);font-weight:700;font-size:14px">1,850 Points</div>
-        </div>
-        <div style="font-size:11px;color:var(--accent);font-weight:600;">Redeem →</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS STRIP -->
-<div class="stats-strip">
-  <div class="strip-stat">
-    <span class="strip-val">10K+</span>
-    <span class="strip-lbl">Active Users</span>
-  </div>
-  <div class="strip-stat">
-    <span class="strip-val">200+</span>
-    <span class="strip-lbl">Local Vendors</span>
-  </div>
-  <div class="strip-stat">
-    <span class="strip-val">50+</span>
-    <span class="strip-lbl">Service Categories</span>
-  </div>
-  <div class="strip-stat">
-    <span class="strip-val">4.9★</span>
-    <span class="strip-lbl">App Rating</span>
   </div>
 </div>
 
-<!-- CTA -->
-<section id="cta">
-  <h2 class="cta-title">Ready to explore<br><span>your city?</span></h2>
-  <p class="cta-sub">Join thousands of users already discovering the best of local commerce with JACK.</p>
-  <button class="cta-btn">Launch JACK App →</button>
+<!-- BENTO: VENDOR BENEFITS -->
+<section id="benefits">
+  <div class="bento">
+    <div class="bento-header reveal">
+      <div class="section-eyebrow">Why Vendors Choose JACK</div>
+      <h2 class="section-title">Everything You Need<br>to <span style="color:var(--accent)">Grow</span></h2>
+      <p class="section-sub">One platform to manage your business, reach customers, and track performance — no tech skills needed.</p>
+    </div>
+    <div class="bento-grid">
+      <!-- Large cell: Dashboard -->
+      <div class="bento-cell large reveal">
+        <div class="bento-icon">📊</div>
+        <h3>Real-Time Dashboard</h3>
+        <p>Track revenue, orders, and customer ratings in real time. Know exactly how your business is performing — anytime, anywhere.</p>
+        <div class="bento-visual">
+          <div class="mini-dash">
+            <div class="mini-dash-row">
+              <div class="mini-dash-block">
+                <div class="mdb-label">Today's Revenue</div>
+                <div class="mdb-val">₹3,450</div>
+              </div>
+              <div class="mini-dash-block">
+                <div class="mdb-label">Pending Orders</div>
+                <div class="mdb-val">8</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Cell: Inventory -->
+      <div class="bento-cell reveal reveal-delay-1">
+        <div class="bento-icon">📦</div>
+        <h3>Inventory Management</h3>
+        <p>Track stock levels, get low-stock alerts, and manage supplies from one place.</p>
+      </div>
+      <!-- Cell: Customer Reach -->
+      <div class="bento-cell reveal reveal-delay-2">
+        <div class="bento-icon">📍</div>
+        <h3>Local Customer Reach</h3>
+        <p>Get discovered by customers within 5 km. Hyperlocal visibility that drives real footfall.</p>
+      </div>
+      <!-- Cell: Payments -->
+      <div class="bento-cell reveal reveal-delay-1">
+        <div class="bento-icon">💰</div>
+        <h3>Instant Payments</h3>
+        <p>Receive payments directly. No waiting periods. Daily settlements to your account.</p>
+      </div>
+      <!-- Cell: Offers -->
+      <div class="bento-cell reveal reveal-delay-2">
+        <div class="bento-icon">🎯</div>
+        <h3>Offers Engine</h3>
+        <p>Create and toggle promotional offers. Attract new customers with deals you control.</p>
+      </div>
+      <!-- Cell: Analytics -->
+      <div class="bento-cell reveal reveal-delay-3">
+        <div class="bento-icon">📈</div>
+        <h3>Customer Analytics</h3>
+        <p>Understand your customers — peak hours, popular services, repeat rates. Data-driven growth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-it-works">
+    <div class="how-header reveal">
+      <div class="section-eyebrow">How It Works</div>
+      <h2 class="section-title">Start in <span style="color:var(--accent)">3 Steps</span></h2>
+      <p class="section-sub">From sign-up to your first order — it takes less than 5 minutes. No paperwork, no waiting.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3>Create Your Profile</h3>
+        <p>Sign up with your business name, services, and location. Takes 2 minutes.</p>
+      </div>
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">2</div>
+        <h3>List Your Services</h3>
+        <p>Add what you offer, set your prices, and upload photos. Go live instantly.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">3</div>
+        <h3>Start Earning</h3>
+        <p>Customers find you, place orders, and you get paid. It's that simple.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testimonials">
+    <div class="test-header reveal">
+      <div class="section-eyebrow">Vendor Stories</div>
+      <h2 class="section-title">Loved by <span style="color:var(--accent)">Local Businesses</span></h2>
+      <p class="section-sub">Hear from vendors who grew their business with JACK.</p>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"JACK brought me 40 new customers in the first month. The dashboard makes it easy to track everything — orders, payments, ratings. I wish I joined sooner."</p>
+        <div class="test-author">
+          <div class="test-avatar">R</div>
+          <div>
+            <div class="test-name">Rajesh Kumar</div>
+            <div class="test-role">Raj's Kitchen · Food & Catering</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card reveal reveal-delay-1">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"My plumbing business was struggling to find new clients. Within 3 weeks on JACK, I was fully booked. The local reach is incredible."</p>
+        <div class="test-author">
+          <div class="test-avatar">A</div>
+          <div>
+            <div class="test-name">Ajay Patel</div>
+            <div class="test-role">Ajay Plumbing · Home Services</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card reveal reveal-delay-2">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-quote">"The offers engine is a game-changer. I created a weekend discount and got 25 bookings in two days. Best marketing tool I've used."</p>
+        <div class="test-author">
+          <div class="test-avatar">S</div>
+          <div>
+            <div class="test-name">Sneha Reddy</div>
+            <div class="test-role">EduPoint · Tutoring Services</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section id="compare">
+  <div class="comparison">
+    <div class="comp-header reveal">
+      <div class="section-eyebrow">Why JACK Wins</div>
+      <h2 class="section-title">JACK vs <span style="color:var(--muted)">The Old Way</span></h2>
+      <p class="section-sub">Stop relying on word-of-mouth alone. See what you're missing.</p>
+    </div>
+    <table class="comp-table reveal">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="highlight">JACK</th>
+          <th>Word of Mouth</th>
+          <th>Other Platforms</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature">Setup Cost</td>
+          <td class="highlight-col">Free</td>
+          <td>Free</td>
+          <td>₹2,000 – ₹10,000</td>
+        </tr>
+        <tr>
+          <td class="feature">Local Customer Reach</td>
+          <td class="highlight-col"><span class="comp-check">✓</span> 5 km radius</td>
+          <td>Limited</td>
+          <td><span class="comp-check">✓</span> City-wide</td>
+        </tr>
+        <tr>
+          <td class="feature">Real-Time Dashboard</td>
+          <td class="highlight-col"><span class="comp-check">✓</span></td>
+          <td><span class="comp-cross">✗</span></td>
+          <td><span class="comp-check">✓</span> Basic</td>
+        </tr>
+        <tr>
+          <td class="feature">Inventory Management</td>
+          <td class="highlight-col"><span class="comp-check">✓</span></td>
+          <td><span class="comp-cross">✗</span></td>
+          <td><span class="comp-cross">✗</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Instant Payments</td>
+          <td class="highlight-col"><span class="comp-check">✓</span> Daily</td>
+          <td>Cash only</td>
+          <td>Weekly settlement</td>
+        </tr>
+        <tr>
+          <td class="feature">Promotional Offers</td>
+          <td class="highlight-col"><span class="comp-check">✓</span> Self-serve</td>
+          <td><span class="comp-cross">✗</span></td>
+          <td>Limited</td>
+        </tr>
+        <tr>
+          <td class="feature">Customer Analytics</td>
+          <td class="highlight-col"><span class="comp-check">✓</span></td>
+          <td><span class="comp-cross">✗</span></td>
+          <td>Basic</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq">
+    <div class="faq-header reveal">
+      <div class="section-eyebrow">FAQ</div>
+      <h2 class="section-title">Common Questions</h2>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q">How much does it cost to join JACK?<span class="icon">+</span></button>
+      <div class="faq-a"><p>Nothing. Joining JACK is completely free. There are no setup fees, no monthly charges, and no commission on your first 50 orders. After that, we charge a small 5% platform fee — still the lowest in the market.</p></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-1">
+      <button class="faq-q">How do I get paid?<span class="icon">+</span></button>
+      <div class="faq-a"><p>Payments are settled daily directly to your bank account. No waiting for weekly cycles. You can track all earnings in real time from your dashboard.</p></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-2">
+      <button class="faq-q">What if I already use another platform?<span class="icon">+</span></button>
+      <div class="faq-a"><p>JACK works alongside other platforms. Most vendors use JACK to reach local customers they can't get elsewhere. You can list the same services and set your own prices.</p></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-3">
+      <button class="faq-q">How do customers find me?<span class="icon">+</span></button>
+      <div class="faq-a"><p>JACK uses hyperlocal search to show your business to customers within 5 km. The more orders and reviews you get, the higher you rank in search results.</p></div>
+    </div>
+    <div class="faq-item reveal reveal-delay-4">
+      <button class="faq-q">What support do you offer?<span class="icon">+</span></button>
+      <div class="faq-a"><p>Every vendor gets a dedicated relationship manager. Plus, 24/7 in-app chat support and weekly tips to grow your business on the platform.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div style="position:relative;z-index:2">
+    <div class="section-eyebrow reveal">Ready to Grow?</div>
+    <h2 class="section-title reveal">Your Customers Are<br>Already on JACK</h2>
+    <p class="section-sub reveal" style="text-align:center">Join 200+ local vendors who are growing their business every day. It takes 5 minutes to get started — and it's completely free.</p>
+    <div class="reveal" style="margin-top:40px">
+      <button class="btn-primary" style="font-size:17px;padding:20px 48px">Join as Vendor — Free →</button>
+    </div>
+  </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">JACK</div>
-  <div class="footer-links">
-    <a href="https://github.com/Praveenkg02/jack-app" target="_blank">Jack App</a>
-    <a href="https://github.com/Praveenkg02/jack-landing" target="_blank">Landing Page</a>
+  <div class="footer-inner">
+    <div class="footer-logo">JACK</div>
+    <div class="footer-links">
+      <a href="https://github.com/Praveenkg02/jack-app" target="_blank">Jack App</a>
+      <a href="https://github.com/Praveenkg02/jack-landing" target="_blank">Landing Page</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#how">How It Works</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-copy">© 2025 JACK Platform · Built by Praveen KG</div>
   </div>
-  <div class="footer-copy">© 2025 JACK Platform · Built by Praveen KG</div>
 </footer>
 
+<!-- STICKY CTA -->
+<div class="sticky-cta" id="stickyCta">
+  <span class="sticky-cta-text">Ready to grow your business?</span>
+  <button class="btn-primary">Join as Vendor — Free</button>
+</div>
+
 <script>
-  // Intersection Observer for scroll animations
-  const sections = document.querySelectorAll('.feature-section');
+// Intersection Observer for scroll reveals
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.15 });
+reveals.forEach(el => revealObserver.observe(el));
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
+// Sticky CTA
+const stickyCta = document.getElementById('stickyCta');
+const heroSection = document.querySelector('.hero');
+window.addEventListener('scroll', () => {
+  const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+  stickyCta.classList.toggle('visible', window.scrollY > heroBottom - 200);
+});
+
+// Counter animation
+function animateCounters() {
+  document.querySelectorAll('.hero-metric .val').forEach(el => {
+    const target = parseFloat(el.dataset.target);
+    const isDecimal = target % 1 !== 0;
+    const duration = 1500;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * target;
+      if (target >= 1000) {
+        el.textContent = (current / 1000).toFixed(current >= target ? 0 : 0) + 'K+';
+      } else if (isDecimal) {
+        el.textContent = current.toFixed(1) + '★';
+      } else {
+        el.textContent = Math.floor(current) + '+';
       }
-    });
-  }, { threshold: 0.2 });
-
-  sections.forEach(s => observer.observe(s));
-
-  // Nav scroll effect
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    nav.style.borderBottomColor = window.scrollY > 60
-      ? 'rgba(255,107,43,0.15)'
-      : 'rgba(255,255,255,0.06)';
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
   });
+}
+
+// Trigger counters when hero is visible
+const heroObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { animateCounters(); heroObs.unobserve(e.target); } });
+}, { threshold: 0.3 });
+heroObs.observe(document.querySelector('.hero-metrics'));
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Nav scroll effect
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.style.background = window.scrollY > 60 ? 'rgba(9,9,11,.95)' : 'rgba(9,9,11,.8)';
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const href = link.getAttribute('href');
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
 </script>
 </body>
 </html>
