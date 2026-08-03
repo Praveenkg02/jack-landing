@@ -73,6 +73,7 @@ nav{
     radial-gradient(ellipse 60% 60% at 80% 50%,rgba(212,160,23,.04),transparent 70%),
     radial-gradient(ellipse 40% 40% at 20% 80%,rgba(212,160,23,.03),transparent 60%);
   pointer-events:none;
+  animation:bgShift 8s ease-in-out infinite alternate;
 }
 
 .hero-grid{
@@ -82,6 +83,44 @@ nav{
     linear-gradient(90deg,rgba(240,237,230,.015) 1px,transparent 1px);
   background-size:80px 80px;pointer-events:none;
 }
+
+/* ── LIVE ACTIVITY BACKGROUND ── */
+.hero-live{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+
+.live-dot{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px rgba(212,160,23,.15),0 0 12px rgba(212,160,23,.3);
+  animation:pulseDot 3s ease-in-out infinite;
+}
+.live-dot::after{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1px solid rgba(212,160,23,.25);
+  animation:rippleDot 2.5s ease-out infinite;
+}
+.ld1{top:18%;left:12%;animation-delay:0s}
+.ld2{top:32%;left:75%;animation-delay:.6s}
+.ld3{top:60%;left:25%;animation-delay:1.2s}
+.ld4{top:45%;left:88%;animation-delay:1.8s}
+.ld5{top:72%;left:62%;animation-delay:.3s}
+.ld6{top:22%;left:55%;animation-delay:1.5s}
+.ld7{top:80%;left:40%;animation-delay:.9s}
+.ld8{top:55%;left:10%;animation-delay:2.1s}
+.ld9{top:38%;left:45%;animation-delay:.4s}
+.ld10{top:68%;left:82%;animation-delay:1.7s}
+
+.live-icon{
+  position:absolute;font-size:18px;opacity:.12;
+  animation:floatIcon 12s linear infinite;
+}
+.li1{top:15%;left:8%;animation-duration:14s;animation-delay:0s}
+.li2{top:70%;left:90%;animation-duration:18s;animation-delay:2s;animation-direction:reverse}
+.li3{top:40%;left:70%;animation-duration:16s;animation-delay:4s}
+.li4{top:85%;left:20%;animation-duration:15s;animation-delay:1s;animation-direction:reverse}
+.li5{top:25%;left:42%;animation-duration:20s;animation-delay:3s}
+.li6{top:60%;left:5%;animation-duration:17s;animation-delay:5s;animation-direction:reverse}
+.li7{top:10%;left:60%;animation-duration:13s;animation-delay:2.5s}
+.li8{top:78%;left:75%;animation-duration:19s;animation-delay:0.5s;animation-direction:reverse}
 
 .hero-inner{
   max-width:1280px;margin:0 auto;width:100%;
@@ -458,6 +497,26 @@ footer{
 @keyframes fadeRight{to{opacity:1;transform:translateX(0) scale(1)}}
 @keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 
+@keyframes bgShift{
+  0%{background:radial-gradient(ellipse 60% 60% at 80% 50%,rgba(212,160,23,.04),transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(212,160,23,.03),transparent 60%)}
+  100%{background:radial-gradient(ellipse 60% 60% at 30% 60%,rgba(212,160,23,.06),transparent 70%),radial-gradient(ellipse 40% 40% at 70% 30%,rgba(212,160,23,.04),transparent 60%)}
+}
+@keyframes pulseDot{
+  0%,100%{opacity:.4;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.4)}
+}
+@keyframes rippleDot{
+  0%{transform:scale(1);opacity:.6}
+  100%{transform:scale(2.5);opacity:0}
+}
+@keyframes floatIcon{
+  0%{transform:translate(0,0) rotate(0deg)}
+  25%{transform:translate(30px,-20px) rotate(5deg)}
+  50%{transform:translate(-10px,-40px) rotate(-3deg)}
+  75%{transform:translate(20px,-15px) rotate(4deg)}
+  100%{transform:translate(0,0) rotate(0deg)}
+}
+
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 .reveal-delay-1{transition-delay:.1s}
@@ -488,6 +547,8 @@ footer{
   .test-grid{grid-template-columns:1fr}
   .final-cta{padding:100px 24px}
   .sticky-cta-text{display:none}
+  .live-icon{display:none}
+  .live-dot{opacity:.3}
   footer{padding:40px 24px}
   .footer-inner{flex-direction:column;text-align:center}
 }
@@ -517,6 +578,26 @@ footer{
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
+  <div class="hero-live">
+    <div class="live-dot ld1"></div>
+    <div class="live-dot ld2"></div>
+    <div class="live-dot ld3"></div>
+    <div class="live-dot ld4"></div>
+    <div class="live-dot ld5"></div>
+    <div class="live-dot ld6"></div>
+    <div class="live-dot ld7"></div>
+    <div class="live-dot ld8"></div>
+    <div class="live-dot ld9"></div>
+    <div class="live-dot ld10"></div>
+    <div class="live-icon li1">🔧</div>
+    <div class="live-icon li2">⚡</div>
+    <div class="live-icon li3">📚</div>
+    <div class="live-icon li4">🍕</div>
+    <div class="live-icon li5">🏠</div>
+    <div class="live-icon li6">🧹</div>
+    <div class="live-icon li7">💇</div>
+    <div class="live-icon li8">🛒</div>
+  </div>
   <div class="hero-inner">
     <div class="hero-left">
       <div class="hero-badge">
