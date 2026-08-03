@@ -75,10 +75,16 @@ nav{
 
 .hero-bg{
   position:absolute;inset:0;
+  background:url('background.png') center/cover no-repeat;
+  opacity:.18;
+  animation:heroZoom 20s ease-in-out infinite alternate;
+}
+
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 50% 50% at 80% 50%,rgba(107,163,190,.06),transparent 70%),
-    radial-gradient(ellipse 40% 40% at 20% 80%,rgba(212,160,23,.04),transparent 60%);
-  pointer-events:none;
+    linear-gradient(180deg,var(--navy) 0%,transparent 30%,transparent 70%,var(--navy) 100%),
+    linear-gradient(90deg,var(--navy) 0%,transparent 40%,transparent 60%,var(--navy) 100%);
 }
 
 .hero-grid{
@@ -111,6 +117,38 @@ nav{
 .ld6{top:22%;left:55%;animation-delay:1.5s}
 .ld7{top:80%;left:40%;animation-delay:.9s}
 .ld8{top:55%;left:10%;animation-delay:2.1s}
+
+/* glowing circuit lines */
+.circuit-line{
+  position:absolute;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--sky),transparent);
+  opacity:0;
+  animation:circuitPulse 4s ease-in-out infinite;
+}
+.cl1{top:25%;left:5%;width:120px;animation-delay:0s;transform:rotate(15deg)}
+.cl2{top:50%;left:15%;width:180px;animation-delay:1s;transform:rotate(-8deg)}
+.cl3{top:70%;left:8%;width:100px;animation-delay:2s;transform:rotate(5deg)}
+.cl4{top:35%;right:10%;width:150px;animation-delay:1.5s;transform:rotate(-12deg)}
+.cl5{top:65%;right:5%;width:130px;animation-delay:2.5s;transform:rotate(10deg)}
+.cl6{top:80%;right:15%;width:110px;animation-delay:0.5s;transform:rotate(-5deg)}
+
+/* floating particles */
+.particle{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:rgba(107,163,190,.4);
+  animation:floatParticle 8s ease-in-out infinite;
+}
+.pp1{top:20%;left:20%;animation-delay:0s}
+.pp2{top:40%;left:60%;animation-delay:1s}
+.pp3{top:60%;left:30%;animation-delay:2s}
+.pp4{top:30%;left:80%;animation-delay:3s}
+.pp5{top:75%;left:50%;animation-delay:4s}
+.pp6{top:15%;left:45%;animation-delay:1.5s}
+.pp7{top:55%;left:70%;animation-delay:2.5s}
+.pp8{top:85%;left:25%;animation-delay:3.5s}
+.pp9{top:45%;left:10%;animation-delay:0.5s}
+.pp10{top:25%;left:90%;animation-delay:4.5s}
 
 .hero-inner{
   max-width:1280px;margin:0 auto;width:100%;
@@ -502,6 +540,20 @@ footer{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-8px)}
 }
+@keyframes heroZoom{
+  0%{transform:scale(1) translate(0,0)}
+  100%{transform:scale(1.08) translate(-1%,-1%)}
+}
+@keyframes circuitPulse{
+  0%,100%{opacity:0;transform:scaleX(0.3)}
+  50%{opacity:.5;transform:scaleX(1)}
+}
+@keyframes floatParticle{
+  0%,100%{transform:translate(0,0);opacity:.3}
+  25%{transform:translate(15px,-20px);opacity:.6}
+  50%{transform:translate(-10px,-35px);opacity:.4}
+  75%{transform:translate(20px,-15px);opacity:.5}
+}
 
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -539,6 +591,7 @@ footer{
   .live-dot{opacity:.3}
   .mascot-float{display:none}
   .mascot-badge{width:200px;height:200px}
+  .circuit-line,.particle{display:none}
 }
 
 @media(max-width:480px){
@@ -575,6 +628,24 @@ footer{
     <div class="live-dot ld6"></div>
     <div class="live-dot ld7"></div>
     <div class="live-dot ld8"></div>
+    <!-- Circuit lines -->
+    <div class="circuit-line cl1"></div>
+    <div class="circuit-line cl2"></div>
+    <div class="circuit-line cl3"></div>
+    <div class="circuit-line cl4"></div>
+    <div class="circuit-line cl5"></div>
+    <div class="circuit-line cl6"></div>
+    <!-- Floating particles -->
+    <div class="particle pp1"></div>
+    <div class="particle pp2"></div>
+    <div class="particle pp3"></div>
+    <div class="particle pp4"></div>
+    <div class="particle pp5"></div>
+    <div class="particle pp6"></div>
+    <div class="particle pp7"></div>
+    <div class="particle pp8"></div>
+    <div class="particle pp9"></div>
+    <div class="particle pp10"></div>
   </div>
   <div class="hero-inner">
     <div class="hero-left">
