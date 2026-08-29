@@ -562,26 +562,80 @@ footer{
 .reveal-delay-3{transition-delay:.3s}
 .reveal-delay-4{transition-delay:.35s}
 
-/* ── SERVICE CATEGORIES ── */
-.services-section{background:var(--light)}
-.services{max-width:1280px;margin:0 auto}
-.services-header{text-align:center;margin-bottom:64px}
-.services-header .section-sub{margin:16px auto 0}
+/* ── SERVICE SCROLL SECTION ── */
+.services-scroll-section{
+  position:relative;height:600vh;background:var(--light);
+}
+.services-sticky{
+  position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;overflow:hidden;
+  padding:0 48px;
+}
+.services-sticky-inner{
+  max-width:1280px;width:100%;position:relative;
+}
+.services-sticky-header{text-align:center;margin-bottom:48px}
+.services-sticky-header .section-eyebrow{display:inline-block}
+.services-sticky-header h2{font-size:clamp(32px,4vw,48px);color:var(--text)}
+.services-sticky-header p{font-size:16px;color:var(--text-light);margin-top:12px}
 
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.service-card{
+/* panels */
+.services-panels{position:relative;height:420px}
+.services-panel{
+  position:absolute;inset:0;
+  opacity:0;visibility:hidden;
+  transition:opacity .5s ease,visibility .5s ease;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  align-content:start;
+}
+.services-panel.active{opacity:1;visibility:visible}
+
+.panel-card{
   background:var(--white);border:1px solid rgba(0,0,0,.06);
-  border-radius:var(--radius);padding:32px;text-align:center;
+  border-radius:var(--radius);padding:28px 20px;text-align:center;
   transition:transform .2s,box-shadow .3s,border-color .3s;cursor:pointer;
 }
-.service-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06);border-color:var(--accent)}
-.service-icon{
-  width:56px;height:56px;border-radius:16px;
+.panel-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06);border-color:var(--accent)}
+.panel-card-icon{
+  width:52px;height:52px;border-radius:14px;
   background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
-  margin:0 auto 16px;font-size:28px;
+  margin:0 auto 14px;font-size:26px;
 }
-.service-card h3{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
-.service-card p{font-size:13px;color:var(--text-light);line-height:1.5}
+.panel-card h4{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.panel-card span{font-size:12px;color:var(--text-light)}
+
+/* progress dots */
+.panel-progress{
+  display:flex;gap:10px;justify-content:center;margin-top:40px;
+}
+.panel-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:rgba(0,0,0,.1);border:none;cursor:pointer;
+  transition:background .3s,transform .3s;
+}
+.panel-dot.active{background:var(--accent);transform:scale(1.3)}
+
+/* panel category label */
+.panel-category{
+  position:absolute;top:0;right:0;
+  font-size:12px;font-weight:600;color:var(--accent);
+  text-transform:uppercase;letter-spacing:1.5px;
+  padding:6px 14px;border:1px solid var(--accent-dim);border-radius:999px;
+  background:var(--white);
+}
+
+/* scroll hint */
+.scroll-hint{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  color:var(--text-light);font-size:12px;font-weight:500;
+  animation:scrollHintBounce 2s ease-in-out infinite;
+}
+.scroll-hint svg{width:20px;height:20px;opacity:.5}
+@keyframes scrollHintBounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(6px)}
+}
 
 /* ── HOW IT WORKS — CUSTOMERS ── */
 .how-customer-section{background:var(--light2)}
@@ -714,6 +768,8 @@ footer{
   .faq-inner{grid-template-columns:1fr;gap:48px}
   .faq-left{position:static}
   .mascot-badge{width:260px;height:260px}
+  .services-panel{grid-template-columns:repeat(2,1fr)}
+  .services-panels{height:380px}
 }
 
 @media(max-width:768px){
@@ -729,6 +785,12 @@ footer{
   .customer-steps{grid-template-columns:1fr}
   .customer-steps::before{display:none}
   .services-grid{grid-template-columns:1fr}
+  .services-scroll-section{height:auto}
+  .services-sticky{position:relative;height:auto;padding:80px 24px}
+  .services-panels{position:relative;height:auto}
+  .services-panel{position:relative;opacity:1;visibility:visible;display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:32px}
+  .services-panel::before{content:attr(data-label);display:block;font-size:14px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;grid-column:1/-1}
+  .panel-progress,.scroll-hint,.panel-category{display:none}
   .vendor-grid{grid-template-columns:1fr}
   .discover-search{flex-direction:column}
   .download-btns{flex-direction:column;align-items:center}
@@ -884,45 +946,95 @@ footer{
   </div>
 </div>
 
-<!-- SERVICE CATEGORIES -->
-<section id="services" class="services-section">
-  <div class="services">
-    <div class="services-header reveal">
-      <div class="section-eyebrow">Services</div>
-      <h2 class="section-title">50+ Services, One Platform</h2>
-      <p class="section-sub">From home repairs to personal care — find trusted local vendors for everything you need.</p>
+<!-- SERVICE SCROLL SECTION -->
+<section id="services" class="services-scroll-section">
+  <div class="services-sticky">
+    <div class="services-sticky-inner">
+      <div class="services-sticky-header">
+        <div class="section-eyebrow">Explore Services</div>
+        <h2 class="section-title">50+ Services, One Platform</h2>
+        <p>Scroll to discover what JACK has to offer</p>
+      </div>
+      <div class="services-panels">
+        <div class="panel-category" id="panelCategory">In the Spotlight</div>
+
+        <!-- Panel 1: In the Spotlight -->
+        <div class="services-panel active" data-label="In the Spotlight">
+          <div class="panel-card"><div class="panel-card-icon">🎨</div><h4>Interior Design</h4><span>Home makeovers</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🎉</div><h4>Event Planning</h4><span>Parties & weddings</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📸</div><h4>Photography</h4><span>Professional shoots</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🚗</div><h4>Car Wash</h4><span>At your doorstep</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🐾</div><h4>Pet Grooming</h4><span>Care for your pets</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🏠</div><h4>Smart Home Setup</h4><span>IoT & automation</span></div>
+        </div>
+
+        <!-- Panel 2: New Services -->
+        <div class="services-panel" data-label="New Services">
+          <div class="panel-card"><div class="panel-card-icon">🛩️</div><h4>Drone Photography</h4><span>Aerial shots</span></div>
+          <div class="panel-card"><div class="panel-card-icon">⚡</div><h4>EV Charging</h4><span>On-demand power</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🎬</div><h4>Home Theatre</h4><span>Setup & install</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📋</div><h4>Virtual Assistant</h4><span>Remote support</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🤖</div><h4>AI Tutoring</h4><span>Smart learning</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🚲</div><h4>Bike Rental</h4><span>Short-term rides</span></div>
+        </div>
+
+        <!-- Panel 3: Most Booked -->
+        <div class="services-panel" data-label="Most Booked">
+          <div class="panel-card"><div class="panel-card-icon">🔧</div><h4>Plumbing</h4><span>Leaks & installs</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💡</div><h4>Electrical Repair</h4><span>Wiring & fixes</span></div>
+          <div class="panel-card"><div class="panel-card-icon">❄️</div><h4>AC Service</h4><span>Service & repair</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🍲</div><h4>Catering</h4><span>Events & tiffin</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📖</div><h4>Tutoring</h4><span>All subjects</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💇</div><h4>Salon at Home</h4><span>Beauty services</span></div>
+        </div>
+
+        <!-- Panel 4: Salon Services -->
+        <div class="services-panel" data-label="Salon Services">
+          <div class="panel-card"><div class="panel-card-icon">✂️</div><h4>Hair Styling</h4><span>Cuts & colour</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🧖</div><h4>Facial & Skincare</h4><span>Glow treatments</span></div>
+          <div class="panel-card"><div class="panel-card-icon">👰</div><h4>Bridal Makeup</h4><span>Special occasions</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💆</div><h4>Waxing</h4><span>Full body care</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💅</div><h4>Manicure & Pedicure</h4><span>Nail care</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🧔</div><h4>Beard Grooming</h4><span>Shaves & trims</span></div>
+        </div>
+
+        <!-- Panel 5: Appliance Repair -->
+        <div class="services-panel" data-label="Appliance Repair">
+          <div class="panel-card"><div class="panel-card-icon">🧺</div><h4>Washing Machine</h4><span>All brands</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🧊</div><h4>Refrigerator</h4><span>Frost & gas</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📡</div><h4>Microwave</h4><span>All models</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📺</div><h4>TV Repair</h4><span>LED & smart</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💧</div><h4>Water Purifier</h4><span>Filter change</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🌬️</div><h4>Split AC</h4><span>Install & service</span></div>
+        </div>
+
+        <!-- Panel 6: Home Repair & Installation -->
+        <div class="services-panel" data-label="Home Repair & Installation">
+          <div class="panel-card"><div class="panel-card-icon">🔩</div><h4>Plumbing Install</h4><span>Pipes & fixtures</span></div>
+          <div class="panel-card"><div class="panel-card-icon">⚡</div><h4>Electrical Wiring</h4><span>New connections</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🪚</div><h4>Carpentry</h4><span>Furniture & wood</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🖌️</div><h4>Paint Work</h4><span>Interior & exterior</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🍳</div><h4>Modular Kitchen</h4><span>Custom designs</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🐜</div><h4>Pest Control</h4><span>Home & office</span></div>
+        </div>
+
+      </div>
+
+      <!-- Progress dots -->
+      <div class="panel-progress">
+        <button class="panel-dot active" data-idx="0"></button>
+        <button class="panel-dot" data-idx="1"></button>
+        <button class="panel-dot" data-idx="2"></button>
+        <button class="panel-dot" data-idx="3"></button>
+        <button class="panel-dot" data-idx="4"></button>
+        <button class="panel-dot" data-idx="5"></button>
+      </div>
     </div>
-    <div class="services-grid">
-      <div class="service-card reveal">
-        <div class="service-icon">🔧</div>
-        <h3>Home Repair</h3>
-        <p>Plumbing, electrical, carpentry & more</p>
-      </div>
-      <div class="service-card reveal reveal-delay-1">
-        <div class="service-icon">🍳</div>
-        <h3>Food & Catering</h3>
-        <p>Tiffin services, bulk orders, events</p>
-      </div>
-      <div class="service-card reveal reveal-delay-2">
-        <div class="service-icon">📚</div>
-        <h3>Tutoring</h3>
-        <p>Academic, music, coding & languages</p>
-      </div>
-      <div class="service-card reveal reveal-delay-3">
-        <div class="service-icon">💄</div>
-        <h3>Beauty & Wellness</h3>
-        <p>Salon at home, spa, fitness training</p>
-      </div>
-      <div class="service-card reveal reveal-delay-4">
-        <div class="service-icon">🚚</div>
-        <h3>Logistics</h3>
-        <p>Delivery, moving, packing services</p>
-      </div>
-      <div class="service-card reveal reveal-delay-5">
-        <div class="service-icon">💻</div>
-        <h3>Tech Services</h3>
-        <p>Repairs, setup, web development</p>
-      </div>
+
+    <!-- Scroll hint -->
+    <div class="scroll-hint">
+      <span>Scroll to explore</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </div>
   </div>
 </section>
@@ -1370,6 +1482,55 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     }
   });
 });
+
+// ── SERVICES IN-SECTION SCROLL ──
+(function() {
+  const section = document.querySelector('.services-scroll-section');
+  if (!section) return;
+  const panels = section.querySelectorAll('.services-panel');
+  const dots = section.querySelectorAll('.panel-dot');
+  const categoryLabel = document.getElementById('panelCategory');
+  const scrollHint = section.querySelector('.scroll-hint');
+  const totalPanels = panels.length;
+
+  function updatePanels() {
+    const rect = section.getBoundingClientRect();
+    const sectionHeight = section.offsetHeight;
+    const viewportH = window.innerHeight;
+    const scrolled = -rect.top;
+    const scrollable = sectionHeight - viewportH;
+    const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+    const panelIndex = Math.min(Math.floor(progress * totalPanels), totalPanels - 1);
+
+    panels.forEach((p, i) => p.classList.toggle('active', i === panelIndex));
+    dots.forEach((d, i) => d.classList.toggle('active', i === panelIndex));
+    if (categoryLabel) categoryLabel.textContent = panels[panelIndex].dataset.label;
+
+    // Hide scroll hint after first scroll
+    if (scrollHint && scrolled > 100) {
+      scrollHint.style.opacity = '0';
+      scrollHint.style.pointerEvents = 'none';
+    } else if (scrollHint) {
+      scrollHint.style.opacity = '1';
+    }
+  }
+
+  window.addEventListener('scroll', updatePanels, { passive: true });
+  updatePanels();
+
+  // Dot click navigation
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = parseInt(dot.dataset.idx);
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const viewportH = window.innerHeight;
+      const scrollable = sectionHeight - viewportH;
+      const targetScroll = sectionTop + (idx / totalPanels) * scrollable;
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    });
+  });
+})();
 </script>
 </body>
 </html>
