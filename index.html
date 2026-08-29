@@ -564,7 +564,7 @@ footer{
 
 /* ── SERVICE PANELS (embedded scroll) ── */
 .services-scroll-wrap{
-  position:relative;height:300vh;
+  position:relative;height:600vh;
 }
 .services-scroll-sticky{
   position:sticky;top:0;height:100vh;
@@ -769,7 +769,7 @@ footer{
   .faq-left{position:static}
   .mascot-badge{width:260px;height:260px}
   .panel-cards{grid-template-columns:repeat(2,1fr)}
-  .services-scroll-wrap{height:300vh}
+  .services-scroll-wrap{height:600vh}
   .services-scroll-sticky{margin:0 32px}
 }
 
@@ -1503,65 +1503,41 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 // ── SERVICES EMBEDDED SCROLL ──
 (function() {
   const wrap = document.querySelector('.services-scroll-wrap');
-  const sticky = document.querySelector('.services-scroll-sticky');
-  if (!wrap || !sticky) return;
+  if (!wrap) return;
   const panels = wrap.querySelectorAll('.services-panel');
   const dots = wrap.querySelectorAll('.services-progress-dot');
   const label = document.getElementById('scrollLabel');
   const arrow = document.getElementById('scrollArrow');
   const total = panels.length;
-  let currentIdx = 0;
-  let isAnimating = false;
+  let lastIdx = -1;
 
-  function goTo(idx) {
-    if (idx < 0 || idx >= total || isAnimating) return;
-    isAnimating = true;
-    currentIdx = idx;
+  function update() {
+    const rect = wrap.getBoundingClientRect();
+    const scrollable = wrap.offsetHeight - window.innerHeight;
+    const scrolled = -rect.top;
+    const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+    const idx = Math.min(Math.floor(progress * total), total - 1);
+
+    if (idx === lastIdx) return;
+    lastIdx = idx;
+
     panels.forEach((p, i) => p.classList.toggle('active', i === idx));
     dots.forEach((d, i) => d.classList.toggle('active', i === idx));
     if (label) label.textContent = panels[idx].dataset.label;
-    if (arrow) arrow.classList.add('hidden');
-    setTimeout(() => isAnimating = false, 600);
+    if (arrow) arrow.classList.toggle('hidden', scrolled > 50);
   }
 
-  // Wheel handler — only capture when cursor is inside the sticky card
-  sticky.addEventListener('wheel', function(e) {
-    const rect = sticky.getBoundingClientRect();
-    const insideCard = (
-      e.clientX >= rect.left && e.clientX <= rect.right &&
-      e.clientY >= rect.top && e.clientY <= rect.bottom
-    );
-    if (!insideCard) return; // let page scroll normally
+  window.addEventListener('scroll', update, { passive: true });
+  update();
 
-    e.preventDefault();
-    if (isAnimating) return;
-
-    if (e.deltaY > 30 && currentIdx < total - 1) {
-      goTo(currentIdx + 1);
-    } else if (e.deltaY < -30 && currentIdx > 0) {
-      goTo(currentIdx - 1);
-    }
-  }, { passive: false });
-
-  // Touch support for mobile
-  let touchStartY = 0;
-  sticky.addEventListener('touchstart', function(e) {
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-  sticky.addEventListener('touchend', function(e) {
-    const diff = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(diff) < 40) return;
-    if (diff > 0 && currentIdx < total - 1) goTo(currentIdx + 1);
-    else if (diff < 0 && currentIdx > 0) goTo(currentIdx - 1);
-  }, { passive: true });
-
-  // Dot click
   dots.forEach(dot => {
-    dot.addEventListener('click', () => goTo(parseInt(dot.dataset.idx)));
+    dot.addEventListener('click', () => {
+      const i = parseInt(dot.dataset.idx);
+      const top = wrap.offsetTop;
+      const scrollable = wrap.offsetHeight - window.innerHeight;
+      window.scrollTo({ top: top + (i / total) * scrollable, behavior: 'smooth' });
+    });
   });
-
-  // Init
-  goTo(0);
 })();
 
 
