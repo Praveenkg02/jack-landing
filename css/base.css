@@ -30,7 +30,7 @@ section{padding:120px 48px}
 .btn-primary{
   background:var(--accent);color:var(--navy);font-family:'DM Sans',sans-serif;
   font-size:15px;font-weight:600;padding:16px 36px;
-  border:none;border-radius:999px;cursor:pointer;
+  border:none;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-block;
   transition:background .2s,transform .15s,box-shadow .2s;
 }
 .btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 32px rgba(212,160,23,.3)}
@@ -39,6 +39,6 @@ section{padding:120px 48px}
   background:transparent;color:var(--white);font-family:'DM Sans',sans-serif;
   font-size:15px;font-weight:500;padding:16px 32px;
   border:1.5px solid rgba(255,255,255,.2);border-radius:999px;cursor:pointer;
-  transition:border-color .2s;
+  text-decoration:none;display:inline-block;transition:border-color .2s;
 }
 .btn-secondary:hover{border-color:rgba(255,255,255,.5)}

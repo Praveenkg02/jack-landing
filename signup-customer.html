@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up as Customer — JACK</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <div class="auth-page">
+
+    <!-- Left panel -->
+    <div class="auth-left">
+      <a href="index.html" class="auth-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to home
+      </a>
+      <div class="auth-left-content">
+        <div class="auth-left-logo">
+          <img src="logo.png" alt="JACK">
+          <span>JACK</span>
+        </div>
+        <h2>Find Trusted Local Vendors</h2>
+        <p>Book home services, discover local businesses, and get things done — all from your phone.</p>
+        <div class="auth-features">
+          <div class="auth-feature">
+            <div class="auth-feature-icon">🔍</div>
+            <span>Search 50+ service categories near you</span>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">⭐</div>
+            <span>Read verified reviews from real customers</span>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">💳</div>
+            <span>Pay securely — UPI, cards, wallets</span>
+          </div>
+          <div class="auth-feature">
+            <div class="auth-feature-icon">📦</div>
+            <span>Track your order in real-time</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel — form -->
+    <div class="auth-right">
+      <div class="auth-form-wrap">
+        <div class="auth-form-header">
+          <h1>Create your account</h1>
+          <p>Start booking local services in under a minute</p>
+        </div>
+
+        <!-- Steps -->
+        <div class="auth-steps">
+          <div class="auth-step active" data-step="1">
+            <div class="auth-step-num">1</div>
+            <span>Mobile</span>
+          </div>
+          <div class="auth-step-line"></div>
+          <div class="auth-step" data-step="2">
+            <div class="auth-step-num">2</div>
+            <span>Verify</span>
+          </div>
+          <div class="auth-step-line"></div>
+          <div class="auth-step" data-step="3">
+            <div class="auth-step-num">3</div>
+            <span>Profile</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Mobile number -->
+        <div class="auth-panel active" data-panel="1">
+          <div class="input-group">
+            <label>Mobile Number</label>
+            <div class="phone-input-wrap">
+              <div class="phone-code"><span>🇮🇳</span> +91</div>
+              <input type="tel" id="customerPhone" placeholder="Enter your mobile number" maxlength="10" autocomplete="tel">
+            </div>
+            <div class="error-msg">Please enter a valid 10-digit mobile number</div>
+          </div>
+          <button class="auth-btn auth-btn-primary" id="customerSendOtp">Send OTP</button>
+          <div class="auth-footer">
+            Already have an account? <a href="#">Sign in</a>
+          </div>
+        </div>
+
+        <!-- Step 2: OTP verification -->
+        <div class="auth-panel" data-panel="2">
+          <p style="font-size:14px;color:var(--text-light);margin-bottom:20px">
+            Enter the 6-digit code sent to <strong id="otpPhoneDisplay"></strong>
+          </p>
+          <div class="otp-inputs" id="customerOtpInputs">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+            <input type="text" maxlength="1" inputmode="numeric">
+          </div>
+          <button class="auth-btn auth-btn-primary" id="customerVerifyOtp" disabled>Verify OTP</button>
+          <div class="otp-resend">
+            <span class="otp-timer" id="customerTimer">Resend OTP in 30s</span>
+            <button id="customerResendOtp" style="display:none">Resend OTP</button>
+          </div>
+          <button class="auth-btn auth-btn-secondary" id="customerChangePhone">Change Number</button>
+        </div>
+
+        <!-- Step 3: Profile setup -->
+        <div class="auth-panel" data-panel="3">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="customerName" placeholder="Your full name">
+            <div class="error-msg">Please enter your name</div>
+          </div>
+          <div class="input-group">
+            <label>Email (optional)</label>
+            <input type="email" id="customerEmail" placeholder="you@example.com">
+          </div>
+          <div class="input-group">
+            <label>Locality / Area</label>
+            <input type="text" id="customerArea" placeholder="e.g. Koramangala, Bangalore">
+            <div class="error-msg">Please enter your area</div>
+          </div>
+          <button class="auth-btn auth-btn-primary" id="customerFinish">Create Account</button>
+        </div>
+
+        <!-- Step 4: Success -->
+        <div class="auth-panel" data-panel="4">
+          <div class="auth-success">
+            <div class="auth-success-icon">🎉</div>
+            <h2>Welcome to JACK!</h2>
+            <p>Your account is ready. Start exploring trusted local vendors in your area.</p>
+            <button class="auth-btn auth-btn-primary" onclick="window.location.href='index.html#services'">Explore Services</button>
+            <div class="auth-footer" style="margin-top:20px">
+              <a href="index.html">or go back home</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    initAuth({ role: 'customer' });
+  </script>
+</body>
+</html>
