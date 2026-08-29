@@ -8,7 +8,7 @@
   .faq-left{position:static}
   .mascot-badge{width:260px;height:260px}
   .panel-cards{grid-template-columns:repeat(2,1fr)}
-  .services-scroll-sticky{margin:0 32px}
+  .services-section{padding:60px 32px}
 }
 
 @media(max-width:768px){
@@ -28,11 +28,9 @@
   .steps{grid-template-columns:1fr}
   .customer-steps{grid-template-columns:1fr}
   .customer-steps::before{display:none}
-  .services-scroll-wrap{height:auto}
-  .services-scroll-sticky{position:relative;height:auto;margin:0;border-radius:16px}
-  .services-panel{position:relative;opacity:1;visibility:visible;min-height:auto;padding:60px 0}
+  .services-section{padding:48px 24px}
   .panel-cards{grid-template-columns:1fr}
-  .services-progress,.services-scroll-arrow{display:none}
+  .service-category{padding:24px 20px}
   .vendor-grid{grid-template-columns:1fr}
   .discover-search{flex-direction:column}
   .download-btns{flex-direction:column;align-items:center}

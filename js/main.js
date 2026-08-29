@@ -89,42 +89,4 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   });
 });
 
-// ── SERVICES EMBEDDED SCROLL ──
-(function() {
-  const wrap = document.querySelector('.services-scroll-wrap');
-  if (!wrap) return;
-  const panels = wrap.querySelectorAll('.services-panel');
-  const dots = wrap.querySelectorAll('.services-progress-dot');
-  const label = document.getElementById('scrollLabel');
-  const arrow = document.getElementById('scrollArrow');
-  const total = panels.length;
-  let lastIdx = -1;
 
-  function update() {
-    const rect = wrap.getBoundingClientRect();
-    const scrollable = wrap.offsetHeight - window.innerHeight;
-    const scrolled = -rect.top;
-    const progress = Math.max(0, Math.min(1, scrolled / scrollable));
-    const idx = Math.min(Math.floor(progress * total), total - 1);
-
-    if (idx === lastIdx) return;
-    lastIdx = idx;
-
-    panels.forEach((p, i) => p.classList.toggle('active', i === idx));
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (label) label.textContent = panels[idx].dataset.label;
-    if (arrow) arrow.classList.toggle('hidden', scrolled > 50);
-  }
-
-  window.addEventListener('scroll', update, { passive: true });
-  update();
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const i = parseInt(dot.dataset.idx);
-      const top = wrap.offsetTop;
-      const scrollable = wrap.offsetHeight - window.innerHeight;
-      window.scrollTo({ top: top + (i / total) * scrollable, behavior: 'smooth' });
-    });
-  });
-})();
