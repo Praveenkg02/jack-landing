@@ -562,36 +562,43 @@ footer{
 .reveal-delay-3{transition-delay:.3s}
 .reveal-delay-4{transition-delay:.35s}
 
-/* ── SERVICE PANELS (vertical scroll) ── */
-.service-panel-section{
-  min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:100px 48px;position:relative;overflow:hidden;
+/* ── SERVICE PANELS (embedded scroll) ── */
+.services-scroll-wrap{
+  position:relative;height:600vh;background:var(--light);
 }
-.service-panel-section:nth-child(odd){background:var(--light)}
-.service-panel-section:nth-child(even){background:var(--light2)}
-
-.service-panel-section:first-child{
-  background:var(--light);
-  padding-top:120px;
+.services-scroll-sticky{
+  position:sticky;top:0;height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;padding:0 48px;
+}
+.services-scroll-inner{
+  max-width:1280px;width:100%;text-align:center;
+  position:relative;
 }
 
-.panel-inner{max-width:1280px;width:100%;text-align:center}
-
-.panel-eyebrow{
-  display:inline-block;font-size:12px;font-weight:600;
-  text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;
-  padding:6px 16px;border-radius:999px;
+/* panel category label — floats top-right */
+.services-scroll-label{
+  position:absolute;top:0;right:0;
+  font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;
+  padding:6px 14px;border-radius:999px;z-index:5;
+  background:var(--accent-dim);color:var(--accent);
+  transition:opacity .4s;
 }
-.panel-eyebrow.gold{color:var(--accent);background:var(--accent-dim)}
-.panel-eyebrow.sky{color:var(--sky);background:var(--sky-dim)}
-.panel-eyebrow.olive{color:var(--olive);background:rgba(107,122,58,.1)}
-.panel-eyebrow.navy{color:var(--navy);background:rgba(27,42,74,.08)}
+
+/* panels — stacked on top of each other, fade swap */
+.services-panel{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
+  transition:opacity .5s ease,visibility .5s ease;
+  text-align:center;
+}
+.services-panel.active{opacity:1;visibility:visible}
 
 .panel-title{font-size:clamp(28px,3.5vw,42px);color:var(--text);margin-bottom:8px}
-.panel-subtitle{font-size:16px;color:var(--text-light);margin-bottom:48px}
+.panel-subtitle{font-size:16px;color:var(--text-light);margin-bottom:40px;max-width:520px}
 
-.panel-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.panel-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;width:100%}
 .panel-card{
   background:var(--white);border:1px solid rgba(0,0,0,.06);
   border-radius:var(--radius);padding:28px 20px;text-align:center;
@@ -606,19 +613,27 @@ footer{
 .panel-card h4{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
 .panel-card span{font-size:12px;color:var(--text-light)}
 
-/* scroll arrow between panels */
-.panel-arrow{
+/* progress bar */
+.services-progress{
   position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;align-items:center;z-index:5;
+}
+.services-progress-dot{
+  width:8px;height:8px;border-radius:50%;border:none;
+  background:rgba(0,0,0,.12);cursor:pointer;
+  transition:background .3s,transform .3s;
+}
+.services-progress-dot.active{background:var(--accent);transform:scale(1.4)}
+
+/* scroll hint arrow */
+.services-scroll-arrow{
+  position:absolute;bottom:64px;left:50%;transform:translateX(-50%);
   display:flex;flex-direction:column;align-items:center;gap:4px;
   color:var(--text-light);font-size:11px;font-weight:500;letter-spacing:1px;
-  opacity:.5;
+  opacity:.5;transition:opacity .4s;z-index:5;
 }
-.panel-arrow svg{width:18px;height:18px}
-
-/* alternating card icon bg on even panels */
-.service-panel-section:nth-child(even) .panel-card-icon{
-  background:rgba(107,163,190,.12);
-}
+.services-scroll-arrow.hidden{opacity:0;pointer-events:none}
+.services-scroll-arrow svg{width:18px;height:18px}
 
 /* ── HOW IT WORKS — CUSTOMERS ── */
 .how-customer-section{background:var(--light2)}
@@ -752,6 +767,7 @@ footer{
   .faq-left{position:static}
   .mascot-badge{width:260px;height:260px}
   .panel-cards{grid-template-columns:repeat(2,1fr)}
+  .services-scroll-wrap{height:600vh}
 }
 
 @media(max-width:768px){
@@ -766,9 +782,11 @@ footer{
   .steps{grid-template-columns:1fr}
   .customer-steps{grid-template-columns:1fr}
   .customer-steps::before{display:none}
-  .service-panel-section{min-height:auto;padding:80px 24px}
+  .services-scroll-wrap{height:auto}
+  .services-scroll-sticky{position:relative;height:auto}
+  .services-panel{position:relative;opacity:1;visibility:visible;min-height:auto;padding:60px 0}
   .panel-cards{grid-template-columns:1fr}
-  .panel-arrow{display:none}
+  .services-progress,.services-scroll-arrow{display:none}
   .vendor-grid{grid-template-columns:1fr}
   .discover-search{flex-direction:column}
   .download-btns{flex-direction:column;align-items:center}
@@ -924,104 +942,113 @@ footer{
   </div>
 </div>
 
-<!-- SERVICE PANELS -->
-<section id="services" class="service-panel-section">
-  <div class="panel-inner">
-    <div class="panel-eyebrow gold reveal">Explore Services</div>
-    <h2 class="panel-title reveal">50+ Services, One Platform</h2>
-    <p class="panel-subtitle reveal">From home repairs to personal care — find trusted local vendors for everything you need.</p>
-    <div class="panel-cards">
-      <div class="panel-card reveal"><div class="panel-card-icon">🎨</div><h4>Interior Design</h4><span>Home makeovers</span></div>
-      <div class="panel-card reveal reveal-delay-1"><div class="panel-card-icon">🎉</div><h4>Event Planning</h4><span>Parties & weddings</span></div>
-      <div class="panel-card reveal reveal-delay-2"><div class="panel-card-icon">📸</div><h4>Photography</h4><span>Professional shoots</span></div>
-      <div class="panel-card reveal reveal-delay-3"><div class="panel-card-icon">🚗</div><h4>Car Wash</h4><span>At your doorstep</span></div>
-      <div class="panel-card reveal reveal-delay-4"><div class="panel-card-icon">🐾</div><h4>Pet Grooming</h4><span>Care for your pets</span></div>
-      <div class="panel-card reveal reveal-delay-5"><div class="panel-card-icon">🏠</div><h4>Smart Home Setup</h4><span>IoT & automation</span></div>
-    </div>
-  </div>
-  <div class="panel-arrow"><span>SCROLL</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
-</section>
+<!-- SERVICE PANELS (embedded scroll) -->
+<section id="services" class="services-scroll-wrap">
+  <div class="services-scroll-sticky">
+    <div class="services-scroll-inner">
 
-<section class="service-panel-section">
-  <div class="panel-inner">
-    <div class="panel-eyebrow sky reveal">New Services</div>
-    <h2 class="panel-title reveal">Fresh Arrivals on JACK</h2>
-    <p class="panel-subtitle reveal">Cutting-edge services that just landed on the platform.</p>
-    <div class="panel-cards">
-      <div class="panel-card reveal"><div class="panel-card-icon">🛩️</div><h4>Drone Photography</h4><span>Aerial shots</span></div>
-      <div class="panel-card reveal reveal-delay-1"><div class="panel-card-icon">⚡</div><h4>EV Charging</h4><span>On-demand power</span></div>
-      <div class="panel-card reveal reveal-delay-2"><div class="panel-card-icon">🎬</div><h4>Home Theatre</h4><span>Setup & install</span></div>
-      <div class="panel-card reveal reveal-delay-3"><div class="panel-card-icon">📋</div><h4>Virtual Assistant</h4><span>Remote support</span></div>
-      <div class="panel-card reveal reveal-delay-4"><div class="panel-card-icon">🤖</div><h4>AI Tutoring</h4><span>Smart learning</span></div>
-      <div class="panel-card reveal reveal-delay-5"><div class="panel-card-icon">🚲</div><h4>Bike Rental</h4><span>Short-term rides</span></div>
-    </div>
-  </div>
-  <div class="panel-arrow"><span>SCROLL</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
-</section>
+      <div class="services-scroll-label" id="scrollLabel">In the Spotlight</div>
 
-<section class="service-panel-section">
-  <div class="panel-inner">
-    <div class="panel-eyebrow gold reveal">Most Booked</div>
-    <h2 class="panel-title reveal">Customer Favourites</h2>
-    <p class="panel-subtitle reveal">The services customers book again and again.</p>
-    <div class="panel-cards">
-      <div class="panel-card reveal"><div class="panel-card-icon">🔧</div><h4>Plumbing</h4><span>Leaks & installs</span></div>
-      <div class="panel-card reveal reveal-delay-1"><div class="panel-card-icon">💡</div><h4>Electrical Repair</h4><span>Wiring & fixes</span></div>
-      <div class="panel-card reveal reveal-delay-2"><div class="panel-card-icon">❄️</div><h4>AC Service</h4><span>Service & repair</span></div>
-      <div class="panel-card reveal reveal-delay-3"><div class="panel-card-icon">🍲</div><h4>Catering</h4><span>Events & tiffin</span></div>
-      <div class="panel-card reveal reveal-delay-4"><div class="panel-card-icon">📖</div><h4>Tutoring</h4><span>All subjects</span></div>
-      <div class="panel-card reveal reveal-delay-5"><div class="panel-card-icon">💇</div><h4>Salon at Home</h4><span>Beauty services</span></div>
-    </div>
-  </div>
-  <div class="panel-arrow"><span>SCROLL</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
-</section>
+      <!-- Panel 1 -->
+      <div class="services-panel active" data-label="In the Spotlight">
+        <div class="panel-title">In the Spotlight</div>
+        <div class="panel-subtitle">Trending services everyone loves</div>
+        <div class="panel-cards">
+          <div class="panel-card"><div class="panel-card-icon">🎨</div><h4>Interior Design</h4><span>Home makeovers</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🎉</div><h4>Event Planning</h4><span>Parties & weddings</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📸</div><h4>Photography</h4><span>Professional shoots</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🚗</div><h4>Car Wash</h4><span>At your doorstep</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🐾</div><h4>Pet Grooming</h4><span>Care for your pets</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🏠</div><h4>Smart Home Setup</h4><span>IoT & automation</span></div>
+        </div>
+      </div>
 
-<section class="service-panel-section">
-  <div class="panel-inner">
-    <div class="panel-eyebrow olive reveal">Salon Services</div>
-    <h2 class="panel-title reveal">Beauty & Grooming</h2>
-    <p class="panel-subtitle reveal">Professional salon services at your doorstep.</p>
-    <div class="panel-cards">
-      <div class="panel-card reveal"><div class="panel-card-icon">✂️</div><h4>Hair Styling</h4><span>Cuts & colour</span></div>
-      <div class="panel-card reveal reveal-delay-1"><div class="panel-card-icon">🧖</div><h4>Facial & Skincare</h4><span>Glow treatments</span></div>
-      <div class="panel-card reveal reveal-delay-2"><div class="panel-card-icon">👰</div><h4>Bridal Makeup</h4><span>Special occasions</span></div>
-      <div class="panel-card reveal reveal-delay-3"><div class="panel-card-icon">💆</div><h4>Waxing</h4><span>Full body care</span></div>
-      <div class="panel-card reveal reveal-delay-4"><div class="panel-card-icon">💅</div><h4>Manicure & Pedicure</h4><span>Nail care</span></div>
-      <div class="panel-card reveal reveal-delay-5"><div class="panel-card-icon">🧔</div><h4>Beard Grooming</h4><span>Shaves & trims</span></div>
-    </div>
-  </div>
-  <div class="panel-arrow"><span>SCROLL</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
-</section>
+      <!-- Panel 2 -->
+      <div class="services-panel" data-label="New Services">
+        <div class="panel-title">New Services</div>
+        <div class="panel-subtitle">Fresh arrivals that just landed on JACK</div>
+        <div class="panel-cards">
+          <div class="panel-card"><div class="panel-card-icon">🛩️</div><h4>Drone Photography</h4><span>Aerial shots</span></div>
+          <div class="panel-card"><div class="panel-card-icon">⚡</div><h4>EV Charging</h4><span>On-demand power</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🎬</div><h4>Home Theatre</h4><span>Setup & install</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📋</div><h4>Virtual Assistant</h4><span>Remote support</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🤖</div><h4>AI Tutoring</h4><span>Smart learning</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🚲</div><h4>Bike Rental</h4><span>Short-term rides</span></div>
+        </div>
+      </div>
 
-<section class="service-panel-section">
-  <div class="panel-inner">
-    <div class="panel-eyebrow sky reveal">Appliance Repair</div>
-    <h2 class="panel-title reveal">Fix It, Don't Replace It</h2>
-    <p class="panel-subtitle reveal">Expert repairs for all major home appliances.</p>
-    <div class="panel-cards">
-      <div class="panel-card reveal"><div class="panel-card-icon">🧺</div><h4>Washing Machine</h4><span>All brands</span></div>
-      <div class="panel-card reveal reveal-delay-1"><div class="panel-card-icon">🧊</div><h4>Refrigerator</h4><span>Frost & gas</span></div>
-      <div class="panel-card reveal reveal-delay-2"><div class="panel-card-icon">📡</div><h4>Microwave</h4><span>All models</span></div>
-      <div class="panel-card reveal reveal-delay-3"><div class="panel-card-icon">📺</div><h4>TV Repair</h4><span>LED & smart</span></div>
-      <div class="panel-card reveal reveal-delay-4"><div class="panel-card-icon">💧</div><h4>Water Purifier</h4><span>Filter change</span></div>
-      <div class="panel-card reveal reveal-delay-5"><div class="panel-card-icon">🌬️</div><h4>Split AC</h4><span>Install & service</span></div>
-    </div>
-  </div>
-  <div class="panel-arrow"><span>SCROLL</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
-</section>
+      <!-- Panel 3 -->
+      <div class="services-panel" data-label="Most Booked">
+        <div class="panel-title">Most Booked</div>
+        <div class="panel-subtitle">Customer favourites, booked again and again</div>
+        <div class="panel-cards">
+          <div class="panel-card"><div class="panel-card-icon">🔧</div><h4>Plumbing</h4><span>Leaks & installs</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💡</div><h4>Electrical Repair</h4><span>Wiring & fixes</span></div>
+          <div class="panel-card"><div class="panel-card-icon">❄️</div><h4>AC Service</h4><span>Service & repair</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🍲</div><h4>Catering</h4><span>Events & tiffin</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📖</div><h4>Tutoring</h4><span>All subjects</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💇</div><h4>Salon at Home</h4><span>Beauty services</span></div>
+        </div>
+      </div>
 
-<section class="service-panel-section">
-  <div class="panel-inner">
-    <div class="panel-eyebrow navy reveal">Home Repair & Installation</div>
-    <h2 class="panel-title reveal">Build, Fix & Upgrade</h2>
-    <p class="panel-subtitle reveal">Professional home services from trusted experts.</p>
-    <div class="panel-cards">
-      <div class="panel-card reveal"><div class="panel-card-icon">🔩</div><h4>Plumbing Install</h4><span>Pipes & fixtures</span></div>
-      <div class="panel-card reveal reveal-delay-1"><div class="panel-card-icon">⚡</div><h4>Electrical Wiring</h4><span>New connections</span></div>
-      <div class="panel-card reveal reveal-delay-2"><div class="panel-card-icon">🪚</div><h4>Carpentry</h4><span>Furniture & wood</span></div>
-      <div class="panel-card reveal reveal-delay-3"><div class="panel-card-icon">🖌️</div><h4>Paint Work</h4><span>Interior & exterior</span></div>
-      <div class="panel-card reveal reveal-delay-4"><div class="panel-card-icon">🍳</div><h4>Modular Kitchen</h4><span>Custom designs</span></div>
-      <div class="panel-card reveal reveal-delay-5"><div class="panel-card-icon">🐜</div><h4>Pest Control</h4><span>Home & office</span></div>
+      <!-- Panel 4 -->
+      <div class="services-panel" data-label="Salon Services">
+        <div class="panel-title">Salon Services</div>
+        <div class="panel-subtitle">Professional beauty & grooming at your doorstep</div>
+        <div class="panel-cards">
+          <div class="panel-card"><div class="panel-card-icon">✂️</div><h4>Hair Styling</h4><span>Cuts & colour</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🧖</div><h4>Facial & Skincare</h4><span>Glow treatments</span></div>
+          <div class="panel-card"><div class="panel-card-icon">👰</div><h4>Bridal Makeup</h4><span>Special occasions</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💆</div><h4>Waxing</h4><span>Full body care</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💅</div><h4>Manicure & Pedicure</h4><span>Nail care</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🧔</div><h4>Beard Grooming</h4><span>Shaves & trims</span></div>
+        </div>
+      </div>
+
+      <!-- Panel 5 -->
+      <div class="services-panel" data-label="Appliance Repair">
+        <div class="panel-title">Appliance Repair</div>
+        <div class="panel-subtitle">Expert fixes for all major home appliances</div>
+        <div class="panel-cards">
+          <div class="panel-card"><div class="panel-card-icon">🧺</div><h4>Washing Machine</h4><span>All brands</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🧊</div><h4>Refrigerator</h4><span>Frost & gas</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📡</div><h4>Microwave</h4><span>All models</span></div>
+          <div class="panel-card"><div class="panel-card-icon">📺</div><h4>TV Repair</h4><span>LED & smart</span></div>
+          <div class="panel-card"><div class="panel-card-icon">💧</div><h4>Water Purifier</h4><span>Filter change</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🌬️</div><h4>Split AC</h4><span>Install & service</span></div>
+        </div>
+      </div>
+
+      <!-- Panel 6 -->
+      <div class="services-panel" data-label="Home Repair">
+        <div class="panel-title">Home Repair & Installation</div>
+        <div class="panel-subtitle">Professional services from trusted experts</div>
+        <div class="panel-cards">
+          <div class="panel-card"><div class="panel-card-icon">🔩</div><h4>Plumbing Install</h4><span>Pipes & fixtures</span></div>
+          <div class="panel-card"><div class="panel-card-icon">⚡</div><h4>Electrical Wiring</h4><span>New connections</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🪚</div><h4>Carpentry</h4><span>Furniture & wood</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🖌️</div><h4>Paint Work</h4><span>Interior & exterior</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🍳</div><h4>Modular Kitchen</h4><span>Custom designs</span></div>
+          <div class="panel-card"><div class="panel-card-icon">🐜</div><h4>Pest Control</h4><span>Home & office</span></div>
+        </div>
+      </div>
+
+      <!-- Progress dots -->
+      <div class="services-progress">
+        <button class="services-progress-dot active" data-idx="0"></button>
+        <button class="services-progress-dot" data-idx="1"></button>
+        <button class="services-progress-dot" data-idx="2"></button>
+        <button class="services-progress-dot" data-idx="3"></button>
+        <button class="services-progress-dot" data-idx="4"></button>
+        <button class="services-progress-dot" data-idx="5"></button>
+      </div>
+
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="services-scroll-arrow" id="scrollArrow">
+      <span>SCROLL</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </div>
   </div>
 </section>
@@ -1469,6 +1496,42 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     }
   });
 });
+
+// ── SERVICES EMBEDDED SCROLL ──
+(function() {
+  const wrap = document.querySelector('.services-scroll-wrap');
+  if (!wrap) return;
+  const panels = wrap.querySelectorAll('.services-panel');
+  const dots = wrap.querySelectorAll('.services-progress-dot');
+  const label = document.getElementById('scrollLabel');
+  const arrow = document.getElementById('scrollArrow');
+  const total = panels.length;
+
+  function update() {
+    const rect = wrap.getBoundingClientRect();
+    const scrollable = wrap.offsetHeight - window.innerHeight;
+    const scrolled = -rect.top;
+    const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+    const idx = Math.min(Math.floor(progress * total), total - 1);
+
+    panels.forEach((p, i) => p.classList.toggle('active', i === idx));
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    if (label) label.textContent = panels[idx].dataset.label;
+    if (arrow) arrow.classList.toggle('hidden', scrolled > 80);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const i = parseInt(dot.dataset.idx);
+      const top = wrap.offsetTop;
+      const scrollable = wrap.offsetHeight - window.innerHeight;
+      window.scrollTo({ top: top + (i / total) * scrollable, behavior: 'smooth' });
+    });
+  });
+})();
 
 
 </script>
