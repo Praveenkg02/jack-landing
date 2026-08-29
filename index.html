@@ -180,6 +180,47 @@ nav{
   animation:fadeUp .5s .5s forwards;
 }
 
+/* hero search bar */
+.hero-search{
+  display:flex;align-items:center;gap:0;
+  background:rgba(255,255,255,.08);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.12);border-radius:999px;
+  padding:6px 6px 6px 20px;margin-top:32px;max-width:520px;
+  opacity:0;transform:translateY(16px);
+  animation:fadeUp .5s .55s forwards;
+  transition:border-color .2s;
+}
+.hero-search:focus-within{border-color:rgba(255,255,255,.3)}
+.hero-search-loc{
+  display:flex;align-items:center;gap:6px;flex-shrink:0;
+}
+.hero-search-loc svg{width:16px;height:16px;color:var(--sky);flex-shrink:0}
+.hero-search-loc select{
+  background:none;border:none;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  color:var(--white);cursor:pointer;
+  -webkit-appearance:none;appearance:none;padding-right:4px;
+}
+.hero-search-loc select option{background:var(--navy);color:var(--white)}
+.hero-search-divider{
+  width:1px;height:24px;background:rgba(255,255,255,.15);flex-shrink:0;
+  margin:0 12px;
+}
+.hero-search input{
+  flex:1;background:none;border:none;outline:none;
+  font-family:'DM Sans',sans-serif;font-size:14px;
+  color:var(--white);min-width:0;
+}
+.hero-search input::placeholder{color:rgba(255,255,255,.35)}
+.hero-search-btn{
+  width:40px;height:40px;border-radius:50%;border:none;
+  background:var(--accent);cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .15s;
+}
+.hero-search-btn:hover{background:var(--accent-hover);transform:scale(1.05)}
+.hero-search-btn svg{width:18px;height:18px;color:var(--navy)}
+
 .hero-actions{
   display:flex;gap:14px;margin-top:44px;align-items:center;flex-wrap:wrap;
   opacity:0;transform:translateY(16px);
@@ -777,6 +818,11 @@ footer{
   nav{padding:0 24px}
   .nav-links{display:none}
   .hero{padding:120px 24px 80px}
+  .hero-search{flex-direction:row;flex-wrap:wrap;border-radius:16px;padding:12px;gap:8px}
+  .hero-search-divider{display:none}
+  .hero-search-loc{width:100%}
+  .hero-search input{width:100%}
+  .hero-search-btn{width:100%;border-radius:12px;height:44px}
   section{padding:80px 24px}
   .stats-bar{padding:40px 24px}
   .stats-bar-inner{grid-template-columns:1fr;gap:24px}
@@ -867,6 +913,26 @@ footer{
       </div>
       <h1 class="hero-title">JACK of All Trades,<br>Master of <em>Service</em></h1>
       <p class="hero-sub">Professional vendor services for your neighbourhood — done right, every time. Book services, discover local vendors, and grow your business on one platform.</p>
+      <div class="hero-search reveal">
+        <div class="hero-search-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <select id="heroLocation">
+            <option>Bangalore</option>
+            <option>Mumbai</option>
+            <option>Delhi</option>
+            <option>Hyderabad</option>
+            <option>Chennai</option>
+            <option>Pune</option>
+            <option>Kolkata</option>
+            <option>All Locations</option>
+          </select>
+        </div>
+        <div class="hero-search-divider"></div>
+        <input type="text" id="heroSearch" placeholder="Search for a service or product...">
+        <button class="hero-search-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </button>
+      </div>
       <div class="hero-actions">
         <button class="btn-primary">🛒 Sign Up as Customer</button>
         <button class="btn-secondary">🏪 Sign Up as Vendor</button>
