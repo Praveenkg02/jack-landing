@@ -1,0 +1,11 @@
+/* ── CSS CUSTOM PROPERTIES ── */
+:root{
+  --navy:#1B2A4A;--navy-light:#243656;--navy-dark:#141f36;
+  --accent:#d4a017;--accent-hover:#c49312;--accent-dim:rgba(212,160,23,.1);
+  --sky:#6BA3BE;--sky-dim:rgba(107,163,190,.12);
+  --olive:#6b7a3a;
+  --light:#f6f5f0;--light2:#efeee8;
+  --text:#1a1a2e;--text-light:#6b6b7b;--text-white:#f0ede6;
+  --white:#ffffff;
+  --radius:20px;--radius-sm:12px;--radius-xs:8px;
+}

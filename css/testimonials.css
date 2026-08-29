@@ -1,0 +1,31 @@
+/* ── TESTIMONIALS ── */
+.test-section{background:var(--light)}
+.testimonials{max-width:1280px;margin:0 auto}
+.test-header{text-align:center;margin-bottom:64px}
+.test-header .section-sub{margin:16px auto 0}
+
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+
+.test-card{
+  background:var(--white);border:1px solid rgba(0,0,0,.06);
+  border-radius:var(--radius);padding:36px;
+  display:flex;flex-direction:column;
+  transition:border-color .3s,transform .2s,box-shadow .3s;
+}
+.test-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+
+.test-stars{color:var(--accent);font-size:14px;letter-spacing:2px;margin-bottom:20px}
+
+.test-quote{
+  font-size:15px;line-height:1.75;color:var(--text-light);
+  flex:1;margin-bottom:28px;font-style:italic;
+}
+
+.test-author{display:flex;align-items:center;gap:14px}
+.test-avatar{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;color:var(--accent);flex-shrink:0;
+}
+.test-name{font-size:14px;font-weight:600;color:var(--text)}
+.test-role{font-size:12px;color:var(--text-light);margin-top:2px}

@@ -1,0 +1,24 @@
+/* ── DOWNLOAD APP ── */
+.download-section{
+  background:linear-gradient(135deg,var(--navy),var(--navy-dark));
+  padding:100px 48px;text-align:center;position:relative;overflow:hidden;
+}
+.download-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(212,160,23,.06),transparent 70%);
+  pointer-events:none;
+}
+.download-inner{max-width:720px;margin:0 auto;position:relative;z-index:2}
+.download-inner h2{font-size:clamp(32px,4vw,48px);color:var(--white);margin-bottom:12px}
+.download-inner p{font-size:16px;color:rgba(255,255,255,.5);margin-bottom:40px;line-height:1.7}
+.download-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.download-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 28px;border-radius:999px;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  text-decoration:none;transition:transform .15s,box-shadow .2s;
+}
+.download-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.download-btn.appstore{background:var(--white);color:var(--navy)}
+.download-btn.playstore{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.25)}
+.download-btn.playstore:hover{border-color:rgba(255,255,255,.5)}

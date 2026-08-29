@@ -1,1612 +1,622 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JACK — Connecting Clients & Vendors</title>
-<link rel="icon" type="image/png" href="logo.png">
-<meta name="description" content="Find trusted local vendors or grow your business on JACK. 50+ service categories, instant booking, and daily payouts — all from one platform.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
-:root{
-  --navy:#1B2A4A;--navy-light:#243656;--navy-dark:#141f36;
-  --accent:#d4a017;--accent-hover:#c49312;--accent-dim:rgba(212,160,23,.1);
-  --sky:#6BA3BE;--sky-dim:rgba(107,163,190,.12);
-  --olive:#6b7a3a;
-  --light:#f6f5f0;--light2:#efeee8;
-  --text:#1a1a2e;--text-light:#6b6b7b;--text-white:#f0ede6;
-  --white:#ffffff;
-  --radius:20px;--radius-sm:12px;--radius-xs:8px;
-}
-
-html{scroll-behavior:smooth}
-
-body{
-  background:var(--light);color:var(--text);
-  font-family:'DM Sans',system-ui,sans-serif;
-  line-height:1.6;-webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-
-h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.1}
-
-a{color:inherit;text-decoration:none}
-
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;height:72px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 48px;
-  background:rgba(27,42,74,.95);backdrop-filter:blur(20px);
-  transition:background .3s;
-}
-
-.nav-logo{
-  display:flex;align-items:center;gap:10px;
-}
-.nav-logo img{height:40px;width:auto;border-radius:8px}
-.nav-logo-text{
-  font-family:'Nunito',sans-serif;font-size:26px;font-weight:900;
-  color:var(--white);letter-spacing:2px;
-}
-
-.nav-links{display:flex;gap:36px;align-items:center}
-.nav-links a{font-size:14px;font-weight:500;color:rgba(255,255,255,.55);transition:color .2s}
-.nav-links a:hover{color:var(--white)}
-
-.nav-cta{
-  background:transparent;color:var(--white);font-family:'DM Sans',sans-serif;
-  font-size:14px;font-weight:500;padding:10px 28px;
-  border:1.5px solid rgba(255,255,255,.25);border-radius:999px;cursor:pointer;
-  transition:border-color .2s,color .2s;
-}
-.nav-cta:hover{border-color:var(--white)}
-
-/* ── HERO ── */
-.hero{
-  min-height:100vh;display:flex;align-items:center;
-  padding:140px 48px 100px;position:relative;overflow:hidden;
-  background:var(--navy);
-}
-
-.hero-bg{
-  position:absolute;inset:0;
-  background:url('background.png') center/cover no-repeat;
-  opacity:.18;
-  animation:heroZoom 20s ease-in-out infinite alternate;
-}
-
-.hero-bg::after{
-  content:'';position:absolute;inset:0;
-  background:
-    linear-gradient(180deg,var(--navy) 0%,transparent 30%,transparent 70%,var(--navy) 100%),
-    linear-gradient(90deg,var(--navy) 0%,transparent 40%,transparent 60%,var(--navy) 100%);
-}
-
-.hero-grid{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
-  background-size:80px 80px;pointer-events:none;
-}
-
-/* live activity */
-.hero-live{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
-
-.live-dot{
-  position:absolute;width:6px;height:6px;border-radius:50%;
-  background:var(--accent);
-  box-shadow:0 0 0 3px rgba(212,160,23,.15),0 0 12px rgba(212,160,23,.3);
-  animation:pulseDot 3s ease-in-out infinite;
-}
-.live-dot::after{
-  content:'';position:absolute;inset:-8px;border-radius:50%;
-  border:1px solid rgba(212,160,23,.25);
-  animation:rippleDot 2.5s ease-out infinite;
-}
-.ld1{top:18%;left:12%;animation-delay:0s}
-.ld2{top:32%;left:75%;animation-delay:.6s}
-.ld3{top:60%;left:25%;animation-delay:1.2s}
-.ld4{top:45%;left:88%;animation-delay:1.8s}
-.ld5{top:72%;left:62%;animation-delay:.3s}
-.ld6{top:22%;left:55%;animation-delay:1.5s}
-.ld7{top:80%;left:40%;animation-delay:.9s}
-.ld8{top:55%;left:10%;animation-delay:2.1s}
-
-/* glowing circuit lines */
-.circuit-line{
-  position:absolute;
-  height:2px;
-  background:linear-gradient(90deg,transparent,var(--sky),transparent);
-  opacity:0;
-  animation:circuitPulse 4s ease-in-out infinite;
-}
-.cl1{top:25%;left:5%;width:120px;animation-delay:0s;transform:rotate(15deg)}
-.cl2{top:50%;left:15%;width:180px;animation-delay:1s;transform:rotate(-8deg)}
-.cl3{top:70%;left:8%;width:100px;animation-delay:2s;transform:rotate(5deg)}
-.cl4{top:35%;right:10%;width:150px;animation-delay:1.5s;transform:rotate(-12deg)}
-.cl5{top:65%;right:5%;width:130px;animation-delay:2.5s;transform:rotate(10deg)}
-.cl6{top:80%;right:15%;width:110px;animation-delay:0.5s;transform:rotate(-5deg)}
-
-/* floating particles */
-.particle{
-  position:absolute;width:3px;height:3px;border-radius:50%;
-  background:rgba(107,163,190,.4);
-  animation:floatParticle 8s ease-in-out infinite;
-}
-.pp1{top:20%;left:20%;animation-delay:0s}
-.pp2{top:40%;left:60%;animation-delay:1s}
-.pp3{top:60%;left:30%;animation-delay:2s}
-.pp4{top:30%;left:80%;animation-delay:3s}
-.pp5{top:75%;left:50%;animation-delay:4s}
-.pp6{top:15%;left:45%;animation-delay:1.5s}
-.pp7{top:55%;left:70%;animation-delay:2.5s}
-.pp8{top:85%;left:25%;animation-delay:3.5s}
-.pp9{top:45%;left:10%;animation-delay:0.5s}
-.pp10{top:25%;left:90%;animation-delay:4.5s}
-
-.hero-inner{
-  max-width:1280px;margin:0 auto;width:100%;
-  display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center;
-  position:relative;z-index:2;
-}
-
-.hero-badge{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:13px;font-weight:500;color:rgba(255,255,255,.6);
-  margin-bottom:32px;
-  opacity:0;transform:translateY(16px);
-  animation:fadeUp .5s .15s forwards;
-}
-.hero-badge svg{width:16px;height:16px;color:var(--sky)}
-
-.hero-title{
-  font-size:clamp(48px,6vw,80px);font-weight:400;
-  line-height:1.05;color:var(--white);
-  opacity:0;transform:translateY(24px);
-  animation:fadeUp .6s .3s forwards;
-}
-.hero-title em{font-style:italic;color:var(--accent)}
-
-.hero-sub{
-  font-size:17px;color:rgba(255,255,255,.5);max-width:460px;
-  margin-top:28px;line-height:1.75;
-  opacity:0;transform:translateY(20px);
-  animation:fadeUp .5s .5s forwards;
-}
-
-/* hero search bar */
-.hero-search{
-  display:flex;align-items:center;gap:0;
-  background:rgba(255,255,255,.08);backdrop-filter:blur(16px);
-  border:1px solid rgba(255,255,255,.12);border-radius:999px;
-  padding:6px 6px 6px 20px;margin-top:32px;max-width:520px;
-  opacity:0;transform:translateY(16px);
-  animation:fadeUp .5s .55s forwards;
-  transition:border-color .2s;
-}
-.hero-search:focus-within{border-color:rgba(255,255,255,.3)}
-.hero-search-loc{
-  display:flex;align-items:center;gap:6px;flex-shrink:0;
-}
-.hero-search-loc svg{width:16px;height:16px;color:var(--sky);flex-shrink:0}
-.hero-search-loc select{
-  background:none;border:none;outline:none;
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
-  color:var(--white);cursor:pointer;
-  -webkit-appearance:none;appearance:none;padding-right:4px;
-}
-.hero-search-loc select option{background:var(--navy);color:var(--white)}
-.hero-search-divider{
-  width:1px;height:24px;background:rgba(255,255,255,.15);flex-shrink:0;
-  margin:0 12px;
-}
-.hero-search input{
-  flex:1;background:none;border:none;outline:none;
-  font-family:'DM Sans',sans-serif;font-size:14px;
-  color:var(--white);min-width:0;
-}
-.hero-search input::placeholder{color:rgba(255,255,255,.35)}
-.hero-search-btn{
-  width:40px;height:40px;border-radius:50%;border:none;
-  background:var(--accent);cursor:pointer;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  transition:background .2s,transform .15s;
-}
-.hero-search-btn:hover{background:var(--accent-hover);transform:scale(1.05)}
-.hero-search-btn svg{width:18px;height:18px;color:var(--navy)}
-
-.hero-actions{
-  display:flex;gap:14px;margin-top:44px;align-items:center;flex-wrap:wrap;
-  opacity:0;transform:translateY(16px);
-  animation:fadeUp .5s .65s forwards;
-}
-
-.btn-primary{
-  background:var(--accent);color:var(--navy);font-family:'DM Sans',sans-serif;
-  font-size:15px;font-weight:600;padding:16px 36px;
-  border:none;border-radius:999px;cursor:pointer;
-  transition:background .2s,transform .15s,box-shadow .2s;
-}
-.btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 8px 32px rgba(212,160,23,.3)}
-
-.btn-secondary{
-  background:transparent;color:var(--white);font-family:'DM Sans',sans-serif;
-  font-size:15px;font-weight:500;padding:16px 32px;
-  border:1.5px solid rgba(255,255,255,.2);border-radius:999px;cursor:pointer;
-  transition:border-color .2s;
-}
-.btn-secondary:hover{border-color:rgba(255,255,255,.5)}
-
-.hero-trust{
-  display:flex;align-items:center;gap:12px;margin-top:48px;
-  opacity:0;animation:fadeUp .5s .8s forwards;
-}
-.hero-trust-avatars{display:flex}
-.hero-trust-avatar{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--navy-light);border:2px solid var(--navy);
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:600;color:var(--accent);
-  margin-left:-8px;
-}
-.hero-trust-avatar:first-child{margin-left:0}
-.hero-trust-text{font-size:13px;color:rgba(255,255,255,.45);line-height:1.4}
-.hero-trust-text strong{color:var(--white);font-weight:600}
-
-/* hero right — mascot */
-.hero-visual{position:relative;display:flex;justify-content:center}
-
-.mascot-wrap{
-  position:relative;
-  opacity:0;transform:translateX(32px) scale(.96);
-  animation:fadeRight .7s .4s forwards;
-}
-
-.mascot-badge{
-  width:340px;height:340px;border-radius:50%;
-  overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-  box-shadow:0 0 80px rgba(107,163,190,.1),0 0 0 1px rgba(255,255,255,.03);
-}
-.mascot-badge img{width:100%;height:100%;object-fit:cover}
-
-.mascot-badge::before{
-  content:'';position:absolute;inset:-16px;border-radius:50%;
-  border:1px solid rgba(107,163,190,.1);
-}
-.mascot-badge::after{
-  content:'';position:absolute;inset:-32px;border-radius:50%;
-  border:1px solid rgba(107,163,190,.05);
-}
-
-.mascot-float{
-  position:absolute;
-  background:rgba(27,42,74,.8);backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.08);border-radius:14px;
-  padding:12px 16px;display:flex;align-items:center;gap:10px;
-  font-size:12px;font-weight:500;color:rgba(255,255,255,.7);
-  white-space:nowrap;
-  animation:floatBadge 4s ease-in-out infinite;
-}
-.mascot-float .mf-icon{
-  width:32px;height:32px;border-radius:8px;
-  background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
-  font-size:16px;flex-shrink:0;
-}
-.mf1{top:10%;right:-20px;animation-delay:0s}
-.mf2{bottom:15%;left:-30px;animation-delay:1.5s}
-.mf3{top:50%;right:-40px;animation-delay:3s}
-
-/* ── STATS BAR ── */
-.stats-bar{
-  background:var(--navy-dark);border-top:1px solid rgba(255,255,255,.05);
-  border-bottom:1px solid rgba(255,255,255,.05);
-  padding:48px 48px;
-}
-.stats-bar-inner{
-  max-width:1280px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:40px;
-}
-.stats-item{display:flex;align-items:center;gap:20px}
-.stats-icon{
-  width:56px;height:56px;border-radius:16px;
-  background:rgba(107,163,190,.1);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-}
-.stats-icon svg{width:28px;height:28px;fill:var(--sky)}
-.stats-val{font-family:'DM Serif Display',serif;font-size:36px;color:var(--white);line-height:1}
-.stats-lbl{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px;max-width:180px;line-height:1.4}
-
-/* ── SECTIONS ── */
-section{padding:120px 48px}
-
-.section-eyebrow{
-  display:inline-block;
-  font-size:12px;font-weight:600;color:var(--sky);
-  text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;
-  padding:6px 16px;border:1px solid var(--sky-dim);border-radius:999px;
-}
-.section-title{font-size:clamp(36px,4vw,52px);color:var(--text)}
-.section-sub{font-size:17px;color:var(--text-light);max-width:520px;margin-top:16px;line-height:1.7}
-
-/* ── BENTO GRID ── */
-.bento-section{background:var(--light)}
-.bento{max-width:1280px;margin:0 auto}
-.bento-header{text-align:center;margin-bottom:72px}
-.bento-header .section-sub{margin:16px auto 0}
-
-.bento-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  grid-template-rows:auto auto;
-  gap:16px;
-}
-
-.bento-cell{
-  background:var(--white);border:1px solid rgba(0,0,0,.06);
-  border-radius:var(--radius);padding:32px;
-  position:relative;overflow:hidden;
-  transition:border-color .3s,transform .2s,box-shadow .3s;
-}
-.bento-cell:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
-
-.bento-cell.wide{grid-column:span 2}
-
-.bento-cell.navy{
-  background:var(--navy);border-color:rgba(255,255,255,.06);
-  color:var(--white);
-}
-.bento-cell.navy .bento-lbl{color:rgba(255,255,255,.4)}
-.bento-cell.navy .bento-desc{color:rgba(255,255,255,.55)}
-
-.bento-cell.accent{
-  background:var(--accent);border-color:var(--accent);
-  color:var(--navy);
-}
-.bento-cell.accent .bento-lbl{color:rgba(27,42,74,.5)}
-.bento-cell.accent .bento-desc{color:rgba(27,42,74,.7)}
-
-.bento-cell.sky{
-  background:var(--sky-dim);border-color:rgba(107,163,190,.2);
-}
-
-.bento-icon{
-  width:44px;height:44px;border-radius:12px;
-  background:rgba(0,0,0,.04);display:flex;align-items:center;justify-content:center;
-  margin-bottom:20px;
-}
-.bento-icon svg{width:22px;height:22px;fill:var(--navy)}
-.bento-cell.navy .bento-icon{background:rgba(255,255,255,.08)}
-.bento-cell.navy .bento-icon svg{fill:var(--sky)}
-.bento-cell.accent .bento-icon{background:rgba(27,42,74,.1)}
-.bento-cell.accent .bento-icon svg{fill:var(--navy)}
-
-.bento-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px}
-.bento-val{font-family:'DM Serif Display',serif;font-size:42px;line-height:1;margin-bottom:4px}
-.bento-cell.wide .bento-val{font-size:48px}
-.bento-desc{font-size:14px;color:var(--text-light);line-height:1.5;margin-top:8px}
-.bento-cell.wide .bento-desc{max-width:320px}
-
-.bento-visual{
-  margin-top:20px;background:rgba(0,0,0,.03);border-radius:var(--radius-sm);
-  padding:16px;border:1px solid rgba(0,0,0,.04);
-}
-.bento-cell.navy .bento-visual{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.06)}
-
-.bento-mini-bars{display:flex;align-items:flex-end;gap:6px;height:64px}
-.bento-bar{flex:1;border-radius:3px 3px 0 0;background:var(--sky);opacity:.5;animation:barGrow .6s ease-out forwards;transform-origin:bottom}
-.bento-cell.navy .bento-bar{background:var(--accent)}
-
-.bento-mini-list{display:flex;flex-direction:column;gap:6px}
-.bento-mini-item{
-  display:flex;align-items:center;gap:8px;font-size:12px;
-  padding:8px 10px;background:rgba(0,0,0,.02);border-radius:var(--radius-xs);
-}
-.bento-cell.navy .bento-mini-item{background:rgba(255,255,255,.04)}
-.bento-mini-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.bento-mini-text{flex:1;color:var(--text-light)}
-.bento-cell.navy .bento-mini-text{color:rgba(255,255,255,.45)}
-.bento-mini-val{font-weight:600;color:var(--text)}
-.bento-cell.navy .bento-mini-val{color:var(--white)}
-
-/* ── HOW IT WORKS ── */
-.how-section{background:var(--light2)}
-.how{max-width:1280px;margin:0 auto}
-.how-header{text-align:center;margin-bottom:72px}
-.how-header .section-sub{margin:16px auto 0}
-
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-.step{
-  background:var(--white);border:1px solid rgba(0,0,0,.06);
-  border-radius:var(--radius);padding:40px 32px;text-align:center;
-  transition:transform .2s,box-shadow .3s;
-}
-.step:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
-
-.step-num{
-  width:64px;height:64px;border-radius:50%;
-  background:var(--accent-dim);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'DM Serif Display',serif;font-size:28px;color:var(--accent);
-  margin:0 auto 24px;
-  transition:background .3s,color .3s;
-}
-.step:hover .step-num{background:var(--accent);color:var(--white)}
-
-.step h3{font-size:22px;margin-bottom:10px;color:var(--text)}
-.step p{font-size:14px;color:var(--text-light);max-width:280px;margin:0 auto;line-height:1.6}
-
-/* ── TESTIMONIALS ── */
-.test-section{background:var(--light)}
-.testimonials{max-width:1280px;margin:0 auto}
-.test-header{text-align:center;margin-bottom:64px}
-.test-header .section-sub{margin:16px auto 0}
-
-.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-
-.test-card{
-  background:var(--white);border:1px solid rgba(0,0,0,.06);
-  border-radius:var(--radius);padding:36px;
-  display:flex;flex-direction:column;
-  transition:border-color .3s,transform .2s,box-shadow .3s;
-}
-.test-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
-
-.test-stars{color:var(--accent);font-size:14px;letter-spacing:2px;margin-bottom:20px}
-
-.test-quote{
-  font-size:15px;line-height:1.75;color:var(--text-light);
-  flex:1;margin-bottom:28px;font-style:italic;
-}
-
-.test-author{display:flex;align-items:center;gap:14px}
-.test-avatar{
-  width:48px;height:48px;border-radius:50%;
-  background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:700;color:var(--accent);flex-shrink:0;
-}
-.test-name{font-size:14px;font-weight:600;color:var(--text)}
-.test-role{font-size:12px;color:var(--text-light);margin-top:2px}
-
-/* ── FAQ ── */
-.faq-section{background:var(--light2)}
-.faq-inner{
-  max-width:1280px;margin:0 auto;
-  display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start;
-}
-
-.faq-left{position:sticky;top:120px}
-.faq-left h2{font-size:clamp(36px,4vw,48px);color:var(--text);margin-top:16px;margin-bottom:12px}
-.faq-left p{font-size:16px;color:var(--text-light);line-height:1.7}
-
-.faq-image{
-  width:100%;aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;
-  background:var(--navy);margin-top:32px;
-  display:flex;align-items:center;justify-content:center;
-}
-.faq-mascot-mini{opacity:.15}
-
-.faq-right{display:flex;flex-direction:column}
-
-.faq-item{
-  border-bottom:1px solid rgba(0,0,0,.08);
-}
-.faq-q{
-  width:100%;display:flex;align-items:center;justify-content:space-between;
-  padding:24px 0;background:none;border:none;cursor:pointer;
-  font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;
-  color:var(--text);text-align:left;
-  transition:color .2s;
-}
-.faq-q:hover{color:var(--accent)}
-.faq-q .icon{
-  width:28px;height:28px;border-radius:50%;border:1px solid rgba(0,0,0,.12);
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;flex-shrink:0;transition:transform .3s,border-color .3s,color .3s;
-  color:var(--text-light);
-}
-.faq-item.open .faq-q .icon{transform:rotate(45deg);border-color:var(--accent);color:var(--accent)}
-
-.faq-a{
-  max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s;
-}
-.faq-item.open .faq-a{max-height:200px;padding-bottom:24px}
-.faq-a p{font-size:15px;color:var(--text-light);line-height:1.7}
-
-/* ── FINAL CTA ── */
-.final-cta{
-  background:var(--navy);padding:140px 48px;text-align:center;
-  position:relative;overflow:hidden;
-}
-.final-cta::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 50% at center,rgba(107,163,190,.06),transparent 70%);
-  pointer-events:none;
-}
-.final-cta .section-eyebrow{color:var(--sky);border-color:rgba(107,163,190,.2)}
-.final-cta .section-title{color:var(--white);font-size:clamp(40px,5vw,60px);margin-bottom:20px}
-.final-cta .section-sub{color:rgba(255,255,255,.5);margin:0 auto 48px;text-align:center}
-
-/* ── STICKY CTA ── */
-.sticky-cta{
-  position:fixed;bottom:0;left:0;right:0;z-index:99;
-  background:rgba(27,42,74,.97);backdrop-filter:blur(16px);
-  border-top:1px solid rgba(255,255,255,.06);
-  padding:14px 48px;
-  display:flex;align-items:center;justify-content:center;gap:20px;
-  transform:translateY(100%);transition:transform .3s;
-}
-.sticky-cta.visible{transform:translateY(0)}
-.sticky-cta-text{font-size:14px;color:rgba(255,255,255,.5);font-weight:500}
-.sticky-cta .btn-primary{padding:10px 28px;font-size:13px}
-
-/* ── FOOTER ── */
-footer{
-  background:var(--navy-dark);border-top:1px solid rgba(255,255,255,.05);
-  padding:48px 48px;
-}
-.footer-inner{
-  max-width:1280px;margin:0 auto;
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
-}
-.footer-logo{display:flex;align-items:center;gap:10px}
-.footer-logo img{height:36px;width:auto;border-radius:6px}
-.footer-logo-text{font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;color:var(--white);letter-spacing:2px}
-.footer-links{display:flex;gap:28px}
-.footer-links a{font-size:13px;color:rgba(255,255,255,.35);transition:color .2s}
-.footer-links a:hover{color:var(--white)}
-.footer-copy{font-size:12px;color:rgba(255,255,255,.25)}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-@keyframes fadeRight{to{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-@keyframes pulseDot{
-  0%,100%{opacity:.4;transform:scale(1)}
-  50%{opacity:1;transform:scale(1.4)}
-}
-@keyframes rippleDot{
-  0%{transform:scale(1);opacity:.6}
-  100%{transform:scale(2.5);opacity:0}
-}
-@keyframes floatBadge{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
-@keyframes heroZoom{
-  0%{transform:scale(1) translate(0,0)}
-  100%{transform:scale(1.08) translate(-1%,-1%)}
-}
-@keyframes circuitPulse{
-  0%,100%{opacity:0;transform:scaleX(0.3)}
-  50%{opacity:.5;transform:scaleX(1)}
-}
-@keyframes floatParticle{
-  0%,100%{transform:translate(0,0);opacity:.3}
-  25%{transform:translate(15px,-20px);opacity:.6}
-  50%{transform:translate(-10px,-35px);opacity:.4}
-  75%{transform:translate(20px,-15px);opacity:.5}
-}
-
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .6s ease,transform .6s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-delay-1{transition-delay:.1s}
-.reveal-delay-2{transition-delay:.2s}
-.reveal-delay-3{transition-delay:.3s}
-.reveal-delay-4{transition-delay:.35s}
-
-/* ── SERVICE PANELS (embedded scroll) ── */
-.services-scroll-wrap{
-  position:relative;height:600vh;
-}
-.services-scroll-sticky{
-  position:sticky;top:0;height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  margin:0 64px;
-  background:var(--light);border-radius:28px;overflow:hidden;
-  box-shadow:0 8px 60px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);
-}
-.services-scroll-inner{
-  max-width:1100px;width:100%;text-align:center;
-  position:relative;padding:0 24px;
-}
-
-/* panel category label — floats top-right */
-.services-scroll-label{
-  position:absolute;top:0;right:0;
-  font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;
-  padding:6px 14px;border-radius:999px;z-index:5;
-  background:var(--accent-dim);color:var(--accent);
-  transition:opacity .4s;
-}
-
-/* panels — stacked on top of each other, fade swap */
-.services-panel{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  opacity:0;visibility:hidden;
-  transition:opacity .5s ease,visibility .5s ease;
-  text-align:center;
-}
-.services-panel.active{opacity:1;visibility:visible}
-
-.panel-title{font-size:clamp(28px,3.5vw,42px);color:var(--text);margin-bottom:8px}
-.panel-subtitle{font-size:16px;color:var(--text-light);margin-bottom:40px;max-width:520px}
-
-.panel-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;width:100%}
-.panel-card{
-  background:var(--white);border:1px solid rgba(0,0,0,.06);
-  border-radius:var(--radius);padding:28px 20px;text-align:center;
-  transition:transform .2s,box-shadow .3s,border-color .3s;cursor:pointer;
-}
-.panel-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06);border-color:var(--accent)}
-.panel-card-icon{
-  width:52px;height:52px;border-radius:14px;
-  background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
-  margin:0 auto 14px;font-size:26px;
-}
-.panel-card h4{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
-.panel-card span{font-size:12px;color:var(--text-light)}
-
-/* progress bar */
-.services-progress{
-  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
-  display:flex;gap:8px;align-items:center;z-index:5;
-}
-.services-progress-dot{
-  width:8px;height:8px;border-radius:50%;border:none;
-  background:rgba(0,0,0,.12);cursor:pointer;
-  transition:background .3s,transform .3s;
-}
-.services-progress-dot.active{background:var(--accent);transform:scale(1.4)}
-
-/* scroll hint arrow */
-.services-scroll-arrow{
-  position:absolute;bottom:64px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  color:var(--text-light);font-size:11px;font-weight:500;letter-spacing:1px;
-  opacity:.5;transition:opacity .4s;z-index:5;
-}
-.services-scroll-arrow.hidden{opacity:0;pointer-events:none}
-.services-scroll-arrow svg{width:18px;height:18px}
-
-/* ── HOW IT WORKS — CUSTOMERS ── */
-.how-customer-section{background:var(--light2)}
-.how-customer{max-width:1280px;margin:0 auto}
-.how-customer-header{text-align:center;margin-bottom:72px}
-.how-customer-header .section-sub{margin:16px auto 0}
-
-.customer-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative}
-.customer-steps::before{
-  content:'';position:absolute;top:52px;left:calc(16.67% + 16px);right:calc(16.67% + 16px);
-  height:2px;background:linear-gradient(90deg,var(--accent),var(--sky),var(--accent));
-  opacity:.3;
-}
-.customer-step{
-  text-align:center;position:relative;
-  background:var(--white);border:1px solid rgba(0,0,0,.06);
-  border-radius:var(--radius);padding:40px 28px;
-  transition:transform .2s,box-shadow .3s;
-}
-.customer-step:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
-.cs-num{
-  width:64px;height:64px;border-radius:50%;
-  background:var(--accent);color:var(--white);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'DM Serif Display',serif;font-size:28px;
-  margin:0 auto 24px;position:relative;z-index:1;
-  transition:transform .3s;
-}
-.customer-step:hover .cs-num{transform:scale(1.1)}
-.customer-step h3{font-size:20px;margin-bottom:8px;color:var(--text)}
-.customer-step p{font-size:14px;color:var(--text-light);line-height:1.6}
-
-/* ── VENDOR DISCOVERY ── */
-.discover-section{background:var(--light)}
-.discover{max-width:1280px;margin:0 auto}
-.discover-header{text-align:center;margin-bottom:48px}
-.discover-header .section-sub{margin:16px auto 0}
-
-.discover-search{
-  max-width:640px;margin:0 auto 56px;
-  display:flex;gap:12px;
-}
-.discover-search input{
-  flex:1;padding:16px 24px;
-  border:1.5px solid rgba(0,0,0,.1);border-radius:999px;
-  font-family:'DM Sans',sans-serif;font-size:15px;
-  background:var(--white);color:var(--text);
-  outline:none;transition:border-color .2s;
-}
-.discover-search input:focus{border-color:var(--accent)}
-.discover-search input::placeholder{color:var(--text-light)}
-.discover-search button{
-  background:var(--accent);color:var(--navy);
-  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
-  padding:16px 32px;border:none;border-radius:999px;cursor:pointer;
-  transition:background .2s,transform .15s;white-space:nowrap;
-}
-.discover-search button:hover{background:var(--accent-hover);transform:translateY(-1px)}
-
-.vendor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.vendor-card{
-  background:var(--white);border:1px solid rgba(0,0,0,.06);
-  border-radius:var(--radius);overflow:hidden;
-  transition:transform .2s,box-shadow .3s;
-}
-.vendor-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.08)}
-.vendor-img{
-  height:160px;
-  background:linear-gradient(135deg,var(--navy),var(--sky));
-  display:flex;align-items:center;justify-content:center;
-  font-size:48px;
-}
-.vendor-body{padding:24px}
-.vendor-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px}
-.vendor-name{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;color:var(--text)}
-.vendor-rating{font-size:13px;color:var(--accent);font-weight:600}
-.vendor-cat{font-size:12px;color:var(--text-light);margin-bottom:12px}
-.vendor-meta{display:flex;gap:16px;font-size:12px;color:var(--text-light)}
-.vendor-meta span{display:flex;align-items:center;gap:4px}
-
-/* ── DOWNLOAD APP ── */
-.download-section{
-  background:linear-gradient(135deg,var(--navy),var(--navy-dark));
-  padding:100px 48px;text-align:center;position:relative;overflow:hidden;
-}
-.download-section::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(212,160,23,.06),transparent 70%);
-  pointer-events:none;
-}
-.download-inner{max-width:720px;margin:0 auto;position:relative;z-index:2}
-.download-inner h2{font-size:clamp(32px,4vw,48px);color:var(--white);margin-bottom:12px}
-.download-inner p{font-size:16px;color:rgba(255,255,255,.5);margin-bottom:40px;line-height:1.7}
-.download-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.download-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:14px 28px;border-radius:999px;
-  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
-  text-decoration:none;transition:transform .15s,box-shadow .2s;
-}
-.download-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
-.download-btn.appstore{background:var(--white);color:var(--navy)}
-.download-btn.playstore{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.25)}
-.download-btn.playstore:hover{border-color:rgba(255,255,255,.5)}
-
-/* ── FAQ TABS ── */
-.faq-tabs{
-  display:flex;gap:8px;margin-bottom:32px;
-  background:rgba(0,0,0,.04);border-radius:999px;padding:4px;
-}
-.faq-tab{
-  flex:1;padding:12px 24px;border-radius:999px;border:none;
-  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
-  cursor:pointer;transition:all .2s;
-  background:transparent;color:var(--text-light);
-}
-.faq-tab.active{background:var(--white);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.faq-tab:hover:not(.active){color:var(--text)}
-.faq-panel{display:none}
-.faq-panel.active{display:flex;flex-direction:column}
-
-.reveal-delay-5{transition-delay:.4s}
-
-/* ── RESPONSIVE ── */
-@media(max-width:1024px){
-  .hero-inner{grid-template-columns:1fr;gap:56px}
-  .hero-visual{order:-1}
-  .bento-grid{grid-template-columns:repeat(2,1fr)}
-  .bento-cell.wide{grid-column:span 2}
-  .faq-inner{grid-template-columns:1fr;gap:48px}
-  .faq-left{position:static}
-  .mascot-badge{width:260px;height:260px}
-  .panel-cards{grid-template-columns:repeat(2,1fr)}
-  .services-scroll-wrap{height:600vh}
-  .services-scroll-sticky{margin:0 32px}
-}
-
-@media(max-width:768px){
-  nav{padding:0 24px}
-  .nav-links{display:none}
-  .hero{padding:120px 24px 80px}
-  .hero-search{flex-direction:row;flex-wrap:wrap;border-radius:16px;padding:12px;gap:8px}
-  .hero-search-divider{display:none}
-  .hero-search-loc{width:100%}
-  .hero-search input{width:100%}
-  .hero-search-btn{width:100%;border-radius:12px;height:44px}
-  section{padding:80px 24px}
-  .stats-bar{padding:40px 24px}
-  .stats-bar-inner{grid-template-columns:1fr;gap:24px}
-  .bento-grid{grid-template-columns:1fr}
-  .bento-cell.wide{grid-column:span 1}
-  .steps{grid-template-columns:1fr}
-  .customer-steps{grid-template-columns:1fr}
-  .customer-steps::before{display:none}
-  .services-scroll-wrap{height:auto}
-  .services-scroll-sticky{position:relative;height:auto;margin:0;border-radius:16px}
-  .services-panel{position:relative;opacity:1;visibility:visible;min-height:auto;padding:60px 0}
-  .panel-cards{grid-template-columns:1fr}
-  .services-progress,.services-scroll-arrow{display:none}
-  .vendor-grid{grid-template-columns:1fr}
-  .discover-search{flex-direction:column}
-  .download-btns{flex-direction:column;align-items:center}
-  .faq-tabs{flex-direction:row}
-  .test-grid{grid-template-columns:1fr}
-  .final-cta{padding:100px 24px}
-  .sticky-cta-text{display:none}
-  footer{padding:40px 24px}
-  .footer-inner{flex-direction:column;text-align:center}
-  .live-dot{opacity:.3}
-  .mascot-float{display:none}
-  .mascot-badge{width:200px;height:200px}
-  .circuit-line,.particle{display:none}
-}
-
-@media(max-width:480px){
-  .hero-title{font-size:36px}
-  .bento-val{font-size:36px}
-  .mascot-badge{width:160px;height:160px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JACK — Connecting Clients & Vendors</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <meta name="description" content="Find trusted local vendors or grow your business on JACK. 50+ service categories, instant booking, and daily payouts — all from one platform.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo"><img src="logo.png" alt="JACK"><span class="nav-logo-text">JACK</span></a>
-  <div class="nav-links">
-    <a href="#services">Services</a>
-    <a href="#benefits">For Vendors</a>
-    <a href="#how">How It Works</a>
-    <a href="#discover">Discover</a>
-    <a href="#faq">FAQ</a>
-  </div>
-  <button class="nav-cta">Download App</button>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-live">
-    <div class="live-dot ld1"></div>
-    <div class="live-dot ld2"></div>
-    <div class="live-dot ld3"></div>
-    <div class="live-dot ld4"></div>
-    <div class="live-dot ld5"></div>
-    <div class="live-dot ld6"></div>
-    <div class="live-dot ld7"></div>
-    <div class="live-dot ld8"></div>
-    <!-- Circuit lines -->
-    <div class="circuit-line cl1"></div>
-    <div class="circuit-line cl2"></div>
-    <div class="circuit-line cl3"></div>
-    <div class="circuit-line cl4"></div>
-    <div class="circuit-line cl5"></div>
-    <div class="circuit-line cl6"></div>
-    <!-- Floating particles -->
-    <div class="particle pp1"></div>
-    <div class="particle pp2"></div>
-    <div class="particle pp3"></div>
-    <div class="particle pp4"></div>
-    <div class="particle pp5"></div>
-    <div class="particle pp6"></div>
-    <div class="particle pp7"></div>
-    <div class="particle pp8"></div>
-    <div class="particle pp9"></div>
-    <div class="particle pp10"></div>
-  </div>
-  <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        Connecting Clients & Vendors
-      </div>
-      <h1 class="hero-title">JACK of All Trades,<br>Master of <em>Service</em></h1>
-      <p class="hero-sub">Professional vendor services for your neighbourhood — done right, every time. Book services, discover local vendors, and grow your business on one platform.</p>
-      <div class="hero-search reveal">
-        <div class="hero-search-loc">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <select id="heroLocation">
-            <option>Bangalore</option>
-            <option>Mumbai</option>
-            <option>Delhi</option>
-            <option>Hyderabad</option>
-            <option>Chennai</option>
-            <option>Pune</option>
-            <option>Kolkata</option>
-            <option>All Locations</option>
-          </select>
-        </div>
-        <div class="hero-search-divider"></div>
-        <input type="text" id="heroSearch" placeholder="Search for a service or product...">
-        <button class="hero-search-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        </button>
-      </div>
-      <div class="hero-actions">
-        <button class="btn-primary">🛒 Sign Up as Customer</button>
-        <button class="btn-secondary">🏪 Sign Up as Vendor</button>
-      </div>
-      <div class="hero-trust">
-        <div class="hero-trust-avatars">
-          <div class="hero-trust-avatar">R</div>
-          <div class="hero-trust-avatar">A</div>
-          <div class="hero-trust-avatar">S</div>
-          <div class="hero-trust-avatar">+</div>
-        </div>
-        <div class="hero-trust-text"><strong>Trusted By 200+</strong> Businesses<br>Growing with JACK</div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="mascot-wrap">
-        <div class="mascot-badge">
-          <img src="imagee.png" alt="JACK — Connecting Clients & Vendors">
-        </div>
-        <!-- Floating badges -->
-        <div class="mascot-float mf1">
-          <div class="mf-icon">🛒</div>
-          <span>New order received!</span>
-        </div>
-        <div class="mascot-float mf2">
-          <div class="mf-icon">⭐</div>
-          <span>5-star review</span>
-        </div>
-        <div class="mascot-float mf3">
-          <div class="mf-icon">💰</div>
-          <span>Payment settled</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BANNER -->
-<div style="background:var(--navy-dark);padding:0;text-align:center;border-bottom:1px solid rgba(255,255,255,.05)">
-  <img src="banner.png" alt="JACK — Connecting Clients & Vendors" style="width:100%;max-width:1280px;height:auto;display:block">
-</div>
-
-<!-- STATS BAR -->
-<div class="stats-bar">
-  <div class="stats-bar-inner">
-    <div class="stats-item reveal">
-      <div class="stats-icon">
-        <!-- Users icon -->
-        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-      </div>
-      <div>
-        <div class="stats-val" data-target="200">0</div>
-        <div class="stats-lbl">Active Vendors Trusting JACK With Their Business.</div>
-      </div>
-    </div>
-    <div class="stats-item reveal reveal-delay-1">
-      <div class="stats-icon">
-        <!-- Storefront icon -->
-        <svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
-      </div>
-      <div>
-        <div class="stats-val" data-target="10000">0</div>
-        <div class="stats-lbl">Monthly Customers Across All Service Categories.</div>
-      </div>
-    </div>
-    <div class="stats-item reveal reveal-delay-2">
-      <div class="stats-icon">
-        <!-- Star icon -->
-        <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-      </div>
-      <div>
-        <div class="stats-val">4.9★</div>
-        <div class="stats-lbl">Average Vendor Rating From Verified Customers.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SERVICE PANELS (embedded scroll) -->
-<section id="services" class="services-scroll-wrap">
-  <div class="services-scroll-sticky">
-    <div class="services-scroll-inner">
-
-      <div class="services-scroll-label" id="scrollLabel">In the Spotlight</div>
-
-      <!-- Panel 1 -->
-      <div class="services-panel active" data-label="In the Spotlight">
-        <div class="panel-title">In the Spotlight</div>
-        <div class="panel-subtitle">Trending services everyone loves</div>
-        <div class="panel-cards">
-          <div class="panel-card"><div class="panel-card-icon">🎨</div><h4>Interior Design</h4><span>Home makeovers</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🎉</div><h4>Event Planning</h4><span>Parties & weddings</span></div>
-          <div class="panel-card"><div class="panel-card-icon">📸</div><h4>Photography</h4><span>Professional shoots</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🚗</div><h4>Car Wash</h4><span>At your doorstep</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🐾</div><h4>Pet Grooming</h4><span>Care for your pets</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🏠</div><h4>Smart Home Setup</h4><span>IoT & automation</span></div>
-        </div>
-      </div>
-
-      <!-- Panel 2 -->
-      <div class="services-panel" data-label="New Services">
-        <div class="panel-title">New Services</div>
-        <div class="panel-subtitle">Fresh arrivals that just landed on JACK</div>
-        <div class="panel-cards">
-          <div class="panel-card"><div class="panel-card-icon">🛩️</div><h4>Drone Photography</h4><span>Aerial shots</span></div>
-          <div class="panel-card"><div class="panel-card-icon">⚡</div><h4>EV Charging</h4><span>On-demand power</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🎬</div><h4>Home Theatre</h4><span>Setup & install</span></div>
-          <div class="panel-card"><div class="panel-card-icon">📋</div><h4>Virtual Assistant</h4><span>Remote support</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🤖</div><h4>AI Tutoring</h4><span>Smart learning</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🚲</div><h4>Bike Rental</h4><span>Short-term rides</span></div>
-        </div>
-      </div>
-
-      <!-- Panel 3 -->
-      <div class="services-panel" data-label="Most Booked">
-        <div class="panel-title">Most Booked</div>
-        <div class="panel-subtitle">Customer favourites, booked again and again</div>
-        <div class="panel-cards">
-          <div class="panel-card"><div class="panel-card-icon">🔧</div><h4>Plumbing</h4><span>Leaks & installs</span></div>
-          <div class="panel-card"><div class="panel-card-icon">💡</div><h4>Electrical Repair</h4><span>Wiring & fixes</span></div>
-          <div class="panel-card"><div class="panel-card-icon">❄️</div><h4>AC Service</h4><span>Service & repair</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🍲</div><h4>Catering</h4><span>Events & tiffin</span></div>
-          <div class="panel-card"><div class="panel-card-icon">📖</div><h4>Tutoring</h4><span>All subjects</span></div>
-          <div class="panel-card"><div class="panel-card-icon">💇</div><h4>Salon at Home</h4><span>Beauty services</span></div>
-        </div>
-      </div>
-
-      <!-- Panel 4 -->
-      <div class="services-panel" data-label="Salon Services">
-        <div class="panel-title">Salon Services</div>
-        <div class="panel-subtitle">Professional beauty & grooming at your doorstep</div>
-        <div class="panel-cards">
-          <div class="panel-card"><div class="panel-card-icon">✂️</div><h4>Hair Styling</h4><span>Cuts & colour</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🧖</div><h4>Facial & Skincare</h4><span>Glow treatments</span></div>
-          <div class="panel-card"><div class="panel-card-icon">👰</div><h4>Bridal Makeup</h4><span>Special occasions</span></div>
-          <div class="panel-card"><div class="panel-card-icon">💆</div><h4>Waxing</h4><span>Full body care</span></div>
-          <div class="panel-card"><div class="panel-card-icon">💅</div><h4>Manicure & Pedicure</h4><span>Nail care</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🧔</div><h4>Beard Grooming</h4><span>Shaves & trims</span></div>
-        </div>
-      </div>
-
-      <!-- Panel 5 -->
-      <div class="services-panel" data-label="Appliance Repair">
-        <div class="panel-title">Appliance Repair</div>
-        <div class="panel-subtitle">Expert fixes for all major home appliances</div>
-        <div class="panel-cards">
-          <div class="panel-card"><div class="panel-card-icon">🧺</div><h4>Washing Machine</h4><span>All brands</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🧊</div><h4>Refrigerator</h4><span>Frost & gas</span></div>
-          <div class="panel-card"><div class="panel-card-icon">📡</div><h4>Microwave</h4><span>All models</span></div>
-          <div class="panel-card"><div class="panel-card-icon">📺</div><h4>TV Repair</h4><span>LED & smart</span></div>
-          <div class="panel-card"><div class="panel-card-icon">💧</div><h4>Water Purifier</h4><span>Filter change</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🌬️</div><h4>Split AC</h4><span>Install & service</span></div>
-        </div>
-      </div>
-
-      <!-- Panel 6 -->
-      <div class="services-panel" data-label="Home Repair">
-        <div class="panel-title">Home Repair & Installation</div>
-        <div class="panel-subtitle">Professional services from trusted experts</div>
-        <div class="panel-cards">
-          <div class="panel-card"><div class="panel-card-icon">🔩</div><h4>Plumbing Install</h4><span>Pipes & fixtures</span></div>
-          <div class="panel-card"><div class="panel-card-icon">⚡</div><h4>Electrical Wiring</h4><span>New connections</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🪚</div><h4>Carpentry</h4><span>Furniture & wood</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🖌️</div><h4>Paint Work</h4><span>Interior & exterior</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🍳</div><h4>Modular Kitchen</h4><span>Custom designs</span></div>
-          <div class="panel-card"><div class="panel-card-icon">🐜</div><h4>Pest Control</h4><span>Home & office</span></div>
-        </div>
-      </div>
-
-      <!-- Progress dots -->
-      <div class="services-progress">
-        <button class="services-progress-dot active" data-idx="0"></button>
-        <button class="services-progress-dot" data-idx="1"></button>
-        <button class="services-progress-dot" data-idx="2"></button>
-        <button class="services-progress-dot" data-idx="3"></button>
-        <button class="services-progress-dot" data-idx="4"></button>
-        <button class="services-progress-dot" data-idx="5"></button>
-      </div>
-
-    </div>
-
-    <!-- Scroll hint -->
-    <div class="services-scroll-arrow" id="scrollArrow">
-      <span>SCROLL</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS — CUSTOMERS -->
-<section class="how-customer-section">
-  <div class="how-customer">
-    <div class="how-customer-header reveal">
-      <div class="section-eyebrow">For Customers</div>
-      <h2 class="section-title">Book Local Services <em>in Minutes</em></h2>
-      <p class="section-sub">Skip the hassle of searching. Find, book, and pay — all from your phone.</p>
-    </div>
-    <div class="customer-steps">
-      <div class="customer-step reveal">
-        <div class="cs-num">1</div>
-        <h3>Search & Browse</h3>
-        <p>Explore 50+ service categories. Filter by rating, price, and availability near you.</p>
-      </div>
-      <div class="customer-step reveal reveal-delay-1">
-        <div class="cs-num">2</div>
-        <h3>Book & Pay</h3>
-        <p>Pick a time slot, confirm your booking, and pay securely — all in the app.</p>
-      </div>
-      <div class="customer-step reveal reveal-delay-2">
-        <div class="cs-num">3</div>
-        <h3>Sit Back & Relax</h3>
-        <p>Track your vendor in real-time. Rate your experience after the job is done.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- BENTO: WHY JACK -->
-<section id="benefits" class="bento-section">
-  <div class="bento">
-    <div class="bento-header reveal">
-      <div class="section-eyebrow">Why It Works</div>
-      <h2 class="section-title">Our Vendors Stay For a Reason</h2>
-      <p class="section-sub">A sale isn't the end — it's the beginning of something better. Here's why vendors love JACK.</p>
-    </div>
-    <div class="bento-grid">
-      <!-- Large stat card -->
-      <div class="bento-cell wide navy reveal">
-        <div class="bento-lbl">Loved By Locals</div>
-        <div class="bento-val">90%</div>
-        <div class="bento-desc">of our bookings are from repeat clients. Build loyalty, not just one-time sales.</div>
-        <div class="bento-visual">
-          <div class="bento-mini-bars">
-            <div class="bento-bar" style="height:40%"></div>
-            <div class="bento-bar" style="height:55%"></div>
-            <div class="bento-bar" style="height:45%"></div>
-            <div class="bento-bar" style="height:70%"></div>
-            <div class="bento-bar" style="height:60%"></div>
-            <div class="bento-bar" style="height:85%"></div>
-            <div class="bento-bar" style="height:92%"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Verified reviews -->
-      <div class="bento-cell reveal reveal-delay-1">
-        <div class="bento-lbl">Verified Reviews</div>
-        <div class="bento-val">512</div>
-        <div class="bento-desc">reviews from busy home & businesses.</div>
-      </div>
-
-      <!-- Hours saved -->
-      <div class="bento-cell reveal reveal-delay-2">
-        <div class="bento-icon">
-          <svg viewBox="0 0 24 24" fill="#1B2A4A"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-        </div>
-        <div class="bento-val">6+</div>
-        <div class="bento-lbl">Hours Saved</div>
-        <div class="bento-desc">Clients save 6+ hours weekly by handing us their needs.</div>
-      </div>
-
-      <!-- Accent: Zero fee -->
-      <div class="bento-cell accent reveal reveal-delay-1">
-        <div class="bento-icon">
-          <svg viewBox="0 0 24 24" fill="#1B2A4A"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-        </div>
-        <div class="bento-val">Zero</div>
-        <div class="bento-lbl">Setup Fee</div>
-        <div class="bento-desc">No temps. No shortcuts. Just pros trained to impress.</div>
-      </div>
-
-      <!-- 50+ service types -->
-      <div class="bento-cell reveal reveal-delay-2">
-        <div class="bento-lbl">Service Categories</div>
-        <div class="bento-val">50+</div>
-        <div class="bento-desc">from plumbing to tutoring — list any service you offer.</div>
-      </div>
-
-      <!-- 12+ years -->
-      <div class="bento-cell reveal reveal-delay-3">
-        <div class="bento-lbl">Platform Experience</div>
-        <div class="bento-val">12+</div>
-        <div class="bento-desc">Years of trusted, professional local commerce expertise.</div>
-      </div>
-
-      <!-- Quick setup -->
-      <div class="bento-cell reveal reveal-delay-4">
-        <div class="bento-icon">
-          <svg viewBox="0 0 24 24" fill="#1B2A4A"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
-        </div>
-        <div class="bento-lbl">Instant Booking</div>
-        <div class="bento-val">/sec</div>
-        <div class="bento-desc">Real-time slots, live updates, zero hassle for your customers.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section id="how" class="how-section">
-  <div class="how">
-    <div class="how-header reveal">
-      <div class="section-eyebrow">How It Works</div>
-      <h2 class="section-title">Start in <em>3 Simple Steps</em></h2>
-      <p class="section-sub">From sign-up to your first order — it takes less than 5 minutes. No paperwork, no waiting.</p>
-    </div>
-    <div class="steps">
-      <div class="step reveal">
-        <div class="step-num">1</div>
-        <h3>Create Your Profile</h3>
-        <p>Sign up with your business name, services, and location. Takes 2 minutes.</p>
-      </div>
-      <div class="step reveal reveal-delay-1">
-        <div class="step-num">2</div>
-        <h3>List Your Services</h3>
-        <p>Add what you offer, set your prices, and upload photos. Go live instantly.</p>
-      </div>
-      <div class="step reveal reveal-delay-2">
-        <div class="step-num">3</div>
-        <h3>Start Earning</h3>
-        <p>Customers find you, place orders, and you get paid. It's that simple.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section id="testimonials" class="test-section">
-  <div class="testimonials">
-    <div class="test-header reveal">
-      <div class="section-eyebrow">Vendor Stories</div>
-      <h2 class="section-title">Loved by <em>Local Businesses</em></h2>
-      <p class="section-sub">Hear from vendors who grew their business with JACK.</p>
-    </div>
-    <div class="test-grid">
-      <div class="test-card reveal">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"JACK brought me 40 new customers in the first month. The dashboard makes it easy to track everything — orders, payments, ratings. I wish I joined sooner."</p>
-        <div class="test-author">
-          <div class="test-avatar">R</div>
-          <div>
-            <div class="test-name">Rajesh Kumar</div>
-            <div class="test-role">Raj's Kitchen · Food & Catering</div>
-          </div>
-        </div>
-      </div>
-      <div class="test-card reveal reveal-delay-1">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"My plumbing business was struggling to find new clients. Within 3 weeks on JACK, I was fully booked. The local reach is incredible."</p>
-        <div class="test-author">
-          <div class="test-avatar">A</div>
-          <div>
-            <div class="test-name">Ajay Patel</div>
-            <div class="test-role">Ajay Plumbing · Home Services</div>
-          </div>
-        </div>
-      </div>
-      <div class="test-card reveal reveal-delay-2">
-        <div class="test-stars">★★★★★</div>
-        <p class="test-quote">"The offers engine is a game-changer. I created a weekend discount and got 25 bookings in two days. Best marketing tool I've used."</p>
-        <div class="test-author">
-          <div class="test-avatar">S</div>
-          <div>
-            <div class="test-name">Sneha Reddy</div>
-            <div class="test-role">EduPoint · Tutoring Services</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- VENDOR DISCOVERY -->
-<section id="discover" class="discover-section">
-  <div class="discover">
-    <div class="discover-header reveal">
-      <div class="section-eyebrow">Discover</div>
-      <h2 class="section-title">Find Trusted <em>Local Vendors</em></h2>
-      <p class="section-sub">Search by service, location, or rating. Your perfect vendor is just a tap away.</p>
-    </div>
-    <div class="discover-search reveal">
-      <input type="text" placeholder="What service do you need? (e.g. plumber, tutor, caterer)">
-      <button>Search</button>
-    </div>
-    <div class="vendor-grid">
-      <div class="vendor-card reveal">
-        <div class="vendor-img" style="background:linear-gradient(135deg,#1B2A4A,#6BA3BE)">🔧</div>
-        <div class="vendor-body">
-          <div class="vendor-top">
-            <div class="vendor-name">Ajay Plumbing</div>
-            <div class="vendor-rating">★ 4.9</div>
-          </div>
-          <div class="vendor-cat">Home Repair · Plumbing</div>
-          <div class="vendor-meta">
-            <span>📍 2.3 km away</span>
-            <span>⏱ Responds in 10 min</span>
-          </div>
-        </div>
-      </div>
-      <div class="vendor-card reveal reveal-delay-1">
-        <div class="vendor-img" style="background:linear-gradient(135deg,#6b7a3a,#d4a017)">🍳</div>
-        <div class="vendor-body">
-          <div class="vendor-top">
-            <div class="vendor-name">Raj's Kitchen</div>
-            <div class="vendor-rating">★ 4.8</div>
-          </div>
-          <div class="vendor-cat">Food & Catering · Tiffin</div>
-          <div class="vendor-meta">
-            <span>📍 1.1 km away</span>
-            <span>⏱ Responds in 5 min</span>
-          </div>
-        </div>
-      </div>
-      <div class="vendor-card reveal reveal-delay-2">
-        <div class="vendor-img" style="background:linear-gradient(135deg,#d4a017,#1B2A4A)">📚</div>
-        <div class="vendor-body">
-          <div class="vendor-top">
-            <div class="vendor-name">EduPoint</div>
-            <div class="vendor-rating">★ 5.0</div>
-          </div>
-          <div class="vendor-cat">Tutoring · Math & Science</div>
-          <div class="vendor-meta">
-            <span>📍 3.5 km away</span>
-            <span>⏱ Responds in 15 min</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DOWNLOAD APP -->
-<section class="download-section">
-  <div class="download-inner reveal">
-    <h2>Get the JACK App</h2>
-    <p>Book services, track orders, and manage your business — all from your phone. Available on iOS and Android.</p>
-    <div class="download-btns">
-      <a href="#" class="download-btn appstore">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        App Store
-      </a>
-      <a href="#" class="download-btn playstore">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5S6 2.67 6 3.5v17c0 .83-.67 1.5-1.5 1.5S3 21.33 3 20.5zM15.5 12L6 3v18l9.5-9zM17.27 10.73l-2.27-1.31-2.5 2.5 2.5 2.5 2.27-1.31c.83-.48.83-1.68 0-2.16l.01-.22zM6 3l9.5 9-2.27 2.27L6 7.08V3z"/></svg>
-        Google Play
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" class="faq-section">
-  <div class="faq-inner">
-    <div class="faq-left reveal">
-      <div class="section-eyebrow">FAQ</div>
-      <h2>Got any questions?<br>We've got Answers.</h2>
-      <p>Everything you need to know about getting started with JACK.</p>
-      <div class="faq-image">
-        <img src="imagee.png" alt="JACK Mascot" style="width:180px;height:auto;border-radius:50%">
-      </div>
-    </div>
-    <div class="faq-right">
-      <div class="faq-tabs reveal">
-        <button class="faq-tab active" data-tab="customer">Customer FAQ</button>
-        <button class="faq-tab" data-tab="vendor">Vendor FAQ</button>
-      </div>
-      <!-- Customer FAQ Panel -->
-      <div class="faq-panel active" data-panel="customer">
-        <div class="faq-item reveal">
-          <button class="faq-q">How do I book a service?<span class="icon">+</span></button>
-          <div class="faq-a"><p>Browse services or search for what you need. Pick a vendor, choose a time slot, confirm your booking, and pay securely in the app. You'll get real-time updates on your order status.</p></div>
-        </div>
-        <div class="faq-item reveal reveal-delay-1">
-          <button class="faq-q">Is it safe to use local vendors?<span class="icon">+</span></button>
-          <div class="faq-a"><p>Yes! Every vendor on JACK is verified. You can check ratings, read reviews from other customers, and track your service in real-time. Our support team is available 24/7 if anything goes wrong.</p></div>
-        </div>
-        <div class="faq-item reveal reveal-delay-2">
-          <button class="faq-q">What if I'm not satisfied with the service?<span class="icon">+</span></button>
-          <div class="faq-a"><p>You can rate your experience and leave feedback. If there's an issue, our dispute resolution team will help resolve it quickly. We also offer refunds for qualifying cases.</p></div>
-        </div>
-        <div class="faq-item reveal reveal-delay-3">
-          <button class="faq-q">How do I pay?<span class="icon">+</span></button>
-          <div class="faq-a"><p>We support UPI, credit/debit cards, net banking, and wallets. All payments are secure and encrypted. You only pay when the service is confirmed.</p></div>
-        </div>
-        <div class="faq-item reveal reveal-delay-4">
-          <button class="faq-q">Can I schedule services in advance?<span class="icon">+</span></button>
-          <div class="faq-a"><p>Absolutely! You can book services up to 30 days in advance. Set your preferred date and time, and the vendor will confirm availability.</p></div>
-        </div>
-      </div>
-      <!-- Vendor FAQ Panel -->
-      <div class="faq-panel" data-panel="vendor">
-        <div class="faq-item reveal">
-          <button class="faq-q">How much does it cost to join JACK?<span class="icon">+</span></button>
-          <div class="faq-a"><p>Nothing. Joining JACK is completely free. There are no setup fees, no monthly charges, and no commission on your first 50 orders. After that, we charge a small 5% platform fee — still the lowest in the market.</p></div>
-        </div>
-        <div class="faq-item reveal reveal-delay-1">
-          <button class="faq-q">How do I get paid?<span class="icon">+</span></button>
-          <div class="faq-a"><p>Payments are settled daily directly to your bank account. No waiting for weekly cycles. You can track all earnings in real time from your dashboard.</p></div>
-        </div>
-        <div class="faq-item reveal reveal-delay-2">
-          <button class="faq-q">What if I already use another platform?<span class="icon">+</span></button>
-          <div class="faq-a"><p>JACK works alongside other platforms. Most vendors use JACK to reach local customers they can't get elsewhere. You can list the same services and set your own prices.</p></div>
-        </div>
-        <div class="faq-item reveal reveal-delay-3">
-          <button class="faq-q">How do customers find me?<span class="icon">+</span></button>
-          <div class="faq-a"><p>JACK uses hyperlocal search to show your business to customers within 5 km. The more orders and reviews you get, the higher you rank in search results.</p></div>
-        </div>
-        <div class="faq-item reveal reveal-delay-4">
-          <button class="faq-q">What support do you offer?<span class="icon">+</span></button>
-          <div class="faq-a"><p>Every vendor gets a dedicated relationship manager. Plus, 24/7 in-app chat support and weekly tips to grow your business on the platform.</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="final-cta">
-  <div style="position:relative;z-index:2">
-    <div class="section-eyebrow reveal">Ready to Get Started?</div>
-    <h2 class="section-title reveal">Your Perfect Service<br>Is One Tap Away</h2>
-    <p class="section-sub reveal">Join thousands of happy customers and vendors on JACK. Whether you need a service or want to offer one — we've got you covered.</p>
-    <div class="hero-actions reveal" style="justify-content:center">
-      <button class="btn-primary">🛒 Sign Up as Customer</button>
-      <button class="btn-secondary">🏪 Sign Up as Vendor</button>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-logo"><img src="logo.png" alt="JACK"><span class="footer-logo-text">JACK</span></div>
-    <div class="footer-links">
-      <a href="https://github.com/Praveenkg02/jack-app" target="_blank">Jack App</a>
-      <a href="https://github.com/Praveenkg02/jack-landing" target="_blank">Landing Page</a>
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo"><img src="logo.png" alt="JACK"><span class="nav-logo-text">JACK</span></a>
+    <div class="nav-links">
       <a href="#services">Services</a>
       <a href="#benefits">For Vendors</a>
+      <a href="#how">How It Works</a>
       <a href="#discover">Discover</a>
       <a href="#faq">FAQ</a>
     </div>
-    <div class="footer-copy">© 2025 JACK Platform · Built by Praveen KG</div>
+    <button class="nav-cta">Download App</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-live">
+      <div class="live-dot ld1"></div>
+      <div class="live-dot ld2"></div>
+      <div class="live-dot ld3"></div>
+      <div class="live-dot ld4"></div>
+      <div class="live-dot ld5"></div>
+      <div class="live-dot ld6"></div>
+      <div class="live-dot ld7"></div>
+      <div class="live-dot ld8"></div>
+      <div class="circuit-line cl1"></div>
+      <div class="circuit-line cl2"></div>
+      <div class="circuit-line cl3"></div>
+      <div class="circuit-line cl4"></div>
+      <div class="circuit-line cl5"></div>
+      <div class="circuit-line cl6"></div>
+      <div class="particle pp1"></div>
+      <div class="particle pp2"></div>
+      <div class="particle pp3"></div>
+      <div class="particle pp4"></div>
+      <div class="particle pp5"></div>
+      <div class="particle pp6"></div>
+      <div class="particle pp7"></div>
+      <div class="particle pp8"></div>
+      <div class="particle pp9"></div>
+      <div class="particle pp10"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Connecting Clients & Vendors
+        </div>
+        <h1 class="hero-title">JACK of All Trades,<br>Master of <em>Service</em></h1>
+        <p class="hero-sub">Professional vendor services for your neighbourhood — done right, every time. Book services, discover local vendors, and grow your business on one platform.</p>
+        <div class="hero-search reveal">
+          <div class="hero-search-loc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <select id="heroLocation">
+              <option>Bangalore</option>
+              <option>Mumbai</option>
+              <option>Delhi</option>
+              <option>Hyderabad</option>
+              <option>Chennai</option>
+              <option>Pune</option>
+              <option>Kolkata</option>
+              <option>All Locations</option>
+            </select>
+          </div>
+          <div class="hero-search-divider"></div>
+          <input type="text" id="heroSearch" placeholder="Search for a service or product...">
+          <button class="hero-search-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </button>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-primary">🛒 Sign Up as Customer</button>
+          <button class="btn-secondary">🏪 Sign Up as Vendor</button>
+        </div>
+        <div class="hero-trust">
+          <div class="hero-trust-avatars">
+            <div class="hero-trust-avatar">R</div>
+            <div class="hero-trust-avatar">A</div>
+            <div class="hero-trust-avatar">S</div>
+            <div class="hero-trust-avatar">+</div>
+          </div>
+          <div class="hero-trust-text"><strong>Trusted By 200+</strong> Businesses<br>Growing with JACK</div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="mascot-wrap">
+          <div class="mascot-badge">
+            <img src="imagee.png" alt="JACK — Connecting Clients & Vendors">
+          </div>
+          <div class="mascot-float mf1">
+            <div class="mf-icon">🛒</div>
+            <span>New order received!</span>
+          </div>
+          <div class="mascot-float mf2">
+            <div class="mf-icon">⭐</div>
+            <span>5-star review</span>
+          </div>
+          <div class="mascot-float mf3">
+            <div class="mf-icon">💰</div>
+            <span>Payment settled</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNER -->
+  <div class="banner-strip">
+    <img src="banner.png" alt="JACK — Connecting Clients & Vendors">
   </div>
-</footer>
 
-<!-- STICKY CTA -->
-<div class="sticky-cta" id="stickyCta">
-  <span class="sticky-cta-text">Find or offer local services on JACK</span>
-  <button class="btn-primary">Get Started</button>
-</div>
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stats-bar-inner">
+      <div class="stats-item reveal">
+        <div class="stats-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        </div>
+        <div>
+          <div class="stats-val" data-target="200">0</div>
+          <div class="stats-lbl">Active Vendors Trusting JACK With Their Business.</div>
+        </div>
+      </div>
+      <div class="stats-item reveal reveal-delay-1">
+        <div class="stats-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
+        </div>
+        <div>
+          <div class="stats-val" data-target="10000">0</div>
+          <div class="stats-lbl">Monthly Customers Across All Service Categories.</div>
+        </div>
+      </div>
+      <div class="stats-item reveal reveal-delay-2">
+        <div class="stats-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </div>
+        <div>
+          <div class="stats-val">4.9★</div>
+          <div class="stats-lbl">Average Vendor Rating From Verified Customers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<script>
-// Intersection Observer for scroll reveals
-const reveals = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
-}, { threshold: 0.15 });
-reveals.forEach(el => revealObserver.observe(el));
+  <!-- SERVICE PANELS (embedded scroll) -->
+  <section id="services" class="services-scroll-wrap">
+    <div class="services-scroll-sticky">
+      <div class="services-scroll-inner">
 
-// Sticky CTA
-const stickyCta = document.getElementById('stickyCta');
-const heroSection = document.querySelector('.hero');
-window.addEventListener('scroll', () => {
-  const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-  stickyCta.classList.toggle('visible', window.scrollY > heroBottom - 200);
-});
+        <div class="services-scroll-label" id="scrollLabel">In the Spotlight</div>
 
-// Counter animation
-function animateCounters() {
-  document.querySelectorAll('.stats-val[data-target]').forEach(el => {
-    const target = parseFloat(el.dataset.target);
-    const isDecimal = target % 1 !== 0;
-    const duration = 1500;
-    const start = performance.now();
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = eased * target;
-      if (target >= 1000) {
-        el.textContent = (current / 1000).toFixed(current >= target ? 0 : 0) + 'K+';
-      } else if (isDecimal) {
-        el.textContent = current.toFixed(1) + '★';
-      } else {
-        el.textContent = Math.floor(current) + '+';
-      }
-      if (progress < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  });
-}
+        <!-- Panel 1 -->
+        <div class="services-panel active" data-label="In the Spotlight">
+          <div class="panel-title">In the Spotlight</div>
+          <div class="panel-subtitle">Trending services everyone loves</div>
+          <div class="panel-cards">
+            <div class="panel-card"><div class="panel-card-icon">🎨</div><h4>Interior Design</h4><span>Home makeovers</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🎉</div><h4>Event Planning</h4><span>Parties & weddings</span></div>
+            <div class="panel-card"><div class="panel-card-icon">📸</div><h4>Photography</h4><span>Professional shoots</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🚗</div><h4>Car Wash</h4><span>At your doorstep</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🐾</div><h4>Pet Grooming</h4><span>Care for your pets</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🏠</div><h4>Smart Home Setup</h4><span>IoT & automation</span></div>
+          </div>
+        </div>
 
-// Trigger counters when stats bar is visible
-const statsObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { animateCounters(); statsObs.unobserve(e.target); } });
-}, { threshold: 0.3 });
-statsObs.observe(document.querySelector('.stats-bar'));
+        <!-- Panel 2 -->
+        <div class="services-panel" data-label="New Services">
+          <div class="panel-title">New Services</div>
+          <div class="panel-subtitle">Fresh arrivals that just landed on JACK</div>
+          <div class="panel-cards">
+            <div class="panel-card"><div class="panel-card-icon">🛩️</div><h4>Drone Photography</h4><span>Aerial shots</span></div>
+            <div class="panel-card"><div class="panel-card-icon">⚡</div><h4>EV Charging</h4><span>On-demand power</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🎬</div><h4>Home Theatre</h4><span>Setup & install</span></div>
+            <div class="panel-card"><div class="panel-card-icon">📋</div><h4>Virtual Assistant</h4><span>Remote support</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🤖</div><h4>AI Tutoring</h4><span>Smart learning</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🚲</div><h4>Bike Rental</h4><span>Short-term rides</span></div>
+          </div>
+        </div>
 
-// FAQ accordion
-document.querySelectorAll('.faq-q').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.parentElement;
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-panel.active .faq-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
-  });
-});
+        <!-- Panel 3 -->
+        <div class="services-panel" data-label="Most Booked">
+          <div class="panel-title">Most Booked</div>
+          <div class="panel-subtitle">Customer favourites, booked again and again</div>
+          <div class="panel-cards">
+            <div class="panel-card"><div class="panel-card-icon">🔧</div><h4>Plumbing</h4><span>Leaks & installs</span></div>
+            <div class="panel-card"><div class="panel-card-icon">💡</div><h4>Electrical Repair</h4><span>Wiring & fixes</span></div>
+            <div class="panel-card"><div class="panel-card-icon">❄️</div><h4>AC Service</h4><span>Service & repair</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🍲</div><h4>Catering</h4><span>Events & tiffin</span></div>
+            <div class="panel-card"><div class="panel-card-icon">📖</div><h4>Tutoring</h4><span>All subjects</span></div>
+            <div class="panel-card"><div class="panel-card-icon">💇</div><h4>Salon at Home</h4><span>Beauty services</span></div>
+          </div>
+        </div>
 
-// FAQ tabs
-document.querySelectorAll('.faq-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.faq-panel').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelector(`.faq-panel[data-panel="${tab.dataset.tab}"]`).classList.add('active');
-  });
-});
+        <!-- Panel 4 -->
+        <div class="services-panel" data-label="Salon Services">
+          <div class="panel-title">Salon Services</div>
+          <div class="panel-subtitle">Professional beauty & grooming at your doorstep</div>
+          <div class="panel-cards">
+            <div class="panel-card"><div class="panel-card-icon">✂️</div><h4>Hair Styling</h4><span>Cuts & colour</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🧖</div><h4>Facial & Skincare</h4><span>Glow treatments</span></div>
+            <div class="panel-card"><div class="panel-card-icon">👰</div><h4>Bridal Makeup</h4><span>Special occasions</span></div>
+            <div class="panel-card"><div class="panel-card-icon">💆</div><h4>Waxing</h4><span>Full body care</span></div>
+            <div class="panel-card"><div class="panel-card-icon">💅</div><h4>Manicure & Pedicure</h4><span>Nail care</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🧔</div><h4>Beard Grooming</h4><span>Shaves & trims</span></div>
+          </div>
+        </div>
 
-// Nav scroll effect
-const nav = document.querySelector('nav');
-window.addEventListener('scroll', () => {
-  nav.style.background = window.scrollY > 60 ? 'rgba(27,42,74,.98)' : 'rgba(27,42,74,.95)';
-});
+        <!-- Panel 5 -->
+        <div class="services-panel" data-label="Appliance Repair">
+          <div class="panel-title">Appliance Repair</div>
+          <div class="panel-subtitle">Expert fixes for all major home appliances</div>
+          <div class="panel-cards">
+            <div class="panel-card"><div class="panel-card-icon">🧺</div><h4>Washing Machine</h4><span>All brands</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🧊</div><h4>Refrigerator</h4><span>Frost & gas</span></div>
+            <div class="panel-card"><div class="panel-card-icon">📡</div><h4>Microwave</h4><span>All models</span></div>
+            <div class="panel-card"><div class="panel-card-icon">📺</div><h4>TV Repair</h4><span>LED & smart</span></div>
+            <div class="panel-card"><div class="panel-card-icon">💧</div><h4>Water Purifier</h4><span>Filter change</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🌬️</div><h4>Split AC</h4><span>Install & service</span></div>
+          </div>
+        </div>
 
-// Smooth scroll for nav links
-document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', (e) => {
-    const href = link.getAttribute('href');
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
-});
+        <!-- Panel 6 -->
+        <div class="services-panel" data-label="Home Repair">
+          <div class="panel-title">Home Repair & Installation</div>
+          <div class="panel-subtitle">Professional services from trusted experts</div>
+          <div class="panel-cards">
+            <div class="panel-card"><div class="panel-card-icon">🔩</div><h4>Plumbing Install</h4><span>Pipes & fixtures</span></div>
+            <div class="panel-card"><div class="panel-card-icon">⚡</div><h4>Electrical Wiring</h4><span>New connections</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🪚</div><h4>Carpentry</h4><span>Furniture & wood</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🖌️</div><h4>Paint Work</h4><span>Interior & exterior</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🍳</div><h4>Modular Kitchen</h4><span>Custom designs</span></div>
+            <div class="panel-card"><div class="panel-card-icon">🐜</div><h4>Pest Control</h4><span>Home & office</span></div>
+          </div>
+        </div>
 
-// ── SERVICES EMBEDDED SCROLL ──
-(function() {
-  const wrap = document.querySelector('.services-scroll-wrap');
-  if (!wrap) return;
-  const panels = wrap.querySelectorAll('.services-panel');
-  const dots = wrap.querySelectorAll('.services-progress-dot');
-  const label = document.getElementById('scrollLabel');
-  const arrow = document.getElementById('scrollArrow');
-  const total = panels.length;
-  let lastIdx = -1;
+        <!-- Progress dots -->
+        <div class="services-progress">
+          <button class="services-progress-dot active" data-idx="0"></button>
+          <button class="services-progress-dot" data-idx="1"></button>
+          <button class="services-progress-dot" data-idx="2"></button>
+          <button class="services-progress-dot" data-idx="3"></button>
+          <button class="services-progress-dot" data-idx="4"></button>
+          <button class="services-progress-dot" data-idx="5"></button>
+        </div>
 
-  function update() {
-    const rect = wrap.getBoundingClientRect();
-    const scrollable = wrap.offsetHeight - window.innerHeight;
-    const scrolled = -rect.top;
-    const progress = Math.max(0, Math.min(1, scrolled / scrollable));
-    const idx = Math.min(Math.floor(progress * total), total - 1);
+      </div>
 
-    if (idx === lastIdx) return;
-    lastIdx = idx;
+      <!-- Scroll hint -->
+      <div class="services-scroll-arrow" id="scrollArrow">
+        <span>SCROLL</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+    </div>
+  </section>
 
-    panels.forEach((p, i) => p.classList.toggle('active', i === idx));
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    if (label) label.textContent = panels[idx].dataset.label;
-    if (arrow) arrow.classList.toggle('hidden', scrolled > 50);
-  }
+  <!-- HOW IT WORKS — CUSTOMERS -->
+  <section class="how-customer-section">
+    <div class="how-customer">
+      <div class="how-customer-header reveal">
+        <div class="section-eyebrow">For Customers</div>
+        <h2 class="section-title">Book Local Services <em>in Minutes</em></h2>
+        <p class="section-sub">Skip the hassle of searching. Find, book, and pay — all from your phone.</p>
+      </div>
+      <div class="customer-steps">
+        <div class="customer-step reveal">
+          <div class="cs-num">1</div>
+          <h3>Search & Browse</h3>
+          <p>Explore 50+ service categories. Filter by rating, price, and availability near you.</p>
+        </div>
+        <div class="customer-step reveal reveal-delay-1">
+          <div class="cs-num">2</div>
+          <h3>Book & Pay</h3>
+          <p>Pick a time slot, confirm your booking, and pay securely — all in the app.</p>
+        </div>
+        <div class="customer-step reveal reveal-delay-2">
+          <div class="cs-num">3</div>
+          <h3>Sit Back & Relax</h3>
+          <p>Track your vendor in real-time. Rate your experience after the job is done.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  window.addEventListener('scroll', update, { passive: true });
-  update();
+  <!-- BENTO: WHY JACK -->
+  <section id="benefits" class="bento-section">
+    <div class="bento">
+      <div class="bento-header reveal">
+        <div class="section-eyebrow">Why It Works</div>
+        <h2 class="section-title">Our Vendors Stay For a Reason</h2>
+        <p class="section-sub">A sale isn't the end — it's the beginning of something better. Here's why vendors love JACK.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="bento-cell wide navy reveal">
+          <div class="bento-lbl">Loved By Locals</div>
+          <div class="bento-val">90%</div>
+          <div class="bento-desc">of our bookings are from repeat clients. Build loyalty, not just one-time sales.</div>
+          <div class="bento-visual">
+            <div class="bento-mini-bars">
+              <div class="bento-bar" style="height:40%"></div>
+              <div class="bento-bar" style="height:55%"></div>
+              <div class="bento-bar" style="height:45%"></div>
+              <div class="bento-bar" style="height:70%"></div>
+              <div class="bento-bar" style="height:60%"></div>
+              <div class="bento-bar" style="height:85%"></div>
+              <div class="bento-bar" style="height:92%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="bento-cell reveal reveal-delay-1">
+          <div class="bento-lbl">Verified Reviews</div>
+          <div class="bento-val">512</div>
+          <div class="bento-desc">reviews from busy home & businesses.</div>
+        </div>
+        <div class="bento-cell reveal reveal-delay-2">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="#1B2A4A"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+          </div>
+          <div class="bento-val">6+</div>
+          <div class="bento-lbl">Hours Saved</div>
+          <div class="bento-desc">Clients save 6+ hours weekly by handing us their needs.</div>
+        </div>
+        <div class="bento-cell accent reveal reveal-delay-1">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="#1B2A4A"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="bento-val">Zero</div>
+          <div class="bento-lbl">Setup Fee</div>
+          <div class="bento-desc">No temps. No shortcuts. Just pros trained to impress.</div>
+        </div>
+        <div class="bento-cell reveal reveal-delay-2">
+          <div class="bento-lbl">Service Categories</div>
+          <div class="bento-val">50+</div>
+          <div class="bento-desc">from plumbing to tutoring — list any service you offer.</div>
+        </div>
+        <div class="bento-cell reveal reveal-delay-3">
+          <div class="bento-lbl">Platform Experience</div>
+          <div class="bento-val">12+</div>
+          <div class="bento-desc">Years of trusted, professional local commerce expertise.</div>
+        </div>
+        <div class="bento-cell reveal reveal-delay-4">
+          <div class="bento-icon">
+            <svg viewBox="0 0 24 24" fill="#1B2A4A"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+          </div>
+          <div class="bento-lbl">Instant Booking</div>
+          <div class="bento-val">/sec</div>
+          <div class="bento-desc">Real-time slots, live updates, zero hassle for your customers.</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const i = parseInt(dot.dataset.idx);
-      const top = wrap.offsetTop;
-      const scrollable = wrap.offsetHeight - window.innerHeight;
-      window.scrollTo({ top: top + (i / total) * scrollable, behavior: 'smooth' });
-    });
-  });
-})();
+  <!-- HOW IT WORKS (Vendor) -->
+  <section id="how" class="how-section">
+    <div class="how">
+      <div class="how-header reveal">
+        <div class="section-eyebrow">How It Works</div>
+        <h2 class="section-title">Start in <em>3 Simple Steps</em></h2>
+        <p class="section-sub">From sign-up to your first order — it takes less than 5 minutes. No paperwork, no waiting.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <h3>Create Your Profile</h3>
+          <p>Sign up with your business name, services, and location. Takes 2 minutes.</p>
+        </div>
+        <div class="step reveal reveal-delay-1">
+          <div class="step-num">2</div>
+          <h3>List Your Services</h3>
+          <p>Add what you offer, set your prices, and upload photos. Go live instantly.</p>
+        </div>
+        <div class="step reveal reveal-delay-2">
+          <div class="step-num">3</div>
+          <h3>Start Earning</h3>
+          <p>Customers find you, place orders, and you get paid. It's that simple.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="test-section">
+    <div class="testimonials">
+      <div class="test-header reveal">
+        <div class="section-eyebrow">Vendor Stories</div>
+        <h2 class="section-title">Loved by <em>Local Businesses</em></h2>
+        <p class="section-sub">Hear from vendors who grew their business with JACK.</p>
+      </div>
+      <div class="test-grid">
+        <div class="test-card reveal">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-quote">"JACK brought me 40 new customers in the first month. The dashboard makes it easy to track everything — orders, payments, ratings. I wish I joined sooner."</p>
+          <div class="test-author">
+            <div class="test-avatar">R</div>
+            <div>
+              <div class="test-name">Rajesh Kumar</div>
+              <div class="test-role">Raj's Kitchen · Food & Catering</div>
+            </div>
+          </div>
+        </div>
+        <div class="test-card reveal reveal-delay-1">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-quote">"My plumbing business was struggling to find new clients. Within 3 weeks on JACK, I was fully booked. The local reach is incredible."</p>
+          <div class="test-author">
+            <div class="test-avatar">A</div>
+            <div>
+              <div class="test-name">Ajay Patel</div>
+              <div class="test-role">Ajay Plumbing · Home Services</div>
+            </div>
+          </div>
+        </div>
+        <div class="test-card reveal reveal-delay-2">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-quote">"The offers engine is a game-changer. I created a weekend discount and got 25 bookings in two days. Best marketing tool I've used."</p>
+          <div class="test-author">
+            <div class="test-avatar">S</div>
+            <div>
+              <div class="test-name">Sneha Reddy</div>
+              <div class="test-role">EduPoint · Tutoring Services</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-</script>
+  <!-- VENDOR DISCOVERY -->
+  <section id="discover" class="discover-section">
+    <div class="discover">
+      <div class="discover-header reveal">
+        <div class="section-eyebrow">Discover</div>
+        <h2 class="section-title">Find Trusted <em>Local Vendors</em></h2>
+        <p class="section-sub">Search by service, location, or rating. Your perfect vendor is just a tap away.</p>
+      </div>
+      <div class="discover-search reveal">
+        <input type="text" placeholder="What service do you need? (e.g. plumber, tutor, caterer)">
+        <button>Search</button>
+      </div>
+      <div class="vendor-grid">
+        <div class="vendor-card reveal">
+          <div class="vendor-img" style="background:linear-gradient(135deg,#1B2A4A,#6BA3BE)">🔧</div>
+          <div class="vendor-body">
+            <div class="vendor-top">
+              <div class="vendor-name">Ajay Plumbing</div>
+              <div class="vendor-rating">★ 4.9</div>
+            </div>
+            <div class="vendor-cat">Home Repair · Plumbing</div>
+            <div class="vendor-meta">
+              <span>📍 2.3 km away</span>
+              <span>⏱ Responds in 10 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="vendor-card reveal reveal-delay-1">
+          <div class="vendor-img" style="background:linear-gradient(135deg,#6b7a3a,#d4a017)">🍳</div>
+          <div class="vendor-body">
+            <div class="vendor-top">
+              <div class="vendor-name">Raj's Kitchen</div>
+              <div class="vendor-rating">★ 4.8</div>
+            </div>
+            <div class="vendor-cat">Food & Catering · Tiffin</div>
+            <div class="vendor-meta">
+              <span>📍 1.1 km away</span>
+              <span>⏱ Responds in 5 min</span>
+            </div>
+          </div>
+        </div>
+        <div class="vendor-card reveal reveal-delay-2">
+          <div class="vendor-img" style="background:linear-gradient(135deg,#d4a017,#1B2A4A)">📚</div>
+          <div class="vendor-body">
+            <div class="vendor-top">
+              <div class="vendor-name">EduPoint</div>
+              <div class="vendor-rating">★ 5.0</div>
+            </div>
+            <div class="vendor-cat">Tutoring · Math & Science</div>
+            <div class="vendor-meta">
+              <span>📍 3.5 km away</span>
+              <span>⏱ Responds in 15 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD APP -->
+  <section class="download-section">
+    <div class="download-inner reveal">
+      <h2>Get the JACK App</h2>
+      <p>Book services, track orders, and manage your business — all from your phone. Available on iOS and Android.</p>
+      <div class="download-btns">
+        <a href="#" class="download-btn appstore">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          App Store
+        </a>
+        <a href="#" class="download-btn playstore">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5S6 2.67 6 3.5v17c0 .83-.67 1.5-1.5 1.5S3 21.33 3 20.5zM15.5 12L6 3v18l9.5-9zM17.27 10.73l-2.27-1.31-2.5 2.5 2.5 2.5 2.27-1.31c.83-.48.83-1.68 0-2.16l.01-.22zM6 3l9.5 9-2.27 2.27L6 7.08V3z"/></svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq-section">
+    <div class="faq-inner">
+      <div class="faq-left reveal">
+        <div class="section-eyebrow">FAQ</div>
+        <h2>Got any questions?<br>We've got Answers.</h2>
+        <p>Everything you need to know about getting started with JACK.</p>
+        <div class="faq-image">
+          <img src="imagee.png" alt="JACK Mascot" style="width:180px;height:auto;border-radius:50%">
+        </div>
+      </div>
+      <div class="faq-right">
+        <div class="faq-tabs reveal">
+          <button class="faq-tab active" data-tab="customer">Customer FAQ</button>
+          <button class="faq-tab" data-tab="vendor">Vendor FAQ</button>
+        </div>
+        <!-- Customer FAQ Panel -->
+        <div class="faq-panel active" data-panel="customer">
+          <div class="faq-item reveal">
+            <button class="faq-q">How do I book a service?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Browse services or search for what you need. Pick a vendor, choose a time slot, confirm your booking, and pay securely in the app. You'll get real-time updates on your order status.</p></div>
+          </div>
+          <div class="faq-item reveal reveal-delay-1">
+            <button class="faq-q">Is it safe to use local vendors?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Yes! Every vendor on JACK is verified. You can check ratings, read reviews from other customers, and track your service in real-time. Our support team is available 24/7 if anything goes wrong.</p></div>
+          </div>
+          <div class="faq-item reveal reveal-delay-2">
+            <button class="faq-q">What if I'm not satisfied with the service?<span class="icon">+</span></button>
+            <div class="faq-a"><p>You can rate your experience and leave feedback. If there's an issue, our dispute resolution team will help resolve it quickly. We also offer refunds for qualifying cases.</p></div>
+          </div>
+          <div class="faq-item reveal reveal-delay-3">
+            <button class="faq-q">How do I pay?<span class="icon">+</span></button>
+            <div class="faq-a"><p>We support UPI, credit/debit cards, net banking, and wallets. All payments are secure and encrypted. You only pay when the service is confirmed.</p></div>
+          </div>
+          <div class="faq-item reveal reveal-delay-4">
+            <button class="faq-q">Can I schedule services in advance?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Absolutely! You can book services up to 30 days in advance. Set your preferred date and time, and the vendor will confirm availability.</p></div>
+          </div>
+        </div>
+        <!-- Vendor FAQ Panel -->
+        <div class="faq-panel" data-panel="vendor">
+          <div class="faq-item reveal">
+            <button class="faq-q">How much does it cost to join JACK?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Nothing. Joining JACK is completely free. There are no setup fees, no monthly charges, and no commission on your first 50 orders. After that, we charge a small 5% platform fee — still the lowest in the market.</p></div>
+          </div>
+          <div class="faq-item reveal reveal-delay-1">
+            <button class="faq-q">How do I get paid?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Payments are settled daily directly to your bank account. No waiting for weekly cycles. You can track all earnings in real time from your dashboard.</p></div>
+          </div>
+          <div class="faq-item reveal reveal-delay-2">
+            <button class="faq-q">What if I already use another platform?<span class="icon">+</span></button>
+            <div class="faq-a"><p>JACK works alongside other platforms. Most vendors use JACK to reach local customers they can't get elsewhere. You can list the same services and set your own prices.</p></div>
+          </div>
+          <div class="faq-item reveal reveal-delay-3">
+            <button class="faq-q">How do customers find me?<span class="icon">+</span></button>
+            <div class="faq-a"><p>JACK uses hyperlocal search to show your business to customers within 5 km. The more orders and reviews you get, the higher you rank in search results.</p></div>
+          </div>
+          <div class="faq-item reveal reveal-delay-4">
+            <button class="faq-q">What support do you offer?<span class="icon">+</span></button>
+            <div class="faq-a"><p>Every vendor gets a dedicated relationship manager. Plus, 24/7 in-app chat support and weekly tips to grow your business on the platform.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div style="position:relative;z-index:2">
+      <div class="section-eyebrow reveal">Ready to Get Started?</div>
+      <h2 class="section-title reveal">Your Perfect Service<br>Is One Tap Away</h2>
+      <p class="section-sub reveal">Join thousands of happy customers and vendors on JACK. Whether you need a service or want to offer one — we've got you covered.</p>
+      <div class="hero-actions reveal" style="justify-content:center">
+        <button class="btn-primary">🛒 Sign Up as Customer</button>
+        <button class="btn-secondary">🏪 Sign Up as Vendor</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo"><img src="logo.png" alt="JACK"><span class="footer-logo-text">JACK</span></div>
+      <div class="footer-links">
+        <a href="https://github.com/Praveenkg02/jack-app" target="_blank">Jack App</a>
+        <a href="https://github.com/Praveenkg02/jack-landing" target="_blank">Landing Page</a>
+        <a href="#services">Services</a>
+        <a href="#benefits">For Vendors</a>
+        <a href="#discover">Discover</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-copy">&copy; 2025 JACK Platform &middot; Built by Praveen KG</div>
+    </div>
+  </footer>
+
+  <!-- STICKY CTA -->
+  <div class="sticky-cta" id="stickyCta">
+    <span class="sticky-cta-text">Find or offer local services on JACK</span>
+    <button class="btn-primary">Get Started</button>
+  </div>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

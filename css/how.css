@@ -1,0 +1,57 @@
+/* ── HOW IT WORKS (Vendor) ── */
+.how-section{background:var(--light2)}
+.how{max-width:1280px;margin:0 auto}
+.how-header{text-align:center;margin-bottom:72px}
+.how-header .section-sub{margin:16px auto 0}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.step{
+  background:var(--white);border:1px solid rgba(0,0,0,.06);
+  border-radius:var(--radius);padding:40px 32px;text-align:center;
+  transition:transform .2s,box-shadow .3s;
+}
+.step:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+
+.step-num{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--accent-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:28px;color:var(--accent);
+  margin:0 auto 24px;
+  transition:background .3s,color .3s;
+}
+.step:hover .step-num{background:var(--accent);color:var(--white)}
+
+.step h3{font-size:22px;margin-bottom:10px;color:var(--text)}
+.step p{font-size:14px;color:var(--text-light);max-width:280px;margin:0 auto;line-height:1.6}
+
+/* ── HOW IT WORKS — CUSTOMERS ── */
+.how-customer-section{background:var(--light2)}
+.how-customer{max-width:1280px;margin:0 auto}
+.how-customer-header{text-align:center;margin-bottom:72px}
+.how-customer-header .section-sub{margin:16px auto 0}
+
+.customer-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative}
+.customer-steps::before{
+  content:'';position:absolute;top:52px;left:calc(16.67% + 16px);right:calc(16.67% + 16px);
+  height:2px;background:linear-gradient(90deg,var(--accent),var(--sky),var(--accent));
+  opacity:.3;
+}
+.customer-step{
+  text-align:center;position:relative;
+  background:var(--white);border:1px solid rgba(0,0,0,.06);
+  border-radius:var(--radius);padding:40px 28px;
+  transition:transform .2s,box-shadow .3s;
+}
+.customer-step:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.06)}
+.cs-num{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--accent);color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:28px;
+  margin:0 auto 24px;position:relative;z-index:1;
+  transition:transform .3s;
+}
+.customer-step:hover .cs-num{transform:scale(1.1)}
+.customer-step h3{font-size:20px;margin-bottom:8px;color:var(--text)}
+.customer-step p{font-size:14px;color:var(--text-light);line-height:1.6}

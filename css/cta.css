@@ -1,0 +1,26 @@
+/* ── FINAL CTA ── */
+.final-cta{
+  background:var(--navy);padding:140px 48px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.final-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at center,rgba(107,163,190,.06),transparent 70%);
+  pointer-events:none;
+}
+.final-cta .section-eyebrow{color:var(--sky);border-color:rgba(107,163,190,.2)}
+.final-cta .section-title{color:var(--white);font-size:clamp(40px,5vw,60px);margin-bottom:20px}
+.final-cta .section-sub{color:rgba(255,255,255,.5);margin:0 auto 48px;text-align:center}
+
+/* ── STICKY CTA ── */
+.sticky-cta{
+  position:fixed;bottom:0;left:0;right:0;z-index:99;
+  background:rgba(27,42,74,.97);backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:14px 48px;
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  transform:translateY(100%);transition:transform .3s;
+}
+.sticky-cta.visible{transform:translateY(0)}
+.sticky-cta-text{font-size:14px;color:rgba(255,255,255,.5);font-weight:500}
+.sticky-cta .btn-primary{padding:10px 28px;font-size:13px}

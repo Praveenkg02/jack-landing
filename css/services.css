@@ -1,0 +1,74 @@
+/* ── SERVICE PANELS (embedded scroll) ── */
+.services-scroll-wrap{
+  position:relative;height:600vh;
+}
+.services-scroll-sticky{
+  position:sticky;top:0;height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 64px;
+  background:var(--light);border-radius:28px;overflow:hidden;
+  box-shadow:0 8px 60px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);
+}
+.services-scroll-inner{
+  max-width:1100px;width:100%;text-align:center;
+  position:relative;padding:0 24px;
+}
+
+/* panel category label — floats top-right */
+.services-scroll-label{
+  position:absolute;top:0;right:0;
+  font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;
+  padding:6px 14px;border-radius:999px;z-index:5;
+  background:var(--accent-dim);color:var(--accent);
+  transition:opacity .4s;
+}
+
+/* panels — stacked on top of each other, fade swap */
+.services-panel{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
+  transition:opacity .5s ease,visibility .5s ease;
+  text-align:center;
+}
+.services-panel.active{opacity:1;visibility:visible}
+
+.panel-title{font-size:clamp(28px,3.5vw,42px);color:var(--text);margin-bottom:8px}
+.panel-subtitle{font-size:16px;color:var(--text-light);margin-bottom:40px;max-width:520px}
+
+.panel-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;width:100%}
+.panel-card{
+  background:var(--white);border:1px solid rgba(0,0,0,.06);
+  border-radius:var(--radius);padding:28px 20px;text-align:center;
+  transition:transform .2s,box-shadow .3s,border-color .3s;cursor:pointer;
+}
+.panel-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.06);border-color:var(--accent)}
+.panel-card-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;font-size:26px;
+}
+.panel-card h4{font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
+.panel-card span{font-size:12px;color:var(--text-light)}
+
+/* progress dots */
+.services-progress{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;align-items:center;z-index:5;
+}
+.services-progress-dot{
+  width:8px;height:8px;border-radius:50%;border:none;
+  background:rgba(0,0,0,.12);cursor:pointer;
+  transition:background .3s,transform .3s;
+}
+.services-progress-dot.active{background:var(--accent);transform:scale(1.4)}
+
+/* scroll hint arrow */
+.services-scroll-arrow{
+  position:absolute;bottom:64px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  color:var(--text-light);font-size:11px;font-weight:500;letter-spacing:1px;
+  opacity:.5;transition:opacity .4s;z-index:5;
+}
+.services-scroll-arrow.hidden{opacity:0;pointer-events:none}
+.services-scroll-arrow svg{width:18px;height:18px}

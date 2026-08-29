@@ -1,0 +1,16 @@
+/* ── FOOTER ── */
+footer{
+  background:var(--navy-dark);border-top:1px solid rgba(255,255,255,.05);
+  padding:48px 48px;
+}
+.footer-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.footer-logo{display:flex;align-items:center;gap:10px}
+.footer-logo img{height:36px;width:auto;border-radius:6px}
+.footer-logo-text{font-family:'Nunito',sans-serif;font-size:22px;font-weight:900;color:var(--white);letter-spacing:2px}
+.footer-links{display:flex;gap:28px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.35);transition:color .2s}
+.footer-links a:hover{color:var(--white)}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.25)}

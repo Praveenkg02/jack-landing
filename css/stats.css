@@ -1,0 +1,20 @@
+/* ── STATS BAR ── */
+.stats-bar{
+  background:var(--navy-dark);border-top:1px solid rgba(255,255,255,.05);
+  border-bottom:1px solid rgba(255,255,255,.05);
+  padding:48px 48px;
+}
+.stats-bar-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:40px;
+}
+.stats-item{display:flex;align-items:center;gap:20px}
+.stats-icon{
+  width:56px;height:56px;border-radius:16px;
+  background:rgba(107,163,190,.1);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.stats-icon svg{width:28px;height:28px;fill:var(--sky)}
+.stats-val{font-family:'DM Serif Display',serif;font-size:36px;color:var(--white);line-height:1}
+.stats-lbl{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px;max-width:180px;line-height:1.4}
